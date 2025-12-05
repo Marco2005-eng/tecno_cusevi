@@ -142,14 +142,29 @@ async function cargarProducto(id) {
 function configurarBotones(producto) {
     document.getElementById("add-to-cart-form").onsubmit = (e) => {
         e.preventDefault();
+
         const qty = Number(document.getElementById("product-quantity").value);
-        if (qty > 0) agregarAlCarrito(producto, qty);
+        const stock = Number(producto.stock_disponible);
+
+        // 🔥 VALIDACIÓN DE STOCK
+        if (qty > stock) {
+            mostrarNotificacion(`Solo hay ${stock} unidades disponibles.`);
+            return;
+        }
+
+        if (qty <= 0) {
+            mostrarNotificacion("La cantidad debe ser mayor a 0.");
+            return;
+        }
+
+        agregarAlCarrito(producto, qty);
     };
 
     document.getElementById("btn-fav").onclick = () => {
         agregarFavorito(producto.id);
     };
 }
+
 
 /**************************************************************
  * Carrito (localStorage)

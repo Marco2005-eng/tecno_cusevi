@@ -1,5 +1,5 @@
 /**************************************************************
- * CARRITO.JS — NGROK READY + OPTIMIZADO
+ * CARRITO.JS — NGROK / RAILWAY READY + VALIDACIÓN DE STOCK
  **************************************************************/
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,11 +35,13 @@ function inicializarTema() {
 function actualizarCarritoHeader() {
     const carrito = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
     const badge = document.getElementById("cart-count");
-    badge.textContent = carrito.reduce((a, p) => a + p.cantidad, 0);
+    if (badge) {
+        badge.textContent = carrito.reduce((a, p) => a + p.cantidad, 0);
+    }
 }
 
 /**************************************************************
- * UTILIDADES (LOADING, ERROR, NOTIFICACIONES)
+ * UTILIDADES
  **************************************************************/
 function showLoading(el) {
     el.innerHTML = `<p style="text-align:center;color:var(--text-muted)">Cargando carrito...</p>`;
@@ -72,7 +74,7 @@ function mostrarNotificacion(msg, tipo = "success") {
 }
 
 /**************************************************************
- * CARGAR CARRITO (usa apiGet)
+ * CARGAR CARRITO
  **************************************************************/
 async function cargarCarrito() {
     const items = document.getElementById("carrito-items");
@@ -82,7 +84,7 @@ async function cargarCarrito() {
 
     const carrito = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
 
-    if (carrito.length === 0) {
+    if (!carrito.length) {
         items.style.display = "none";
         empty.style.display = "flex";
         calcularTotales();
@@ -126,7 +128,7 @@ async function cargarCarrito() {
 }
 
 /**************************************************************
- * ITEM DEL CARRITO (HTML)
+ * ITEM HTML
  **************************************************************/
 function generarItemCarritoHTML(p, item, precio) {
     return `
@@ -156,7 +158,7 @@ function generarItemCarritoHTML(p, item, precio) {
 }
 
 /**************************************************************
- * EVENTOS DE ITEMS
+ * EVENTOS
  **************************************************************/
 function asignarEventosItems() {
     const items = document.getElementById("carrito-items");
@@ -174,22 +176,46 @@ function asignarEventosItems() {
 }
 
 /**************************************************************
- * CAMBIAR CANTIDAD / ELIMINAR / VACIAR
+ * VALIDAR Y CAMBIAR CANTIDAD (DINÁMICO)
  **************************************************************/
-function cambiarCantidad(id, delta) {
+async function cambiarCantidad(id, delta) {
     let cart = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
     const item = cart.find(p => p.id == id);
 
-    if (item) {
-        item.cantidad += delta;
-        if (item.cantidad <= 0) return eliminarItem(id);
-    }
+    if (!item) return;
 
-    localStorage.setItem("carrito_tienda", JSON.stringify(cart));
-    cargarCarrito();
-    actualizarCarritoHeader();
+    try {
+        const data = await apiGet(`/catalogo-public/${id}`);
+
+        if (!data.success) {
+            mostrarNotificacion("Error consultando stock", "error");
+            return;
+        }
+
+        const stock = data.data.stock_disponible;
+
+        if (delta > 0 && item.cantidad + delta > stock) {
+            mostrarNotificacion(`Solo hay ${stock} unidades disponibles`, "warning");
+            return;
+        }
+
+        item.cantidad += delta;
+
+        if (item.cantidad <= 0) return eliminarItem(id);
+
+        localStorage.setItem("carrito_tienda", JSON.stringify(cart));
+        cargarCarrito();
+        actualizarCarritoHeader();
+
+    } catch (e) {
+        console.error("Error validando stock:", e);
+        mostrarNotificacion("No se pudo validar stock", "error");
+    }
 }
 
+/**************************************************************
+ * ELIMINAR / VACIAR
+ **************************************************************/
 function eliminarItem(id) {
     let cart = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
     cart = cart.filter(p => p.id != id);
@@ -210,7 +236,7 @@ function vaciarCarrito() {
 }
 
 /**************************************************************
- * RESUMEN DE TOTALES
+ * TOTALES
  **************************************************************/
 function calcularTotales() {
     const items = document.querySelectorAll(".carrito-item");
@@ -228,7 +254,32 @@ function calcularTotales() {
 }
 
 /**************************************************************
- * PROCESAR PEDIDO (usa apiPost)
+ * VALIDAR STOCK ANTES DE PEDIDO
+ **************************************************************/
+async function validarStockAntesDePedir() {
+    const carrito = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
+
+    for (const item of carrito) {
+        const data = await apiGet(`/catalogo-public/${item.id}`);
+
+        if (!data.success) continue;
+
+        const stock = data.data.stock_disponible;
+
+        if (item.cantidad > stock) {
+            mostrarNotificacion(
+                `Stock insuficiente para "${data.data.nombre_venta}". Disponible: ${stock}`,
+                "warning"
+            );
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**************************************************************
+ * PROCESAR PEDIDO
  **************************************************************/
 async function procesarPedido() {
     const carrito = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
@@ -237,6 +288,10 @@ async function procesarPedido() {
         mostrarNotificacion("El carrito está vacío", "warning");
         return;
     }
+
+    // 🔥 Validar stock real antes de enviar pedido
+    const ok = await validarStockAntesDePedir();
+    if (!ok) return;
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     if (!user.id_cliente) {
