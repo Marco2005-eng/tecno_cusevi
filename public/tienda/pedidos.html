@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pedidos - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/tienda.css">
+
+    <!-- Scripts -->
+    <script defer src="js/api.js"></script>
+    <script defer src="js/header.js"></script>
+    <script defer src="js/pedidos.js"></script>
+</head>
+
+<body>
+
+    <!-- ================== HEADER ================== -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header__content">
+
+                <a href="index.html" class="header__logo-link">
+                    <img src="assets/logo.png" alt="Logo Tecno CuseVi" class="header__logo">
+                </a>
+
+                <nav class="main-nav">
+                    <ul class="main-nav__list">
+                        <li><a href="index.html" class="main-nav__link">Inicio</a></li>
+                        <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
+                        <li><a href="ofertas.html" class="main-nav__link">Ofertas</a></li>
+                        <li><a href="categorias.html" class="main-nav__link">Categorías</a></li>
+                        <li><a href="pedidos.html" class="main-nav__link active">Mis Pedidos</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header__actions">
+
+                    <!-- Cambio de tema -->
+                    <div class="header__action-icon theme-toggle" title="Cambiar tema">
+                        <svg class="sun-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                        </svg>
+                        <svg class="moon-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Favoritos -->
+                    <a href="favoritos.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </a>
+
+                    <!-- Carrito -->
+                    <a href="carrito.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.6 13.5a2 2 0 0 0 2 1.5h10a2 2 0 0 0 2-1.5L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+
+                    <!-- Perfil -->
+                    <a href="perfil.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================== MAIN ================== -->
+    <main class="main-content">
+        <div class="container">
+
+            <section class="section">
+                <h1 class="section__title">Mis Pedidos</h1>
+                <p class="section__subtitle">Revisa el estado y los detalles de tus compras.</p>
+
+                <div id="lista-pedidos" class="pedidos-list"></div>
+
+                <div id="pedidos-vacio" class="empty-state" style="display:none;">
+                    <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 11H3v10h6V11z"></path>
+                        <path d="M21 3h-6v18h6V3z"></path>
+                        <path d="M15 7H9v14h6V7z"></path>
+                    </svg>
+                    <h3>Aún no tienes pedidos</h3>
+                    <p>Explora nuestros productos y realiza tu primera compra.</p>
+                    <a href="catalogo.html" class="btn btn--primary">Ir al Catálogo</a>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ================== MODAL DETALLE PEDIDO ================== -->
+    <div id="pedido-modal" class="modal">
+        <div class="modal-content modal-lg">
+
+            <span id="pedido-modal-close" class="modal-close">&times;</span>
+            <h2>Detalle del Pedido</h2>
+
+            <div id="pedido-detalle-body" class="pedido-detalle-body">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== FOOTER ================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer__content">
+                <p>&copy; 2025 Tecno CuseVi. Todos los derechos reservados.</p>
+                <nav class="footer-nav">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Contacto</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

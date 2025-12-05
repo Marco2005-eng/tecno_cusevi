@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas & Notificaciones - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================
+            ESTILO DE ALERTAS
+        ==========================*/
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .alerts-header h2 {
+            margin: 0;
+        }
+
+        .alert-counter {
+            background: #ff3b30;
+            padding: 4px 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+
+        .alerts-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alert-card {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            transition: 0.2s ease;
+        }
+
+        .alert-card.no-leida {
+            border-left: 6px solid #4ea8de;
+            background: #f8fcff;
+        }
+
+        .alert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .alert-icon-modern {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 22px;
+            color: white;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #F9C74F, #F9844A);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #4ea8de, #5390d9);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #43aa8b, #4cc9f0);
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f94144, #f3722c);
+        }
+
+        .alert-content {
+            flex-grow: 1;
+        }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .alert-message {
+            font-size: 14px;
+            margin-top: 4px;
+            color: #555;
+        }
+
+        .alert-time {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .alert-action-btn {
+            border: none;
+            background: #f3f3f3;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .alert-action-btn:hover {
+            background: #e3e3e3;
+        }
+
+        #pagination-controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            margin: 0 4px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #f3f3f3;
+        }
+
+        .page-active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html "><i class="fas fa-warehouse"></i> Control de Stock</a>
+                        </li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de
+                                Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="reportes.html" ><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"class="active"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Alertas & Notificaciones</h1>
+                    <p class="header-subtitle">Monitor de actividades críticas del sistema</p>
+                </div>
+
+                <div class="admin-user-info">
+                    
+                    <div>
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">Administrador</span>
+                    </div>
+                </div>
+
+                <button id="logout-btn" class="admin-btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+            </header>
+
+            <!-- CONTENIDO -->
+            <section class="admin-content">
+
+                <div class="alerts-header">
+                    <h2>Centro de Notificaciones 
+                        <span id="alert-counter" class="alert-counter" style="display:none;">0</span>
+                    </h2>
+
+                    <div>
+                        <select id="alert-filter">
+                            <option value="all">Todas</option>
+                            <option value="stock">Stock</option>
+                            <option value="pedido">Pedidos</option>
+                            <option value="usuario">Usuarios</option>
+                            <option value="sistema">Sistema</option>
+                        </select>
+
+                        <button id="mark-all-read-btn" class="admin-btn admin-btn-secondary">
+                            <i class="fas fa-check-double"></i> Marcar todas como leídas
+                        </button>
+                    </div>
+                </div>
+
+                <div id="alerts-list" class="alerts-container"></div>
+
+                <div id="pagination-controls"></div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/alertas.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

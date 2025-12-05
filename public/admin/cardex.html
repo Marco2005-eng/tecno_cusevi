@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kardex - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR COMPLETO -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="stock.html " ><i class="fas fa-warehouse"></i> Control de Stock</a>
+                        </li>
+                        <li><a href="cardex.html" class="active"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <!-- HEADER -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Kardex del Producto</h1>
+                    <p class="header-subtitle">Historial detallado de movimientos de inventario</p>
+                </div>
+
+                <div class="admin-user-info">
+
+                    <div>
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">Administrador</span>
+                    </div>
+                </div>
+
+                <button id="logout-btn" class="admin-btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </header>
+
+            <!-- CONTENIDO -->
+            <section class="admin-content">
+
+                <!-- ENCABEZADO -->
+                <div class="content-header">
+                    <h2 id="nombre-producto">Producto</h2>
+
+                    <button onclick="window.history.back()" class="admin-btn admin-btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                </div>
+
+                <!-- TABLA DEL KARDEX -->
+                <div class="table-container">
+                    <table class="data-table" id="kardex-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Movimiento</th>
+                                <th>Cantidad</th>
+                                <th>Stock Resultante</th>
+                                <th>Usuario</th>
+                                <th>Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </section>
+        </main>
+
+    </div>
+
+    <script src="js/cardex.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración General - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html "><i class="fas fa-warehouse"></i> Control de Stock</a>
+                        </li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de
+                                Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items ">
+                        <li><a href="reportes.html" ><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="configuracion.html" class="active"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="section-title">Configuración General</h1>
+                    <p class="header-subtitle">Ajusta los parámetros principales de la tienda</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="admin-user-info">
+                
+                        <div>
+                            <span class="user-name" id="user-name">Admin</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                    </div>
+
+                    <button id="logout-btn" class="admin-btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <section class="admin-content">
+
+                <form id="config-form">
+
+                    <div class="card">
+                        <h3 class="section-title"><i class="fas fa-store"></i> Información de la Tienda</h3>
+
+                        <div class="form-grid">
+
+                            <div class="form-group full-width">
+                                <label>Nombre Comercial</label>
+                                <input type="text" id="store-name" data-key="store_name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="store-email" data-key="store_email">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="text" id="store-phone" data-key="store_phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label>RUC</label>
+                                <input type="text" id="store-ruc" data-key="store_ruc">
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Dirección</label>
+                                <textarea id="store-address" data-key="store_address"></textarea>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Logo (URL)</label>
+                                <input type="url" id="store-logo-url" data-key="store_logo">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="section-title"><i class="fas fa-tools"></i> Mantenimiento del Sistema</h3>
+
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="maintenance-mode" data-key="maintenance_mode">
+                                Activar modo mantenimiento
+                            </label>
+                        </div>
+
+                        <button type="button" id="clear-cache-btn" class="admin-btn admin-btn-secondary">
+                            <i class="fas fa-broom"></i> Limpiar Caché
+                        </button>
+
+                        <button type="button" id="backup-db-btn" class="admin-btn admin-btn-warning">
+                            <i class="fas fa-download"></i> Respaldar Base de Datos
+                        </button>
+
+                    </div>
+
+                    <div class="form-group full-width" style="text-align:right;">
+                        <button type="submit" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+
+                </form>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- MODAL DE RESPALDO -->
+    <div id="backup-modal" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2><i class="fas fa-download"></i> Confirmar Respaldo</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p>¿Deseas crear un respaldo de la base de datos? Esto puede tardar unos minutos.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary close-modal-btn">Cancelar</button>
+                <button id="confirm-backup-btn" class="admin-btn admin-btn-warning">Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">Cambios guardados correctamente</div>
+
+    <script src="js/configuracion.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

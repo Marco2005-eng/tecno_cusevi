@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecno CuseVi – Finanzas</title>
+
+    <!-- Estilos globales -->
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Librerías para exportación -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- Gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ========================= CARDS DE RESUMEN ========================= */
+        .resume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .fin-card {
+            background: var(--card-bg);
+            padding: 1.4rem;
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--primary-color);
+            box-shadow: var(--shadow);
+            transition: all 0.25s ease;
+        }
+
+        .fin-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .fin-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-light);
+        }
+
+        .fin-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .positive { color: var(--success-color); }
+        .negative { color: var(--danger-color); }
+
+        /* ========================= SEPARADORES ========================= */
+        .section-title {
+            margin: 1.8rem 0 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* ========================= FILTROS ========================= */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-group select,
+        .form-group input {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* ========================= TABLA ========================= */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            padding: 12px;
+            background: #f1f3f5;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* ========================= GRÁFICOS ========================= */
+        .charts-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-width: 320px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        #grafico-mensual-container { min-height: 320px; }
+        #grafico-anual-container { max-width: 340px; margin: auto; }
+
+        /* ========================= MODAL ========================= */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: var(--shadow);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            cursor: pointer;
+            font-size: 22px;
+            color: #777;
+        }
+
+        .close-btn:hover { color: black; }
+    </style>
+</head>
+
+<body>
+<div class="admin-layout">
+
+    <!-- ========================= SIDEBAR ========================= -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="admin-logo">
+                <i class="fas fa-microchip"></i> <span>Tecno CuseVi</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+                <li class="sidebar-title">Operaciones</li>
+                <ul class="nav-items expanded">
+                    <li><a href="productos.html"><i class="fas fa-boxes"></i> Productos</a></li>
+                    <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo</a></li>
+                    <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="ventas.html"><i class="fas fa-receipt"></i> Ventas</a></li>
+                    <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Compras</a></li>
+                    <li><a href="finanzas.html" class="active"><i class="fas fa-chart-line"></i> Finanzas</a></li>
+                </ul>
+
+                <li class="sidebar-title">Datos Maestros</li>
+                <ul class="nav-items">
+                    <li><a href="marcas.html"><i class="fas fa-tag"></i> Marcas</a></li>
+                    <li><a href="categorias.html"><i class="fas fa-list"></i> Categorías</a></li>
+                    <li><a href="ofertas.html"><i class="fas fa-percent"></i> Ofertas</a></li>
+                </ul>
+
+                <li class="sidebar-title">Control</li>
+                <ul class="nav-items">
+                    <li><a href="stock.html"><i class="fas fa-warehouse"></i> Stock</a></li>
+                    <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex</a></li>
+                    <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Proveedores</a></li>
+                    <li><a href="clientes.html"><i class="fas fa-users"></i> Clientes</a></li>
+                </ul>
+
+                <li class="sidebar-title">Reportes</li>
+                <ul class="nav-items">
+                    <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Ventas</a></li>
+                    <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas</a></li>
+                </ul>
+
+                <li class="sidebar-title">Configuración</li>
+                <ul class="nav-items">
+                    <li><a href="configuracion.html"><i class="fas fa-cogs"></i> General</a></li>
+                    <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Usuarios</a></li>
+                </ul>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ========================= MAIN CONTENT ========================= -->
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <h1>Finanzas</h1>
+            <p>Control y análisis financiero del negocio.</p>
+        </header>
+
+        <section class="admin-content">
+
+            <!-- ========================= RESUMEN ========================= -->
+            <h2 class="section-title">Resumen General</h2>
+            <div id="resumen-general" class="resume-grid"></div>
+
+            <button id="btn-manual" class="admin-btn admin-btn-primary" style="margin-top: 10px;">
+                <i class="fas fa-plus"></i> Registrar Movimiento
+            </button>
+
+            <!-- ========================= FILTROS ========================= -->
+            <h2 class="section-title">Filtros del Reporte</h2>
+
+            <div class="card">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Periodo</label>
+                        <select id="filtro-periodo">
+                            <option value="hoy">Hoy</option>
+                            <option value="semana">Última Semana</option>
+                            <option value="mes">Este Mes</option>
+                            <option value="anio">Este Año</option>
+                            <option value="rango">Rango Personalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Desde</label>
+                        <input type="date" id="fecha-desde" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hasta</label>
+                        <input type="date" id="fecha-hasta" disabled>
+                    </div>
+
+                    <button id="btn-filtrar" class="admin-btn admin-btn-info">Aplicar</button>
+                    <button id="btn-export-pdf" class="admin-btn admin-btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <button id="btn-export-excel" class="admin-btn admin-btn-success"><i class="fas fa-file-excel"></i> Excel</button>
+
+                </div>
+            </div>
+
+            <!-- ========================= GRÁFICOS ========================= -->
+            <div class="charts-row">
+
+                <div class="chart-container" id="grafico-mensual-container">
+                    <h2 class="section-title">Ingresos vs Egresos</h2>
+
+                    <label style="font-weight:600;">Vista:</label>
+                    <select id="vista-grafico" style="margin-bottom: 10px;">
+                        <option value="mensual">Mensual (12 meses)</option>
+                        <option value="semanal">Semanal (8 semanas)</option>
+                        <option value="anual">Anual (años)</option>
+                    </select>
+
+                    <canvas id="grafico-mensual"></canvas>
+                </div>
+
+                <div class="chart-container" id="grafico-anual-container">
+                    <h2 class="section-title">Balance del Periodo</h2>
+                    <canvas id="grafico-anual"></canvas>
+                </div>
+
+            </div>
+
+            <!-- ========================= TABLA MOVIMIENTOS ========================= -->
+            <h2 class="section-title">Movimientos Registrados</h2>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Monto</th>
+                            <th>Origen</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-movimientos"></tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<!-- ========================= MODAL REGISTRO ========================= -->
+<div id="modal-manual" class="modal">
+    <div class="modal-content">
+        <span id="close-manual" class="close-btn">&times;</span>
+
+        <h2>Registrar Movimiento</h2>
+
+        <form id="form-manual" style="margin-top: 15px;">
+
+            <label>Tipo</label>
+            <select id="tipo" required>
+                <option value="">Selecciona...</option>
+                <option value="ingreso">Ingreso</option>
+                <option value="egreso">Egreso</option>
+            </select>
+
+            <label>Monto</label>
+            <input type="number" id="monto" min="0.1" step="0.1" required>
+
+            <label>Descripción</label>
+            <textarea id="descripcion" rows="3"></textarea>
+
+            <button class="admin-btn admin-btn-primary" style="margin-top: 10px;">Guardar</button>
+
+        </form>
+    </div>
+</div>
+
+<script src="js/finanzas.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/api.js"></script>
+
+</body>
+
+</html>

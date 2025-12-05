@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/tienda.css">
+
+    <script defer src="js/api.js"></script>
+    <script defer src="js/checkout.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <a href="index.html"><img id="site-logo" src="assets/logo.png" class="logo"></a>
+        </div>
+
+        <div class="nav-right">
+            <a href="carrito.html" class="nav-icon">🛒</a>
+            <a href="perfil.html" class="nav-icon">👤</a>
+        </div>
+    </header>
+
+
+    <main class="checkout-container">
+
+        <h2>Finalizar Compra</h2>
+
+        <div class="checkout-grid">
+
+            <!-- DATOS DEL CLIENTE -->
+            <section class="checkout-card">
+                <h3>Datos del Cliente</h3>
+
+                <form id="checkout-form">
+
+                    <label>Nombre completo</label>
+                    <input type="text" id="cli-nombre" required>
+
+                    <label>Correo</label>
+                    <input type="email" id="cli-email" required>
+
+                    <label>Teléfono</label>
+                    <input type="text" id="cli-telefono" required>
+
+                    <label>Dirección</label>
+                    <textarea id="cli-direccion" rows="2" required></textarea>
+
+                    <label>Método de pago</label>
+                    <select id="checkout-metodo" required>
+                        <option value="yape">Yape</option>
+                        <option value="plin">Plin</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                    </select>
+
+                </form>
+            </section>
+
+            <!-- RESUMEN DEL PEDIDO -->
+            <aside class="checkout-resumen">
+                <h3>Resumen del Pedido</h3>
+
+                <div id="resumen-items"></div>
+
+                <p class="resumen-line">
+                    <span>Subtotal</span>
+                    <span id="checkout-subtotal">S/ 0.00</span>
+                </p>
+
+                <p class="resumen-line total">
+                    <span>Total</span>
+                    <span id="checkout-total">S/ 0.00</span>
+                </p>
+
+                <button id="btn-procesar" class="btn-primary full-btn">Confirmar Pedido</button>
+            </aside>
+        </div>
+
+    </main>
+
+</body>
+</html>

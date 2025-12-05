@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecno CuseVi - Tu Tienda de Tecnología</title>
+    
+    <!-- CSS general -->
+    <link rel="stylesheet" href="css/tienda.css">
+
+    <!-- Scripts globales -->
+    <script defer src="js/api.js"></script>
+
+    <script defer src="js/index.js"></script>
+</head>
+<body>
+
+    <!-- ================== HEADER ================== -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header__content">
+
+            <!-- Logo (estático por ahora) -->
+                <a href="index.html" class="header__logo-link">
+                    <img src="assets/logo.png" alt="Logo Tecno CuseVi" class="header__logo">
+                </a>
+
+                <!-- Navegación -->
+                <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+                    <ul class="main-nav__list">
+                        <li><a href="index.html" class="main-nav__link active">Inicio</a></li>
+                        <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
+                        <li><a href="ofertas.html" class="main-nav__link">Ofertas</a></li>
+                        <li><a href="categorias.html" class="main-nav__link">Categorías</a></li>
+                        <li><a href="pedidos.html" class="main-nav__link">Mis Pedidos</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Acciones -->
+                <div class="header__actions">
+
+                    <!-- Buscador -->
+                    <div class="search-bar">
+                        <input type="search" id="search-bar" class="search-bar__input" placeholder="Buscar productos..." aria-label="Buscar productos">
+                        <button class="search-bar__button" aria-label="Ejecutar búsqueda">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Tema -->
+                    <div class="header__action-icon theme-toggle" title="Cambiar tema">
+                        <!-- Sol -->
+                        <svg class="sun-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                        </svg>
+
+                        <!-- Luna -->
+                        <svg class="moon-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+
+                    <a href="favoritos.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </a>
+
+                    <a href="carrito.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"/>
+                            <circle cx="20" cy="21" r="1"/>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+
+                    <a href="perfil.html" class="header__action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ================== MAIN ================== -->
+    <main class="main-content">
+        <div class="container">
+
+            <section class="hero-banner">
+                <div class="hero-banner__content">
+                    <h1 class="hero-banner__title">Bienvenido a Tecno CuseVi</h1>
+                    <p class="hero-banner__subtitle">Encuentra lo mejor en tecnología al mejor precio.</p>
+                    <div class="hero-banner__actions">
+                        <a href="catalogo.html" class="btn btn--primary">Ver Catálogo</a>
+                        <!-- CORRECCIÓN: Usamos btn--light para mejor contraste y usabilidad -->
+                        <a href="ofertas.html" class="btn btn--light">Ver Ofertas</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== SECCIÓN DE RESULTADOS DE BÚSQUEDA (AÑADIDA) ================== -->
+            <section id="search-results-section" class="section" style="display: none;">
+                <h2 class="section__title">Resultados de Búsqueda</h2>
+                <p class="section__subtitle">Mostrando resultados para: "<span id="search-term-display"></span>"</p>
+                <div id="search-results-container" class="productos-grid"></div>
+            </section>
+
+            <section class="section">
+                <h2 class="section__title">Explora por Categorías</h2>
+                <div id="categorias-container" class="categorias-grid"></div>
+            </section>
+
+            <section class="section section--bg-light">
+                <h2 class="section__title">Ofertas del Día</h2>
+                <div id="ofertas-container" class="productos-grid"></div>
+            </section>
+
+            <section class="section">
+                <h2 class="section__title">Productos Destacados</h2>
+                <div id="destacados-container" class="productos-grid"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ================== FOOTER ================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer__content">
+                <p>&copy; 2025 Tecno CuseVi. Todos los derechos reservados.</p>
+                <nav class="footer-nav">
+                    <a href="politica-privacidad.html">Política de Privacidad</a>
+                    <a href="terminos-condiciones.html">Términos y Condiciones</a>
+                    <a href="contacto.html">Contacto</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Tecno CuseVi - Gestión de Ofertas</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html" class="active"><i class="fas fa-percentage"></i> Gestión de
+                                Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html"><i class="fas fa-warehouse"></i> Control de Stock</a></li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Gestión de Ofertas</h1>
+                    <p class="header-subtitle">Crea y administra descuentos y promociones</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="admin-user-info">
+                        <div>
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="admin-btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- CONTENIDO -->
+            <section class="admin-content">
+
+                <div class="content-header">
+                    <h2>Ofertas Activas</h2>
+
+                    <div class="header-controls">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Buscar oferta por producto...">
+                        </div>
+
+                        <button id="add-offer-btn" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-plus"></i> Nueva Oferta
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TABLA -->
+                <div class="table-container">
+                    <table class="data-table" id="offers-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Descripción</th>
+                                <th>Precio Base</th>
+                                <th>Descuento</th>
+                                <th>Precio Final</th>
+                                <th>Vigencia</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-controls" id="pagination-controls"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div id="offer-modal" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 id="offer-modal-title">
+                    <i class="fas fa-percentage"></i> Crear Oferta
+                </h2>
+                <span class="close-btn">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <form id="offer-form">
+                    <input type="hidden" id="offer-id">
+
+                    <!-- PRODUCTO -->
+                    <div class="form-group full-width">
+                        <label for="offer-catalog-id">Producto del catálogo</label>
+                        <select id="offer-catalog-id" required>
+                            <option value="" disabled selected>Selecciona un producto...</option>
+                        </select>
+                    </div>
+
+                    <!-- DESCRIPCIÓN -->
+                    <div class="form-group full-width">
+                        <label for="offer-short-desc">Descripción Corta</label>
+                        <input type="text" id="offer-short-desc" placeholder="Ej: 20% OFF procesadores">
+                    </div>
+
+                    <!-- DESCUENTO -->
+                    <div class="form-group">
+                        <label for="offer-discount">Descuento (%)</label>
+                        <input type="number" id="offer-discount" min="1" max="95" required>
+                    </div>
+
+                    <!-- FECHAS -->
+                    <div class="form-group">
+                        <label for="offer-start-date">Inicio</label>
+                        <input type="datetime-local" id="offer-start-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="offer-end-date">Fin</label>
+                        <input type="datetime-local" id="offer-end-date" required>
+                    </div>
+
+                    <!-- CHECKBOX (CORREGIDO) -->
+                    <div class="form-group checkbox-group full-width">
+                        <input type="checkbox" id="offer-active" checked>
+                        <label for="offer-active">Oferta activa</label>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="admin-btn admin-btn-secondary close-modal-btn">Cancelar</button>
+                <button form="offer-form" class="admin-btn admin-btn-primary">Guardar Oferta</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/ofertas.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/api.js"></script>
+</body>
+
+</html>

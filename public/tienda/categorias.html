@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías - Tecno CuseVi</title>
+    <link rel="icon" href="assets/icono.png" sizes="any">
+    <!-- CSS unificado -->
+    <link rel="stylesheet" href="css/tienda.css">
+
+    <!-- Scripts -->
+    <script defer src="js/api.js"></script>
+    <script defer src="js/header.js"></script> <!-- 🔥 Añadido para consistencia -->
+    <script defer src="js/categorias.js"></script>
+</head>
+
+<body>
+
+    <!-- ========================================================= -->
+    <!-- HEADER — igual en todo el sitio para coherencia visual -->
+    <!-- ========================================================= -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header__content">
+                <!-- Logo (estático por ahora) -->
+                <a href="index.html" class="header__logo-link">
+                    <img src="assets/logo.png" alt="Logo Tecno CuseVi" class="header__logo">
+                </a>
+                <!-- Navegación -->
+                <nav class="main-nav" role="navigation" aria-label="Menú principal">
+                    <ul class="main-nav__list">
+                        <li><a href="index.html" class="main-nav__link">Inicio</a></li>
+                        <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
+                        <li><a href="ofertas.html" class="main-nav__link">Ofertas</a></li>
+                        <li><a href="categorias.html" class="main-nav__link active">Categorías</a></li>
+                        <li><a href="pedidos.html" class="main-nav__link">Mis Pedidos</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Iconos de acción -->
+                <div class="header__actions">
+
+                    <!-- Buscador -->
+                    <div class="search-bar">
+                        <input type="search" id="search-bar" placeholder="Buscar productos..."
+                            class="search-bar__input">
+                        <button class="search-bar__button" aria-label="Buscar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- 🔥 Botón de Cambio de Tema (Añadido) -->
+                    <div class="header__action-icon theme-toggle" title="Cambiar tema">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                        </svg>
+                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Favoritos -->
+                    <a href="favoritos.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67
+                                     l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23
+                                     l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </a>
+
+                    <!-- Carrito -->
+                    <a href="carrito.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0
+                                     2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+
+                    <!-- Perfil -->
+                    <a href="perfil.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8
+                                     a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================================= -->
+    <main class="main-content">
+        <div class="container">
+
+            <section class="section">
+                <h1 class="section__title">Explora por Categorías</h1>
+                <p class="section__subtitle">Encuentra lo que buscas navegando nuestras secciones.</p>
+
+                <!-- Placeholder inicial mientras carga -->
+                <div id="categorias-placeholder" class="categorias-grid">
+                    <div class="categoria-skeleton"></div>
+                    <div class="categoria-skeleton"></div>
+                    <div class="categoria-skeleton"></div>
+                    <div class="categoria-skeleton"></div>
+                </div>
+
+                <!-- Grid real de categorías (se reemplaza al cargar) -->
+                <div id="categorias-grid" class="categorias-grid" style="display:none;"></div>
+
+                <!-- Mensaje si no hay categorías -->
+                <div id="categorias-vacio" class="no-results" style="display:none;">
+                    <h3>No se encontraron categorías</h3>
+                    <p>Vuelve más tarde para ver nuevas secciones.</p>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer__content">
+                <p>&copy; 2025 Tecno CuseVi — Todos los derechos reservados.</p>
+                <nav class="footer-nav">
+                    <a href="politica-privacidad.html">Política de Privacidad</a>
+                    <a href="terminos-condiciones.html">Términos y Condiciones</a>
+                    <a href="contacto.html">Contacto</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

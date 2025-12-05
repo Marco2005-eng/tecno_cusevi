@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Tecno CuseVi</title>
+    <link rel="stylesheet" href="../admin/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <form id="register-form" class="auth-form">
+            <h2>Crear Cuenta</h2>
+
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Nombre de Usuario</label>
+                <input type="text" id="username" name="username" required placeholder="Ejemplo: Elpro">
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                <input type="email" id="email" name="email" required placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+                <input type="password" id="password" name="password" required placeholder="Mínimo 8 caracteres">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-user-plus"></i> Registrarse
+            </button>
+
+            <p class="auth-switch">
+                ¿Ya tienes una cuenta?
+                <a href="login.html">Inicia sesión aquí</a>
+            </p>
+        </form>
+    </div>
+
+    <script src="../admin/js/register.js"></script>
+    <script src="../admin/js/api.js"></script>
+</body>
+
+</html>

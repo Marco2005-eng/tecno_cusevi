@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ventas - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script defer src="js/admin.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/ventas.js"></script>
+
+    <!-- jsPDF para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- SheetJS para Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i> <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items expanded"> <!-- "expanded" para que aparezca abierto por defecto -->
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> <span>Gestión de
+                                    Productos</span></a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> <span>Gestión de
+                                    Pedidos</span></a></li>
+                        <li><a href="ventas.html" class="active"><i class="fas fa-receipt"></i> <span>Registro de
+                                    Ventas</span></a>
+                        </li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> <span>Registro de
+                                    Compras</span></a></li>
+                        <li><a href="finanzas.html"><i class="fas fa-chart-line"></i> Finanzas</a></li>
+                    </ul>
+
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> <span>Gestión de Marcas</span></a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> <span>Gestión de Categorías</span></a>
+                        </li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> <span>Gestión de Ofertas</span></a>
+                        </li>
+                    </ul>
+
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html"><i class="fas fa-warehouse"></i> <span>Control de Stock</span></a></li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> <span>Cardex de
+                                    Productos</span></a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> <span>Gestión de
+                                    Proveedores</span></a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> <span>Gestión de
+                                    Clientes</span></a></li>
+                    </ul>
+
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> <span>Reportes de
+                                    Ventas</span></a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> <span>Alertas y Notificaciones</span></a>
+                        </li>
+                    </ul>
+
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> <span>Configuración
+                                    General</span></a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> <span>Gestión de
+                                    Usuarios</span></a></li>
+                    </ul>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <!-- HEADER -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Gestión de Ventas</h1>
+                    <p class="header-subtitle">Visualiza, filtra y genera reportes de ventas</p>
+                </div>
+
+                <div class="admin-user-info">
+                    <div>
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">Administrador</span>
+                    </div>
+                </div>
+
+                <button id="logout-btn" class="admin-btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </header>
+
+            <section class="admin-content">
+
+                <!-- ================== FILTROS ================== -->
+                <div class="filter-card card">
+                    <div class="card-header">
+                        <h2>Filtrar Ventas</h2>
+                    </div>
+
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="fecha-desde">Desde</label>
+                            <input type="date" id="fecha-desde">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha-hasta">Hasta</label>
+                            <input type="date" id="fecha-hasta">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="search-input">Buscar</label>
+                            <input type="text" id="search-input" placeholder="Cliente, método, estado...">
+                        </div>
+
+                        <div class="btn-group">
+                            <button id="btn-filtrar" class="admin-btn admin-btn-primary">
+                                <i class="fas fa-filter"></i> Aplicar Filtros
+                            </button>
+
+                            <button id="btn-reporte" class="admin-btn admin-btn-secondary">
+                                <i class="fas fa-chart-pie"></i> Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== RESUMEN ================== -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-list"></i>
+                        <div>
+                            <h3>Total Ventas</h3>
+                            <span id="stat-total-ventas" class="stat-number">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <i class="fas fa-coins"></i>
+                        <div>
+                            <h3>Monto Total</h3>
+                            <span id="stat-monto-ventas" class="stat-number">S/ 0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== LISTADO ================== -->
+                <div class="content-header">
+                    <h2>Listado de Ventas</h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="sales-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Método</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div class="pagination"></div>
+                </div>
+
+                <!-- ================== DETALLE ================== -->
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h2>Detalle de Venta</h2>
+                        <p id="detalle-venta-info" class="header-subtitle">
+                            Selecciona una venta para ver sus productos
+                        </p>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="sale-detail-table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ================== EXPORTAR REPORTE ================== -->
+                <div class="export-card card">
+                    <div class="card-header">
+                        <h2>Exportar Reporte</h2>
+                    </div>
+
+                    <div class="export-buttons">
+                        <button id="btn-export-pdf" class="admin-btn admin-btn-danger">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+
+                        <button id="btn-export-excel" class="admin-btn admin-btn-success">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+    </div>
+
+</body>
+
+</html>

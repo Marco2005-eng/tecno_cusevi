@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Tecno CuseVi - Gestión de Categorías</title>
+    <!-- CAMBIO: Se usa el nuevo archivo CSS -->
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- CAMBIO: Sidebar actualizado con la nueva estructura y enlaces -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="marcas.html" ><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html" class="active"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html"><i class="fas fa-warehouse"></i> Control de Stock</a></li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- CAMBIO: Main content actualizado con la nueva estructura del header -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="section-title">Gestión de Categorías</h1>
+                    <p class="header-subtitle">Organiza tus productos por categorías</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-user-info">
+                        <div>
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="admin-btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </header>
+
+            <!-- El contenido principal se mantiene, pero envuelto en la nueva clase -->
+            <section class="admin-content">
+                <div class="content-header">
+                    <h2>Lista de Categorías</h2>
+                    <div class="header-controls">
+                        <input type="text" id="search-input" placeholder="Buscar por nombre o descripción...">
+                        <button id="add-category-btn" class="admin-btn admin-btn-primary"><i class="fas fa-plus"></i>
+                            Añadir Categoría</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="categories-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para Añadir/Editar Categoría (sin cambios, las clases son compatibles) -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="category-modal-title"><i class="fas fa-list"></i> Añadir Nueva Categoría</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="category-form">
+                    <input type="hidden" id="category-id" name="category-id">
+                    <div class="form-group">
+                        <label for="category-name">Nombre de la Categoría</label>
+                        <input type="text" id="category-name" name="category-name" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="category-description">Descripción</label>
+                        <textarea id="category-description" name="category-description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" form="category-form" class="admin-btn admin-btn-primary">Guardar
+                    Categoría</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/categorias.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/api.js"></script>
+</body>
+
+</html>

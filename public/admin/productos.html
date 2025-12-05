@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Gestionar Productos</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos para la paginación -->
+    <style>
+        /* Pagination Styles */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-top: 1px solid #e9ecef;
+            margin-top: 1rem;
+        }
+
+        .pagination-info {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .pagination-controls button {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--text-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 38px;
+        }
+
+        .pagination-controls button:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-controls button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .pagination-items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .pagination-items-per-page select {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="productos.html" class="active"><i class="fas fa-boxes"></i> Gestión de
+                                Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                        <li><a href="finanzas.html"><i class="fas fa-chart-line"></i> Finanzas</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html"><i class="fas fa-warehouse"></i> Control de Stock</a></li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <!-- HEADER SIN AVATAR -->
+            <header class="admin-header">
+
+                <div class="header-left">
+                    <h1 id="section-title">Gestionar Productos</h1>
+                    <p class="header-subtitle">Administra el inventario y lotes de compra</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="admin-user-info">
+                        <div>
+                            <span class="user-name">Admin</span>
+                            <span>Bienvenido, <strong id="admin-username">Admin</strong></span>
+                        </div>
+                    </div>
+
+                    <button id="logout-btn" class="admin-btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+
+            </header>
+
+
+            <!-- CONTENIDO -->
+            <section class="admin-content">
+
+                <div class="content-header">
+                    <h2>Listado de Productos</h2>
+
+                    <div class="header-controls">
+                        <input type="text" id="search-input" placeholder="Buscar por nombre, proveedor o marca...">
+                        <button id="add-product-btn" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Producto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>SKU</th>
+                                <th>Nombre</th>
+                                <th>Proveedor</th>
+                                <th>Marca</th>
+                                <th>Cant. Comprada</th>
+                                <th>Cant. Disponible</th>
+                                <th>Precio Compra</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <!-- ====== PAGINATION ====== -->
+                    <div class="pagination-wrapper">
+                        <div class="pagination-info">
+                            Mostrando <span id="start-item">0</span> - <span id="end-item">0</span> de <span
+                                id="total-items">0</span> resultados
+                        </div>
+                        <div class="pagination-controls" id="pagination-controls">
+                            <!-- Buttons will be generated by JavaScript -->
+                        </div>
+                        <div class="pagination-items-per-page">
+                            Mostrar
+                            <select id="items-per-page">
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            por página
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- MODAL DE PRODUCTO -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 id="product-modal-title"><i class="fas fa-plus"></i> Nuevo Producto</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="product-sku">SKU (Opcional)</label>
+                            <input type="text" id="product-sku">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-name">Nombre del Producto</label>
+                            <input type="text" id="product-name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-supplier">Proveedor</label>
+                            <select id="product-supplier" required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-brand">Marca</label>
+                            <select id="product-brand" required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-quantity">Cantidad Comprada</label>
+                            <input type="number" id="product-quantity" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-price">Precio Unitario de Compra</label>
+                            <input type="number" id="product-price" step="0.01" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-date">Fecha de Compra</label>
+                            <input type="date" id="product-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product-active">Estado</label>
+                            <select id="product-active">
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="product-notes">Notas</label>
+                        <textarea id="product-notes" rows="3"></textarea>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" form="product-form" class="admin-btn admin-btn-primary">Guardar Producto</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- JS -->
+    <script src="js/productos.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/api.js"></script>
+</body>
+
+</html>

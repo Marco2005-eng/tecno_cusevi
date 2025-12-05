@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertas - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/tienda.css">
+
+    <!-- Scripts globales -->
+    <script defer src="js/api.js"></script>
+    <script defer src="js/header.js"></script> <!-- 🔥 Añadido para consistencia -->
+    <script defer src="js/ofertas.js"></script>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header__content">
+                <!-- Logo (estático por ahora) -->
+                <a href="index.html" class="header__logo-link">
+                    <img src="assets/logo.png" alt="Logo Tecno CuseVi" class="header__logo">
+                </a>
+                <nav class="main-nav">
+                    <ul class="main-nav__list">
+                        <li><a href="index.html" class="main-nav__link">Inicio</a></li>
+                        <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
+                        <li><a href="ofertas.html" class="main-nav__link active">Ofertas</a></li>
+                        <li><a href="categorias.html" class="main-nav__link">Categorías</a></li>
+                        <li><a href="pedidos.html" class="main-nav__link">Mis Pedidos</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header__actions">
+                    <!-- Buscador -->
+                    <div class="search-bar">
+                        <input type="search" id="search-bar" placeholder="Buscar productos...">
+                        <button class="search-bar__button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- 🔥 Botón de Cambio de Tema (Añadido) -->
+                    <div class="header__action-icon theme-toggle" title="Cambiar tema">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                        </svg>
+                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Favoritos -->
+                    <a href="favoritos.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5
+                                 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78
+                                 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </a>
+
+                    <!-- Carrito -->
+                    <a href="carrito.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 
+                                     1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+
+                    <!-- Perfil -->
+                    <a href="perfil.html" class="header__action-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="7" r="4" />
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 
+                                     4v2" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <div class="container">
+
+            <section class="section">
+                <h1 class="section__title">Ofertas del Día</h1>
+                <p class="section__subtitle">Descuentos exclusivos por tiempo limitado.</p>
+
+                <!-- FILTROS -->
+                <div class="ofertas-filtros">
+                    <div class="filtro-group">
+                        <label for="filtro-categoria-ofertas">Categoría</label>
+                        <select id="filtro-categoria-ofertas">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+
+                    <div class="filtro-group">
+                        <label for="filtro-descuento">Descuento mínimo</label>
+                        <select id="filtro-descuento">
+                            <option value="">Cualquier descuento</option>
+                            <option value="10">10% o más</option>
+                            <option value="25">25% o más</option>
+                            <option value="50">50% o más</option>
+                        </select>
+                    </div>
+
+                    <div class="filtro-group">
+                        <label for="ordenar-ofertas">Ordenar por</label>
+                        <select id="ordenar-ofertas">
+                            <option value="descuento">Mayor descuento</option>
+                            <option value="precio-asc">Precio: menor a mayor</option>
+                            <option value="precio-desc">Precio: mayor a menor</option>
+                            <option value="nuevos">Más nuevos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- GRID -->
+                <div id="ofertas-grid" class="productos-grid"></div>
+
+                <!-- NO HAY RESULTADOS -->
+                <div id="no-ofertas" class="no-results" style="display:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 
+                                 12 5.16-1.26 9-6.45 9-12V7z" />
+                    </svg>
+                    <h3>No hay ofertas disponibles</h3>
+                    <p>Vuelve pronto para más descuentos.</p>
+                    <a href="catalogo.html" class="btn btn--primary">Ver catálogo</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer__content">
+                <p>&copy; 2025 Tecno CuseVi</p>
+                <nav class="footer-nav">
+                    <a href="politica-privacidad.html">Privacidad</a>
+                    <a href="terminos-condiciones.html">Términos</a>
+                    <a href="contacto.html">Contacto</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

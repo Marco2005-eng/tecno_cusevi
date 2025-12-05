@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Tecno CuseVi</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 📌 Librerías para Exportación -->
+    <!-- Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Estilos para la paginación -->
+    <style>
+        /* Pagination Styles */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-top: 1px solid #e9ecef;
+            margin-top: 1rem;
+        }
+
+        .pagination-info {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .pagination-controls button {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--text-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 38px;
+        }
+
+        .pagination-controls button:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-controls button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .pagination-items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .pagination-items-per-page select {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+
+                    <!-- OPERACIONES PRINCIPALES -->
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items">
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> Gestión de Pedidos</a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> Registro de Ventas</a></li>
+                        <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
+                    </ul>
+
+                    <!-- MAESTROS -->
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
+                    </ul>
+
+                    <!-- CONTROL -->
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html "><i class="fas fa-warehouse"></i> Control de Stock</a>
+                        </li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de
+                                Proveedores</a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
+                    </ul>
+
+                    <!-- REPORTES -->
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items expanded">
+                        <li><a href="reportes.html" class="active"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
+                    </ul>
+
+                    <!-- CONFIG -->
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> Gestión de Usuarios</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Reportes y Analítica</h1>
+                    <p class="header-subtitle">Información basada en ventas reales</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="admin-user-info">
+
+                        <div>
+                            <span class="user-name">Admin</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="admin-btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </header>
+
+            <section class="admin-content">
+
+                <!-- FILTROS -->
+                <div class="card">
+                    <h3 class="section-title">Filtros del Reporte</h3>
+
+                    <form id="report-filters-form" class="form-grid">
+                        <div class="form-group">
+                            <label>Período</label>
+                            <select id="report-period">
+                                <option value="7">Últimos 7 días</option>
+                                <option value="30" selected>Últimos 30 días</option>
+                                <option value="90">Últimos 3 meses</option>
+                                <option value="365">Último año</option>
+                                <option value="custom">Personalizado</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="custom-date-start" style="display:none;">
+                            <label>Desde</label>
+                            <input type="date" id="start-date">
+                        </div>
+
+                        <div class="form-group" id="custom-date-end" style="display:none;">
+                            <label>Hasta</label>
+                            <input type="date" id="end-date">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <select id="report-category">
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
+
+                        <button class="admin-btn admin-btn-primary" type="submit">
+                            <i class="fas fa-sync-alt"></i> Generar
+                        </button>
+                    </form>
+                </div>
+
+                <!-- MÉTRICAS -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon sales"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <h3 class="stat-value" id="stat-total-sales">S/ 0.00</h3>
+                            <p class="stat-label">Ventas Totales</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orders"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="stat-info">
+                            <h3 class="stat-value" id="stat-total-orders">0</h3>
+                            <p class="stat-label">Pedidos</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon stock"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-info">
+                            <h3 class="stat-value" id="stat-average-order">S/ 0.00</h3>
+                            <p class="stat-label">Ticket Promedio</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon users"><i class="fas fa-user-check"></i></div>
+                        <div class="stat-info">
+                            <h3 class="stat-value" id="stat-total-clients">0</h3>
+                            <p class="stat-label">Clientes Únicos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFICOS -->
+                <div class="content-grid">
+
+                    <div class="card full-width">
+                        <h3 class="section-title">Ventas en el Tiempo</h3>
+                        <canvas id="chart-ventas-tiempo"></canvas>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="section-title">Productos Más Vendidos</h3>
+                        <ul class="report-list" id="top-products-list"></ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="section-title">Ventas por Categoría</h3>
+                        <canvas id="chart-categorias"></canvas>
+                    </div>
+
+                </div>
+
+                <!-- TABLA DETALLADA -->
+                <div class="card">
+                    <h3 class="section-title">Detalle de Ventas</h3>
+
+                    <!-- ⭐ NUEVA BARRA DE ACCIONES -->
+                    <div class="report-actions" style="margin-bottom: 1rem; display:flex; gap:10px;">
+                        <button id="btn-export-excel" class="admin-btn admin-btn-success">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
+                        </button>
+
+                        <button id="btn-export-pdf" class="admin-btn admin-btn-warning">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="sales-report-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Venta</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        
+                        <!-- ====== PAGINATION ====== -->
+                        <div class="pagination-wrapper">
+                            <div class="pagination-info">
+                                Mostrando <span id="start-item">0</span> - <span id="end-item">0</span> de <span id="total-items">0</span> resultados
+                            </div>
+                            <div class="pagination-controls" id="pagination-controls">
+                                <!-- Buttons will be generated by JavaScript -->
+                            </div>
+                            <div class="pagination-items-per-page">
+                                Mostrar
+                                <select id="items-per-page">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                por página
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/reportes.js"></script>
+     <script src="js/api.js"></script>
+
+</body>
+
+</html>

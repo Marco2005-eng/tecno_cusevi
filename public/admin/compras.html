@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Tecno CuseVi - Registro de Compras</title>
+
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="admin-logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>Tecno CuseVi</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+
+                    <li class="sidebar-title">Operaciones Principales</li>
+                    <ul class="nav-items expanded"> <!-- "expanded" para que aparezca abierto por defecto -->
+                        <li><a href="productos.html"><i class="fas fa-boxes"></i> <span>Gestión de
+                                    Productos</span></a></li>
+                        <li><a href="catalogo.html"><i class="fas fa-store"></i> Catálogo de Ventas</a></li>
+                        <li><a href="pedidos.html"><i class="fas fa-shopping-cart"></i> <span>Gestión de
+                                    Pedidos</span></a></li>
+                        <li><a href="ventas.html"><i class="fas fa-receipt"></i> <span>Registro de Ventas</span></a>
+                        </li>
+                        <li><a href="compras.html" class="active"><i class="fas fa-truck-loading"></i> <span>Registro de
+                                    Compras</span></a></li>
+                        <li><a href="finanzas.html"><i class="fas fa-chart-line"></i> Finanzas</a></li>
+                    </ul>
+
+                    <li class="sidebar-title">Gestión de Datos Maestros</li>
+                    <ul class="nav-items">
+                        <li><a href="marcas.html"><i class="fas fa-tag"></i> <span>Gestión de Marcas</span></a></li>
+                        <li><a href="categorias.html"><i class="fas fa-list"></i> <span>Gestión de Categorías</span></a>
+                        </li>
+                        <li><a href="ofertas.html"><i class="fas fa-percentage"></i> <span>Gestión de Ofertas</span></a>
+                        </li>
+                    </ul>
+
+                    <li class="sidebar-title">Control y Gestión</li>
+                    <ul class="nav-items">
+                        <li><a href="stock.html"><i class="fas fa-warehouse"></i> <span>Control de Stock</span></a></li>
+                        <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> <span>Cardex de
+                                    Productos</span></a></li>
+                        <li><a href="proveedores.html"><i class="fas fa-handshake"></i> <span>Gestión de
+                                    Proveedores</span></a></li>
+                        <li><a href="clientes.html"><i class="fas fa-user-friends"></i> <span>Gestión de
+                                    Clientes</span></a></li>
+                    </ul>
+
+                    <li class="sidebar-title">Reportes y Analítica</li>
+                    <ul class="nav-items">
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> <span>Reportes de
+                                    Ventas</span></a></li>
+                        <li><a href="alertas.html"><i class="fas fa-bell"></i> <span>Alertas y Notificaciones</span></a>
+                        </li>
+                    </ul>
+
+                    <li class="sidebar-title">Configuración</li>
+                    <ul class="nav-items">
+                        <li><a href="configuracion.html"><i class="fas fa-cogs"></i> <span>Configuración
+                                    General</span></a></li>
+                        <li><a href="usuarios.html"><i class="fas fa-users-cog"></i> <span>Gestión de
+                                    Usuarios</span></a></li>
+                    </ul>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1>Registro de Compras</h1>
+                    <p class="header-subtitle">Registra las compras realizadas a proveedores</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-user-info">
+                        <div>
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="admin-btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </header>
+
+            <section class="admin-content">
+
+                <!-- HEADER DE TABLA -->
+                <div class="content-header">
+                    <h2>Historial de Compras</h2>
+
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Buscar por proveedor o factura...">
+                    </div>
+
+                    <div class="header-controls">
+                        <button id="add-purchase-btn" class="admin-btn admin-btn-primary">
+                            <i class="fas fa-plus"></i> Nueva Compra
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TABLA -->
+                <div class="table-container">
+                    <table class="data-table" id="purchases-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Proveedor</th>
+                                <th>Fecha Compra</th>
+                                <th>N° Factura</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-controls" id="pagination-controls"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL PARA REGISTRO / EDICIÓN -->
+    <div id="purchase-modal" class="modal">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 id="purchase-modal-title"><i class="fas fa-truck-loading"></i> Nueva Compra</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <form id="purchase-form">
+
+                    <input type="hidden" id="purchase-id">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="purchase-supplier">Proveedor</label>
+                            <select id="purchase-supplier" required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purchase-date">Fecha de Compra</label>
+                            <input type="date" id="purchase-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purchase-invoice">N° de Factura</label>
+                            <input type="text" id="purchase-invoice">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purchase-status">Estado</label>
+                            <select id="purchase-status">
+                                <option value="recibido">Recibido</option>
+                                <option value="pendiente">Pendiente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="purchase-notes">Notas</label>
+                        <textarea id="purchase-notes" rows="3"></textarea>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="admin-btn admin-btn-secondary close-modal-btn">Cancelar</button>
+                <button class="admin-btn admin-btn-primary" type="submit" form="purchase-form">Guardar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/compras.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/api.js"></script>
+</body>
+
+</html>
