@@ -23,10 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("add-offer-btn").onclick = () => abrirModal("Crear Oferta");
 
     // =====================================================
-    // 1. CARGAR PRODUCTOS DEL CATALOGO (adminApiGet)
+    // 1. CARGAR PRODUCTOS DEL CATALOGO
     // =====================================================
     async function cargarProductosCatalogo(seleccionarId = null) {
         const data = await adminApiGet("/catalogo");
+
+        if (!data.success) {
+            return alert("No se pudo cargar el catálogo.");
+        }
 
         catalogSelect.innerHTML = `
             <option value="" disabled selected>Seleccionar producto…</option>
@@ -44,14 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================
-    // 2. CARGAR OFERTAS (adminApiGet)
+    // 2. CARGAR OFERTAS
     // =====================================================
     async function cargarOfertas() {
         const data = await adminApiGet("/ofertas");
 
         if (!data.success) {
-            console.error("Error cargando ofertas");
-            return;
+            console.error("Error cargando ofertas", data);
+            return alert("No se pudieron cargar las ofertas.");
         }
 
         renderTabla(data.data);
@@ -94,9 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =====================================================
-    // FORMATOS
-    // =====================================================
     function formatoFecha(fechaISO) {
         if (!fechaISO) return "-";
         const fecha = new Date(fechaISO);
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================
-    // 4. ABRIR / CERRAR MODAL
+    // 4. ABRIR MODAL
     // =====================================================
     function abrirModal(titulo, esEdicion = false) {
         modalTitle.innerHTML = `<i class="fas fa-percentage"></i> ${titulo}`;
@@ -132,10 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
     window.onclick = e => { if (e.target === modal) cerrarModal(); };
 
     // =====================================================
-    // 5. VALIDAR OFERTA DUPLICADA (adminApiGet)
+    // 5. VALIDAR OFERTA DUPLICADA
     // =====================================================
     async function validarOfertaDuplicada(idCatalogo, idActual = null) {
         const data = await adminApiGet("/ofertas");
+
+        if (!data.success) return false;
 
         return data.data.some(o =>
             o.id_catalogo == idCatalogo &&
@@ -145,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================
-    // 6. GUARDAR / EDITAR OFERTA (adminApiPost / adminApiPut)
+    // 6. GUARDAR / EDITAR OFERTA
     // =====================================================
     form.addEventListener("submit", async e => {
         e.preventDefault();
@@ -156,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const existe = await validarOfertaDuplicada(idCatalogo, id);
 
         if (existe) {
-            return alert("Este producto ya tiene una oferta activa. Debes desactivarla antes de crear otra.");
+            return alert("Este producto ya tiene una oferta activa.");
         }
 
         const payload = {
@@ -176,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
             data = await adminApiPost("/ofertas", payload);
         }
 
-        if (!data.success) return alert(data.message);
+        if (!data.success) {
+            return alert(data.message || "Error guardando oferta.");
+        }
 
         alert("Oferta guardada correctamente");
         cerrarModal();
@@ -184,12 +189,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =====================================================
-    // 7. EDITAR OFERTA (adminApiGet)
+    // 7. EDITAR OFERTA (CORREGIDO)
     // =====================================================
     window.editarOferta = async function (id) {
+
         abrirModal("Editar Oferta", true);
 
         const data = await adminApiGet(`/ofertas/${id}`);
+
+        if (!data.success || !data.data) {
+            cerrarModal();
+            return alert("No se pudo cargar esta oferta.");
+        }
+
         const o = data.data;
 
         offerId.value = o.id;
@@ -198,15 +210,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         shortDesc.value = o.nombre;
         discount.value = o.descuento_porcentaje;
-
         startDate.value = convertirFechaInput(o.fecha_inicio);
         endDate.value = convertirFechaInput(o.fecha_fin);
-
         activeCheck.checked = o.activa == 1;
     };
 
     // =====================================================
-    // 8. ELIMINAR OFERTA (adminApiDelete)
+    // 8. ELIMINAR OFERTA
     // =====================================================
     window.eliminarOferta = async function (id) {
         if (!confirm("¿Eliminar esta oferta?")) return;
