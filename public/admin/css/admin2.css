@@ -1760,6 +1760,113 @@ body.dark-mode .theme-toggle .sun { display: block; }
     margin: 6px 0 0 0;
 }
 
+/* ========================= MODAL GLOBAL ========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ========================= CONTENIDO DEL MODAL ========================= */
+
+.modal-content {
+    background: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 420px;
+    position: relative;
+    animation: slideUp 0.25s ease-out;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+/* ========================= BOTÓN DE CERRAR ========================= */
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+    transition: color .2s ease, transform .2s ease;
+}
+
+.close-btn:hover {
+    color: #000;
+    transform: scale(1.15);
+}
+
+/* ========================= FORMULARIO DEL MODAL ========================= */
+
+#form-manual label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+#form-manual input,
+#form-manual select,
+#form-manual textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: #fafafa;
+}
+
+#form-manual input:focus,
+#form-manual select:focus,
+#form-manual textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.25);
+    background: white;
+}
+
+#form-manual textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+/* ========================= BOTÓN GUARDAR ========================= */
+
+#form-manual button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+}
+
 /* ============================================
    BADGES
 ============================================ */

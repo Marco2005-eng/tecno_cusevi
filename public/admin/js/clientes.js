@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
      **************************************************************/
     const tableBody = document.querySelector("#clients-table tbody");
     const searchInput = document.getElementById("search-input");
+    const paginacionEl = document.getElementById("paginacion-clientes");
 
     const modal = document.getElementById("client-modal");
     const modalTitle = document.getElementById("client-modal-title");
@@ -39,6 +40,38 @@ document.addEventListener("DOMContentLoaded", () => {
     let listaClientes = [];
 
     /**************************************************************
+     * PAGINACIÓN
+     **************************************************************/
+    let paginaActual = 1;
+    const porPagina = 8;
+    let listaFiltrada = [];
+
+    function getPagina(lista) {
+        const inicio = (paginaActual - 1) * porPagina;
+        return lista.slice(inicio, inicio + porPagina);
+    }
+
+    function renderPaginacion(totalItems) {
+        paginacionEl.innerHTML = "";
+
+        const totalPaginas = Math.ceil(totalItems / porPagina);
+        if (totalPaginas <= 1) return;
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = "page-btn " + (i === paginaActual ? "page-active" : "");
+
+            btn.onclick = () => {
+                paginaActual = i;
+                renderTabla(listaFiltrada);
+            };
+
+            paginacionEl.appendChild(btn);
+        }
+    }
+
+    /**************************************************************
      * 🔥 1. CARGAR CLIENTES — adminApiGet()
      **************************************************************/
     async function cargarClientes() {
@@ -50,27 +83,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         listaClientes = data.data;
-        renderTabla(listaClientes);
         statTotal.textContent = listaClientes.length;
+
+        aplicarFiltro();
     }
 
     /**************************************************************
-     * 🔥 2. RENDER TABLA
+     * 🔥 2. RENDER TABLA (CON PAGINACIÓN)
      **************************************************************/
-    function renderTabla(clientes) {
+    function renderTabla(lista) {
         tableBody.innerHTML = "";
 
-        if (!clientes.length) {
+        if (!lista.length) {
             tableBody.innerHTML = `
                 <tr>
                     <td colspan="7" style="text-align:center;padding:1rem;">
                         No hay clientes registrados.
                     </td>
                 </tr>`;
+            paginacionEl.innerHTML = "";
             return;
         }
 
-        clientes.forEach(c => {
+        const pagina = getPagina(lista);
+
+        pagina.forEach(c => {
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
@@ -96,21 +133,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tableBody.appendChild(tr);
         });
+
+        renderPaginacion(lista.length);
     }
 
     /**************************************************************
-     * 🔥 3. BUSCADOR
+     * 🔥 3. BUSCADOR + PAGINACIÓN
      **************************************************************/
-    searchInput.addEventListener("input", () => {
+    searchInput.addEventListener("input", aplicarFiltro);
+
+    function aplicarFiltro() {
         const q = searchInput.value.toLowerCase();
-        const filtrados = listaClientes.filter(c =>
+
+        listaFiltrada = listaClientes.filter(c =>
             c.nombre.toLowerCase().includes(q) ||
             c.email.toLowerCase().includes(q) ||
             (c.telefono && c.telefono.toLowerCase().includes(q))
         );
 
-        renderTabla(filtrados);
-    });
+        paginaActual = 1;
+        renderTabla(listaFiltrada);
+    }
 
     /**************************************************************
      * 🔥 4. MODAL
@@ -127,10 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     closeBtns.forEach(btn => (btn.onclick = cerrarModal));
-
-    window.onclick = e => {
-        if (e.target === modal) cerrarModal();
-    };
+    window.onclick = e => { if (e.target === modal) cerrarModal(); };
 
     /**************************************************************
      * 🔥 5. GUARDAR CLIENTE — adminApiPost / adminApiPut

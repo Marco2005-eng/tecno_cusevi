@@ -8,6 +8,35 @@
 
     <link rel="stylesheet" href="css/admin2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* PAGINACIÓN */
+        #paginacion-clientes {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #e9ecef;
+        }
+
+        .page-active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -24,7 +53,6 @@
             <nav class="sidebar-nav">
                 <ul>
 
-                    <!-- OPERACIONES PRINCIPALES -->
                     <li class="sidebar-title">Operaciones Principales</li>
                     <ul class="nav-items">
                         <li><a href="productos.html"><i class="fas fa-boxes"></i> Gestión de Productos</a></li>
@@ -34,32 +62,27 @@
                         <li><a href="compras.html"><i class="fas fa-truck-loading"></i> Registro de Compras</a></li>
                     </ul>
 
-                    <!-- MAESTROS -->
                     <li class="sidebar-title">Gestión de Datos Maestros</li>
-                    <ul class="nav-items ">
+                    <ul class="nav-items">
                         <li><a href="marcas.html"><i class="fas fa-tag"></i> Gestión de Marcas</a></li>
                         <li><a href="categorias.html"><i class="fas fa-list"></i> Gestión de Categorías</a></li>
                         <li><a href="ofertas.html"><i class="fas fa-percentage"></i> Gestión de Ofertas</a></li>
                     </ul>
 
-                    <!-- CONTROL -->
                     <li class="sidebar-title">Control y Gestión</li>
                     <ul class="nav-items expanded">
                         <li><a href="stock.html"><i class="fas fa-warehouse"></i> Control de Stock</a></li>
                         <li><a href="cardex.html"><i class="fas fa-clipboard-list"></i> Cardex de Productos</a></li>
                         <li><a href="proveedores.html"><i class="fas fa-handshake"></i> Gestión de Proveedores</a></li>
-                        <li><a href="clientes.html" class="active"><i class="fas fa-user-friends"></i> Gestión de
-                                Clientes</a></li>
+                        <li><a href="clientes.html" class="active"><i class="fas fa-user-friends"></i> Gestión de Clientes</a></li>
                     </ul>
 
-                    <!-- REPORTES -->
                     <li class="sidebar-title">Reportes y Analítica</li>
                     <ul class="nav-items">
                         <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes de Ventas</a></li>
                         <li><a href="alertas.html"><i class="fas fa-bell"></i> Alertas y Notificaciones</a></li>
                     </ul>
 
-                    <!-- CONFIG -->
                     <li class="sidebar-title">Configuración</li>
                     <ul class="nav-items">
                         <li><a href="configuracion.html"><i class="fas fa-cogs"></i> Configuración General</a></li>
@@ -68,7 +91,6 @@
 
                 </ul>
             </nav>
-
         </aside>
 
         <!-- MAIN -->
@@ -81,14 +103,15 @@
                 </div>
 
                 <div class="admin-user-info">
-
                     <div>
                         <span class="user-name">Admin</span>
                         <span class="user-role">Administrador</span>
                     </div>
                 </div>
 
-                <button id="logout-btn" class="admin-btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+                <button id="logout-btn" class="admin-btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </header>
 
             <section class="admin-content">
@@ -136,6 +159,9 @@
                         <tbody></tbody>
                     </table>
                 </div>
+
+                <!-- ⭐⭐⭐ PAGINACIÓN ⭐⭐⭐ -->
+                <div id="paginacion-clientes"></div>
 
             </section>
         </main>
@@ -191,6 +217,7 @@
     <script src="js/clientes.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/api.js"></script>
+
 </body>
 
 </html>

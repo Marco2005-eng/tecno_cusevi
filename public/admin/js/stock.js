@@ -1,3 +1,7 @@
+/**************************************************************
+ * STOCK.JS — Con paginación, buscador y estadísticas
+ **************************************************************/
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const token = localStorage.getItem("token");
@@ -12,11 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.querySelector("#stock-table tbody");
     const searchInput = document.getElementById("search-input");
 
+    const pagEl = document.getElementById("paginacion-stock");
+
     const statTotalProducts = document.querySelector("#stat-total-products .stat-number");
     const statLowStock = document.querySelector("#stat-low-stock .stat-number");
     const statCommitted = document.querySelector("#stat-committed-stock .stat-number");
 
+    // ===========================
+    // DATA & PAGINACIÓN
+    // ===========================
     let productos = [];
+    let productosFiltrados = [];
+
+    let paginaActual = 1;
+    const porPagina = 10;
 
     // ===========================
     // CARGAR STOCK DESDE API
@@ -31,8 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             productos = data.data || [];
+            productosFiltrados = productos;
+
             actualizarStats();
-            renderTabla();
+            renderTablaPaginada();
 
         } catch (error) {
             console.error("Error cargando stock:", error);
@@ -58,28 +73,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===========================
-    // RENDERIZAR TABLA
+    // RENDER CON PAGINACIÓN
     // ===========================
-    function renderTabla(filtro = "") {
+    function renderTablaPaginada() {
         tbody.innerHTML = "";
 
-        const filtroLower = filtro.toLowerCase();
-
-        const lista = productos.filter(p =>
-            p.nombre.toLowerCase().includes(filtroLower) ||
-            p.marca.toLowerCase().includes(filtroLower)
-        );
-
-        if (lista.length === 0) {
+        if (productosFiltrados.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="8" style="text-align:center;">No hay productos que coincidan</td>
                 </tr>
             `;
+            pagEl.innerHTML = "";
             return;
         }
 
-        lista.forEach(p => {
+        const totalPaginas = Math.ceil(productosFiltrados.length / porPagina);
+
+        if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+
+        const inicio = (paginaActual - 1) * porPagina;
+        const fin = inicio + porPagina;
+
+        const paginaData = productosFiltrados.slice(inicio, fin);
+
+        paginaData.forEach(p => {
             const tr = document.createElement("tr");
 
             const comprometido = Math.max(0, Number(p.cantidad_comprada) - Number(p.cantidad_disponible));
@@ -112,13 +130,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tbody.appendChild(tr);
         });
+
+        renderPaginacion(totalPaginas);
+    }
+
+    // ===========================
+    // RENDER PAGINACIÓN
+    // ===========================
+    function renderPaginacion(totalPaginas) {
+        pagEl.innerHTML = "";
+
+        if (totalPaginas <= 1) return;
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = "page-btn" + (i === paginaActual ? " page-active" : "");
+
+            btn.addEventListener("click", () => {
+                paginaActual = i;
+                renderTablaPaginada();
+            });
+
+            pagEl.appendChild(btn);
+        }
     }
 
     // ===========================
     // BUSCADOR
     // ===========================
     searchInput.addEventListener("input", e => {
-        renderTabla(e.target.value);
+        const q = e.target.value.toLowerCase();
+
+        productosFiltrados = productos.filter(p =>
+            p.nombre.toLowerCase().includes(q) ||
+            p.marca.toLowerCase().includes(q)
+        );
+
+        paginaActual = 1;
+        renderTablaPaginada();
     });
 
     // ===========================
