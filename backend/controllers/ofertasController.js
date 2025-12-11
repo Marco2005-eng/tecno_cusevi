@@ -12,13 +12,11 @@ const getAllOfertas = async (req, res) => {
                 c.nombre_venta AS producto_nombre,
                 c.precio_venta AS precio_original,
                 c.imagen_url,
-
-                p.id_categoria,
+                c.id_categoria,
                 cat.nombre AS nombre_categoria
             FROM ofertas o
             JOIN catalogo c ON o.id_catalogo = c.id
-            JOIN productos p ON c.id_producto = p.id
-            JOIN categorias cat ON p.id_categoria = cat.id
+            JOIN categorias cat ON c.id_categoria = cat.id
             ORDER BY o.fecha_creacion DESC
         `;
         const [rows] = await pool.query(sql);
