@@ -1,39 +1,20 @@
 // ============================================================
-//  📦 RUTAS DE PEDIDOS — CORREGIDAS Y OPTIMIZADAS
+// 📦 RUTAS DE PEDIDOS — COMPATIBLE CON CLOUDINARY & RENDER
 // ============================================================
 
 const express = require("express");
 const router = express.Router();
 
-const multer = require("multer");
-const path = require("path");
+// ============================================================
+// 📁 MULTER + CLOUDINARY (subida de comprobantes)
+// ============================================================
+
+const upload = require("../utils/multerCloudinary");
 
 // ============================================================
-//  MULTER — COMPROBANTES
+// 🧠 CONTROLADORES
 // ============================================================
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/comprobantes/");
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, `comprobante_${Date.now()}${ext}`);
-    }
-});
 
-function fileFilter(req, file, cb) {
-    const allowed = ["image/jpeg", "image/png", "image/jpg"];
-    if (!allowed.includes(file.mimetype)) {
-        return cb(new Error("Formato no permitido. Solo JPG/PNG."));
-    }
-    cb(null, true);
-}
-
-const upload = multer({ storage, fileFilter });
-
-// ============================================================
-//  CONTROLADOR
-// ============================================================
 const { 
     getAllPedidos,
     getPedidoById,
@@ -49,10 +30,10 @@ const {
 
 
 // ============================================================
-//  📌 RUTAS CLIENTE
+// 📌 RUTAS CLIENTE
 // ============================================================
 
-// Crear un pedido (simulación)
+// Crear un pedido simulado (checkout sin pago aún)
 router.post("/simular", createPedidoSimulado);
 
 // Obtener pedidos del cliente
@@ -61,35 +42,39 @@ router.get("/cliente/:id_cliente", getPedidosByCliente);
 // Obtener estado actual del pedido
 router.get("/:id/estado", getEstadoActual);
 
-// Cliente confirma pago con comprobante
+// Cliente sube comprobante de Cloudinary
 router.put(
     "/:id/cliente-confirmar",
-    upload.single("comprobante"),
+    upload.single("comprobante"), // <--- Archivo enviado
     clienteConfirmaPago
 );
 
 
 // ============================================================
-//  📌 RUTAS ADMIN
+// 📌 RUTAS ADMIN
 // ============================================================
 
-// Historial del pedido (antes que /:id)
+// 🟦 Historial del pedido (IMPORTANTE: antes que /:id)
 router.get("/:id/historial", getHistorial);
 
-// Registrar seguimiento
+// 🟦 Registrar seguimiento de pedido
 router.post("/:id/seguimiento", crearSeguimiento);
 
-// Confirmar pago → genera venta
+// 🟦 Confirmar pago → genera la venta + resta stock
 router.put("/:id/confirmar", adminConfirmaPago);
 
-// Cancelar pedido
+// 🟦 Cancelar un pedido
 router.put("/:id/cancelar", cancelarPedido);
 
-// Obtener pedido por ID (última ruta dinámica)
+// 🟦 Obtener un pedido por ID (detalles + items + estado)
 router.get("/:id", getPedidoById);
 
-// Listar todos los pedidos
+// 🟦 Listar TODOS los pedidos
 router.get("/", getAllPedidos);
 
+
+// ============================================================
+// EXPORTAR RUTAS
+// ============================================================
 
 module.exports = router;

@@ -1,5 +1,5 @@
 /**************************************************************
- * PEDIDOS CONTROLLER — VERSION FINAL CORREGIDA & OPTIMIZADA
+ * PEDIDOS CONTROLLER — FINAL CLOUDINARY VERSION
  **************************************************************/
 
 const pool = require('../config/database');
@@ -8,11 +8,12 @@ const { registrarMovimientoKardex } = require("../utils/kardex");
 const { verificarStockBajo } = require("../utils/stockAlerts");
 
 /* ============================================================
-   Helper para URLs absolutas
+   Helper seguro para URLs (No tocar Cloudinary URLs)
 ============================================================ */
-function buildUrl(path) {
-    if (!path) return null;
-    return `${global.BASE_URL}${path}`;
+function fixUrl(url) {
+    if (!url) return null;
+    if (url.startsWith("http")) return url;  // <-- Cloudinary URL
+    return `${global.BASE_URL}${url}`;
 }
 
 /* ============================================================
@@ -32,7 +33,7 @@ const getAllPedidos = async (req, res) => {
         const [rows] = await pool.query(sql);
 
         rows.forEach(r => {
-            r.comprobante_url = buildUrl(r.comprobante_url);
+            r.comprobante_url = fixUrl(r.comprobante_url);
         });
 
         res.json({ success: true, data: rows });
@@ -55,7 +56,7 @@ const getPedidosByCliente = async (req, res) => {
             [id_cliente]
         );
 
-        rows.forEach(r => r.comprobante_url = buildUrl(r.comprobante_url));
+        rows.forEach(r => r.comprobante_url = fixUrl(r.comprobante_url));
 
         res.json({ success: true, data: rows });
 
@@ -64,6 +65,10 @@ const getPedidosByCliente = async (req, res) => {
         res.status(500).json({ success: false, message: "Error al obtener pedidos del cliente" });
     }
 };
+
+/* ============================================================
+   Obtener estado actual
+============================================================ */
 const getEstadoActual = async (req, res) => {
     const { id } = req.params;
 
@@ -87,7 +92,6 @@ const getEstadoActual = async (req, res) => {
     }
 };
 
-
 /* ============================================================
    Obtener un pedido con detalles
 ============================================================ */
@@ -109,7 +113,7 @@ const getPedidoById = async (req, res) => {
         if (!pedido)
             return res.status(404).json({ success: false, message: "Pedido no encontrado" });
 
-        pedido.comprobante_url = buildUrl(pedido.comprobante_url);
+        pedido.comprobante_url = fixUrl(pedido.comprobante_url);
 
         const [detalles] = await pool.query(`
             SELECT 
@@ -123,7 +127,7 @@ const getPedidoById = async (req, res) => {
             [id]
         );
 
-        detalles.forEach(d => d.imagen_url = buildUrl(d.imagen_url));
+        detalles.forEach(d => d.imagen_url = fixUrl(d.imagen_url));
 
         const [[estadoActual]] = await pool.query(
             `SELECT estado, mensaje, fecha
@@ -152,8 +156,12 @@ const getPedidoById = async (req, res) => {
 const createPedidoSimulado = async (req, res) => {
     const { id_cliente, metodo_pago, total, productos } = req.body;
 
-    if (!id_cliente || !total || !productos?.length)
-        return res.status(400).json({ success: false, message: "Datos incompletos" });
+    if (!id_cliente || !total || !productos?.length) {
+        return res.status(400).json({
+            success: false,
+            message: "Datos incompletos (cliente, total o productos)"
+        });
+    }
 
     const conn = await pool.getConnection();
 
@@ -162,6 +170,7 @@ const createPedidoSimulado = async (req, res) => {
 
         const mp = metodo_pago || "sin_pago";
 
+        // 1️⃣ Crear pedido principal
         const [pedidoRes] = await conn.query(
             `INSERT INTO pedidos (id_cliente, total, metodo_pago, estado)
              VALUES (?, ?, ?, 'pendiente')`,
@@ -170,6 +179,7 @@ const createPedidoSimulado = async (req, res) => {
 
         const id_pedido = pedidoRes.insertId;
 
+        // 2️⃣ Registrar los productos
         for (const item of productos) {
             const [[cat]] = await conn.query(`
                 SELECT 
@@ -178,38 +188,44 @@ const createPedidoSimulado = async (req, res) => {
                     o.activa AS oferta_activa
                 FROM catalogo c
                 LEFT JOIN ofertas o 
-                    ON o.id_catalogo = c.id AND o.activa = 1
+                    ON o.id_catalogo = c.id
+                    AND o.activa = 1
                     AND NOW() BETWEEN o.fecha_inicio AND o.fecha_fin
                 WHERE c.id = ?`,
                 [item.id_producto]
             );
 
-            if (!cat) throw new Error("Producto no encontrado");
+            if (!cat) {
+                throw new Error("Producto no encontrado en catálogo");
+            }
 
+            // Aplicar oferta si corresponde
             let precio = Number(cat.precio_venta);
-            if (cat.oferta_activa)
-                precio -= precio * cat.descuento_porcentaje / 100;
+            if (cat.oferta_activa) {
+                precio -= precio * (cat.descuento_porcentaje / 100);
+            }
 
             const subtotal = precio * item.cantidad;
 
-            await conn.query(`
-                INSERT INTO detalle_pedidos 
-                (id_pedido, id_catalogo, cantidad, precio_unitario, subtotal)
-                VALUES (?, ?, ?, ?, ?)`,
+            await conn.query(
+                `INSERT INTO detalle_pedidos 
+                 (id_pedido, id_catalogo, cantidad, precio_unitario, subtotal)
+                 VALUES (?, ?, ?, ?, ?)`,
                 [id_pedido, item.id_producto, item.cantidad, precio, subtotal]
             );
         }
 
+        // 3️⃣ Crear alerta para el admin
         await crearAlerta(
             "pedido",
             `Nuevo pedido #${id_pedido}`,
-            `El cliente ${id_cliente} ha realizado un pedido.`,
+            `Cliente #${id_cliente} realizó un pedido.`,
             id_pedido
         );
 
         await conn.commit();
 
-        res.json({
+        return res.json({
             success: true,
             message: "Pedido registrado correctamente",
             data: { id_pedido }
@@ -217,25 +233,41 @@ const createPedidoSimulado = async (req, res) => {
 
     } catch (error) {
         await conn.rollback();
-        console.error("Crear pedido:", error);
-        res.status(500).json({ success: false, message: "Error interno" });
+        console.error("Error al crear pedido simulado:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Error interno creando el pedido"
+        });
+
     } finally {
         conn.release();
     }
 };
 
 /* ============================================================
-   Cliente sube comprobante de pago
+   Cliente sube comprobante con Cloudinary
 ============================================================ */
 const clienteConfirmaPago = async (req, res) => {
     const { id } = req.params;
     const metodo_pago = req.body.metodo_pago;
     const notas = req.body.notas || null;
 
-    let relative_url = req.file ? "/uploads/comprobantes/" + req.file.filename : null;
-
     try {
-        const [[pedido]] = await pool.query("SELECT * FROM pedidos WHERE id=?", [id]);
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Debe adjuntar un comprobante de pago"
+            });
+        }
+
+        // Cloudinary URL ✔
+        const urlCloudinary = req.file.path;
+
+        const [[pedido]] = await pool.query(
+            "SELECT * FROM pedidos WHERE id=?",
+            [id]
+        );
 
         if (!pedido)
             return res.status(404).json({ success: false, message: "Pedido no encontrado" });
@@ -244,7 +276,7 @@ const clienteConfirmaPago = async (req, res) => {
             `UPDATE pedidos 
              SET metodo_pago=?, comprobante_url=?, notas=?, estado='procesando'
              WHERE id=?`,
-            [metodo_pago, relative_url, notas, id]
+            [metodo_pago, urlCloudinary, notas, id]
         );
 
         await crearAlerta(
@@ -254,11 +286,18 @@ const clienteConfirmaPago = async (req, res) => {
             id
         );
 
-        res.json({ success: true, message: "Pago enviado correctamente." });
+        res.json({
+            success: true,
+            message: "Comprobante enviado correctamente",
+            comprobante_url: urlCloudinary
+        });
 
     } catch (error) {
-        console.error("Confirmar pago cliente:", error);
-        res.status(500).json({ success: false, message: "Error interno" });
+        console.error("Confirmar pago cliente (Cloudinary):", error);
+        res.status(500).json({
+            success: false,
+            message: "Error interno"
+        });
     }
 };
 
@@ -272,6 +311,7 @@ const adminConfirmaPago = async (req, res) => {
     try {
         await conn.beginTransaction();
 
+        // 1️⃣ Obtener el pedido
         const [[pedido]] = await conn.query("SELECT * FROM pedidos WHERE id=?", [id]);
 
         if (!pedido) {
@@ -284,20 +324,29 @@ const adminConfirmaPago = async (req, res) => {
             return res.json({ success: false, message: "El pedido ya está confirmado" });
         }
 
+        // 2️⃣ Crear venta
         const [ventaRes] = await conn.query(
             `INSERT INTO ventas 
              (id_pedido, id_cliente, total, metodo_pago, comprobante_url, estado)
              VALUES (?, ?, ?, ?, ?, 'Pagado')`,
-            [pedido.id, pedido.id_cliente, pedido.total, pedido.metodo_pago, pedido.comprobante_url]
+            [
+                pedido.id,
+                pedido.id_cliente,
+                pedido.total,
+                pedido.metodo_pago,
+                pedido.comprobante_url
+            ]
         );
 
         const id_venta = ventaRes.insertId;
 
+        // 3️⃣ Obtener detalles del pedido
         const [detalles] = await conn.query(
             "SELECT * FROM detalle_pedidos WHERE id_pedido=?",
             [id]
         );
 
+        // 4️⃣ Actualizar stock producto por producto
         for (const d of detalles) {
             const [[cat]] = await conn.query(
                 "SELECT id_producto FROM catalogo WHERE id=?",
@@ -321,17 +370,27 @@ const adminConfirmaPago = async (req, res) => {
                 });
             }
 
+            // Registrar detalle de venta
             await conn.query(`
                 INSERT INTO detalle_ventas
                 (id_venta, id_producto, id_catalogo, cantidad, precio_unitario, subtotal)
                 VALUES (?, ?, ?, ?, ?, ?)
-            `, [id_venta, id_prod, d.id_catalogo, d.cantidad, d.precio_unitario, d.subtotal]);
+            `, [
+                id_venta,
+                id_prod,
+                d.id_catalogo,
+                d.cantidad,
+                d.precio_unitario,
+                d.subtotal
+            ]);
 
+            // Actualizar stock
             await conn.query(
                 "UPDATE productos SET cantidad_disponible=? WHERE id=?",
                 [nuevo_stock, id_prod]
             );
 
+            // Registrar movimiento en Kardex
             await registrarMovimientoKardex({
                 id_producto: id_prod,
                 tipo_movimiento: "salida",
@@ -344,14 +403,17 @@ const adminConfirmaPago = async (req, res) => {
                 conn
             });
 
+            // Validar stock bajo y generar alerta
             await verificarStockBajo(id_prod, conn);
         }
 
+        // 5️⃣ Marcar pedido como confirmado
         await conn.query(
             "UPDATE pedidos SET estado='confirmado' WHERE id=?",
             [id]
         );
 
+        // 6️⃣ Crear alerta para el admin
         await crearAlerta(
             "pedido",
             `Pedido #${id} confirmado`,
@@ -377,54 +439,7 @@ const adminConfirmaPago = async (req, res) => {
 };
 
 /* ============================================================
-   Crear un seguimiento de pedido (ADMIN)
-============================================================ */
-const crearSeguimiento = async (req, res) => {
-    const { id } = req.params;
-    const { estado, mensaje, nota_admin } = req.body;
-
-    try {
-        await pool.query(`
-            INSERT INTO seguimiento_pedidos (id_pedido, estado, mensaje, nota_admin)
-            VALUES (?, ?, ?, ?)
-        `, [id, estado, mensaje || null, nota_admin || null]);
-
-        await pool.query(`
-            UPDATE pedidos SET estado=? WHERE id=?
-        `, [estado, id]);
-
-        res.json({ success: true, message: "Seguimiento guardado" });
-
-    } catch (err) {
-        console.error("ERROR seguimiento:", err);
-        res.status(500).json({ success: false, message: "Error guardando seguimiento" });
-    }
-};
-
-/* ============================================================
-   Recuperar historial completo de un pedido
-============================================================ */
-const getHistorial = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const [rows] = await pool.query(`
-            SELECT * 
-            FROM seguimiento_pedidos
-            WHERE id_pedido = ?
-            ORDER BY fecha DESC
-        `, [id]);
-
-        res.json({ success: true, data: rows });
-
-    } catch (err) {
-        console.error("ERROR historial:", err);
-        res.status(500).json({ success: false, message: "Error obteniendo historial" });
-    }
-};
-
-/* ============================================================
-   Cancelar pedido
+   Seguimiento / Historial / Cancelar
 ============================================================ */
 const cancelarPedido = async (req, res) => {
     const { id } = req.params;
@@ -449,6 +464,47 @@ const cancelarPedido = async (req, res) => {
         res.status(500).json({ success: false, message: "Error cancelando pedido" });
     }
 };
+const crearSeguimiento = async (req, res) => {
+    const { id } = req.params;
+    const { estado, mensaje, nota_admin } = req.body;
+
+    try {
+        await pool.query(`
+            INSERT INTO seguimiento_pedidos (id_pedido, estado, mensaje, nota_admin)
+            VALUES (?, ?, ?, ?)
+        `, [id, estado, mensaje || null, nota_admin || null]);
+
+        await pool.query(`
+            UPDATE pedidos SET estado=? WHERE id=?
+        `, [estado, id]);
+
+        res.json({ success: true, message: "Seguimiento guardado" });
+
+    } catch (err) {
+        console.error("ERROR seguimiento:", err);
+        res.status(500).json({ success: false, message: "Error guardando seguimiento" });
+    }
+};
+const getHistorial = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [rows] = await pool.query(`
+            SELECT *
+            FROM seguimiento_pedidos
+            WHERE id_pedido = ?
+            ORDER BY fecha DESC
+        `, [id]);
+
+        res.json({ success: true, data: rows });
+
+    } catch (err) {
+        console.error("ERROR historial:", err);
+        res.status(500).json({ success: false, message: "Error obteniendo historial" });
+    }
+};
+
+// Sin cambios, funcionan correctamente.
 
 module.exports = {
     getAllPedidos,
