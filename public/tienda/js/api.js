@@ -1,24 +1,32 @@
-// Detectar si estamos en ngrok o servidor remoto
-const isRemote = window.location.origin.includes("ngrok")
-              || window.location.origin.startsWith("https");
+// =========================
+//  API BASE UNIVERSAL
+// =========================
 
-// API base
-const API = isRemote
-    ? window.location.origin + "/api"
-    : "http://localhost:3000/api";
+// Siempre usar el dominio actual, local o producción
+const API = window.location.origin + "/api";
 
-// Función GET universal
+// =========================
+//  GET
+// =========================
 async function apiGet(url) {
     try {
         const res = await fetch(API + url);
+
+        if (!res.ok) {
+            console.error(" Error GET", res.status, res.statusText);
+            return { success: false };
+        }
+
         return await res.json();
     } catch (err) {
-        console.error("❌ Error GET:", err);
+        console.error("Error GET:", err);
         return { success: false };
     }
 }
 
-// Función POST universal
+// =========================
+//  POST
+// =========================
 async function apiPost(url, data) {
     try {
         const res = await fetch(API + url, {
@@ -26,22 +34,37 @@ async function apiPost(url, data) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+
+        if (!res.ok) {
+            console.error(" Error POST", res.status, res.statusText);
+            return { success: false };
+        }
+
         return await res.json();
     } catch (err) {
-        console.error("❌ Error POST:", err);
+        console.error("Error POST:", err);
         return { success: false };
     }
 }
-// PUT con FormData (para comprobantes de pago)
+
+// =========================
+//  PUT FormData (comprobantes)
+// =========================
 async function apiPutForm(url, formData) {
     try {
         const res = await fetch(API + url, {
             method: "PUT",
             body: formData
         });
+
+        if (!res.ok) {
+            console.error(" Error PUT FORM", res.status, res.statusText);
+            return { success: false };
+        }
+
         return await res.json();
     } catch (err) {
-        console.error("❌ Error PUT FormData:", err);
+        console.error(" Error PUT FormData:", err);
         return { success: false };
     }
 }
