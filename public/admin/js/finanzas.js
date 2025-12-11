@@ -1,5 +1,5 @@
 // ==========================================================
-//   FINANZAS.JS – VERSIÓN PROFESIONAL TECNO CUSEVI (API FIX ONLY)
+//   FINANZAS.JS – VERSIÓN PROFESIONAL TECNO CUSEVI + PAGINACIÓN COMPLETA
 // ==========================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // DOM
     const resumenEl = document.getElementById("resumen-general");
     const tablaMov = document.getElementById("tabla-movimientos");
+    const paginacionEl = document.getElementById("paginacion-mov");
 
     const filtroPeriodo = document.getElementById("filtro-periodo");
     const fechaDesde = document.getElementById("fecha-desde");
@@ -28,16 +29,82 @@ document.addEventListener("DOMContentLoaded", () => {
     let graficoBalance = null;
 
     // ===============================
-    // API GET / POST (USANDO adminApi.js)
+    // API GET / POST
     // ===============================
-    const apiGet = async (url) => {
-        return await adminApiGet(`/finanzas/${url}`);
-    };
+    const apiGet = (url) => adminApiGet(`/finanzas/${url}`);
+    const apiPost = (url, body) => adminApiPost(`/finanzas/${url}`, body);
 
-    const apiPost = async (url, body) => {
-        return await adminApiPost(`/finanzas/${url}`, body);
-    };
+    // ===============================
+    // PAGINACIÓN
+    // ===============================
+    let movimientosData = [];
+    let paginaActual = 1;
+    const porPagina = 10;
 
+    function renderPaginacion() {
+        const total = movimientosData.length;
+        const totalPaginas = Math.ceil(total / porPagina);
+
+        if (totalPaginas <= 1) {
+            paginacionEl.innerHTML = "";
+            return;
+        }
+
+        let html = `<div class="pagination">`;
+
+        html += `
+            <button class="page-btn" ${paginaActual === 1 ? "disabled" : ""} data-page="${paginaActual - 1}">
+                « Anterior
+            </button>
+        `;
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            html += `
+                <button class="page-btn ${i === paginaActual ? "page-active" : ""}" data-page="${i}">
+                    ${i}
+                </button>
+            `;
+        }
+
+        html += `
+            <button class="page-btn" ${paginaActual === totalPaginas ? "disabled" : ""} data-page="${paginaActual + 1}">
+                Siguiente »
+            </button>
+        `;
+
+        html += "</div>";
+
+        paginacionEl.innerHTML = html;
+
+        document.querySelectorAll(".page-btn").forEach(btn => {
+            btn.onclick = () => {
+                const p = Number(btn.dataset.page);
+                paginaActual = p;
+                renderTablaPaginada();
+            };
+        });
+    }
+
+    function renderTablaPaginada() {
+        tablaMov.innerHTML = "";
+
+        const inicio = (paginaActual - 1) * porPagina;
+        const datos = movimientosData.slice(inicio, inicio + porPagina);
+
+        datos.forEach(m => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${new Date(m.fecha_movimiento).toLocaleString("es-PE")}</td>
+                <td>${m.tipo.toUpperCase()}</td>
+                <td style="color:${m.tipo === "ingreso" ? "green" : "red"}">S/ ${Number(m.monto).toFixed(2)}</td>
+                <td>${m.origen}</td>
+                <td>${m.descripcion || "-"}</td>
+            `;
+            tablaMov.appendChild(tr);
+        });
+
+        renderPaginacion();
+    }
 
     // ===============================
     // MODAL
@@ -45,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnManual.onclick = () => modal.style.display = "flex";
     closeManual.onclick = () => modal.style.display = "none";
     window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
-
 
     // ===============================
     // REGISTRAR MOVIMIENTO
@@ -61,10 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const res = await apiPost("manual", payload);
 
-        if (!res.success) {
-            alert("Error al guardar: " + res.message);
-            return;
-        }
+        if (!res.success) return alert("Error al guardar: " + res.message);
 
         alert("Movimiento registrado ✔");
         modal.style.display = "none";
@@ -72,18 +135,15 @@ document.addEventListener("DOMContentLoaded", () => {
         aplicarFiltro();
     });
 
-
     // ===============================
-    // FILTRO DE FECHAS
+    // RANGO DE FECHAS
     // ===============================
     function obtenerRango() {
         const hoy = new Date();
         let desde, hasta;
 
         switch (filtroPeriodo.value) {
-            case "hoy":
-                desde = hasta = hoy.toISOString().slice(0, 10);
-                break;
+            case "hoy": desde = hasta = hoy.toISOString().slice(0, 10); break;
 
             case "semana":
                 let w = new Date(hoy);
@@ -100,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
 
             case "anio":
-                desde = hoy.getFullYear() + "-01-01";
+                desde = `${hoy.getFullYear()}-01-01`;
                 hasta = hoy.toISOString().slice(0, 10);
                 break;
 
@@ -108,12 +168,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!fechaDesde.value || !fechaHasta.value) return null;
                 desde = fechaDesde.value;
                 hasta = fechaHasta.value;
-                break;
         }
 
         return { desde, hasta };
     }
-
 
     // ===============================
     // RESUMEN GENERAL
@@ -131,49 +189,40 @@ document.addEventListener("DOMContentLoaded", () => {
         resumenEl.innerHTML = `
             <div class="fin-card">
                 <h3>Ingresos</h3>
-                <div class="value positive">S/ ${Number(ingresos).toFixed(2)}</div>
+                <div class="value positive">S/ ${ingresos.toFixed(2)}</div>
             </div>
             <div class="fin-card">
                 <h3>Egresos</h3>
-                <div class="value negative">S/ ${Number(egresos).toFixed(2)}</div>
+                <div class="value negative">S/ ${egresos.toFixed(2)}</div>
             </div>
             <div class="fin-card">
                 <h3>Balance</h3>
-                <div class="value" style="color:${balance >= 0 ? "green" : "red"}">S/ ${Number(balance).toFixed(2)}</div>
+                <div class="value" style="color:${balance >= 0 ? "green" : "red"}">S/ ${balance.toFixed(2)}</div>
             </div>
         `;
     }
 
-
     // ===============================
-    // CARGAR MOVIMIENTOS
+    // CARGAR MOVIMIENTOS (PAGINADOS)
     // ===============================
     async function cargarMovimientos(desde, hasta) {
         const j = await apiGet(`movimientos?desde=${desde}&hasta=${hasta}`);
 
-        tablaMov.innerHTML = "";
-
         if (!j.success || j.data.length === 0) {
             tablaMov.innerHTML = `<tr><td colspan="5" style="text-align:center;">Sin movimientos</td></tr>`;
+            movimientosData = [];
+            paginacionEl.innerHTML = "";
             return;
         }
 
-        j.data.forEach(m => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${new Date(m.fecha_movimiento).toLocaleString("es-PE")}</td>
-                <td>${m.tipo.toUpperCase()}</td>
-                <td style="color:${m.tipo === "ingreso" ? "green" : "red"}">S/ ${Number(m.monto).toFixed(2)}</td>
-                <td>${m.origen}</td>
-                <td>${m.descripcion || "-"}</td>
-            `;
-            tablaMov.appendChild(tr);
-        });
+        movimientosData = j.data;
+        paginaActual = 1;
+
+        renderTablaPaginada();
     }
 
-
     // ===============================
-    // GRÁFICOS
+    // 📊 GRÁFICO PRINCIPAL (igual que tenías)
     // ===============================
     async function cargarGraficoPrincipal() {
         const j = await apiGet("grafico-mensual");
@@ -194,7 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
+    // ===============================
+    // 📊 GRÁFICO BALANCE
+    // ===============================
     async function cargarGraficoBalance(desde, hasta) {
         const j = await apiGet(`resumen?desde=${desde}&hasta=${hasta}`);
         if (!j.success) return;
@@ -213,11 +264,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-
-    // ===================================================================
-    // PDF (NO SE MODIFICÓ NADA, SE RESPETA COMPLETAMENTE TU DISEÑO)
-    // ===================================================================
+    // ===============================
+    // PDF COMPLETO — EXACTO COMO TU VERSIÓN ORIGINAL
+    // ===============================
     btnPdf.onclick = async () => {
 
         const rango = obtenerRango();
@@ -233,70 +282,70 @@ document.addEventListener("DOMContentLoaded", () => {
         const resumen = res.data;
         const movimientos = mov.data;
 
-        // --- PDF EXACTO SIN CAMBIOS ---
+        // --- TABLA HTML PDF ---
         let tablaHTML = `
-        <table style="width:100%; border-collapse:collapse; font-size:12px;">
-            <thead>
-                <tr style="background:#f1f3f5; font-weight:bold;">
-                    <th style="padding:6px; border:1px solid #ccc;">Fecha</th>
-                    <th style="padding:6px; border:1px solid #ccc;">Tipo</th>
-                    <th style="padding:6px; border:1px solid #ccc;">Monto</th>
-                    <th style="padding:6px; border:1px solid #ccc;">Origen</th>
-                    <th style="padding:6px; border:1px solid #ccc;">Descripción</th>
-                </tr>
-            </thead>
-            <tbody>
-        `;
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+        <thead>
+            <tr style="background:#f1f3f5; font-weight:bold;">
+                <th style="padding:6px; border:1px solid #ccc;">Fecha</th>
+                <th style="padding:6px; border:1px solid #ccc;">Tipo</th>
+                <th style="padding:6px; border:1px solid #ccc;">Monto</th>
+                <th style="padding:6px; border:1px solid #ccc;">Origen</th>
+                <th style="padding:6px; border:1px solid #ccc;">Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
 
         movimientos.forEach(m => {
             tablaHTML += `
-                <tr>
-                    <td style="padding:6px; border:1px solid #ccc;">${new Date(m.fecha_movimiento).toLocaleString("es-PE")}</td>
-                    <td style="padding:6px; border:1px solid #ccc;">${m.tipo.toUpperCase()}</td>
-                    <td style="padding:6px; border:1px solid #ccc;">S/ ${Number(m.monto).toFixed(2)}</td>
-                    <td style="padding:6px; border:1px solid #ccc;">${m.origen}</td>
-                    <td style="padding:6px; border:1px solid #ccc;">${m.descripcion}</td>
-                </tr>
-            `;
+            <tr>
+                <td style="padding:6px; border:1px solid #ccc;">${new Date(m.fecha_movimiento).toLocaleString("es-PE")}</td>
+                <td style="padding:6px; border:1px solid #ccc;">${m.tipo.toUpperCase()}</td>
+                <td style="padding:6px; border:1px solid #ccc;">S/ ${Number(m.monto).toFixed(2)}</td>
+                <td style="padding:6px; border:1px solid #ccc;">${m.origen}</td>
+                <td style="padding:6px; border:1px solid #ccc;">${m.descripcion || "-"}</td>
+            </tr>
+        `;
         });
 
         tablaHTML += "</tbody></table>";
 
         const contenido = `
-        <div style="font-family: Arial; padding:0 35px 35px 35px;">
+    <div style="font-family: Arial; padding:0 35px 35px 35px;">
 
-            <div style="text-align:center; margin-top:0;">
-                <h1 style="margin:0; padding-top:0; font-size:30px; letter-spacing:1px;">TECNO CUSEVI</h1>
-                <h2 style="margin:0; font-size:18px; color:#444;">REPORTE FINANCIERO OFICIAL</h2>
-                <p style="margin:5px 0; font-size:12px; color:#777;">Generado automáticamente por el sistema</p>
-                <hr style="border:0; border-top:2px solid #444; margin:10px 0;">
-            </div>
-
-            <div style="font-size:14px; margin-bottom:20px;">
-                <p><strong>Fecha de generación:</strong> ${new Date().toLocaleString("es-PE")}</p>
-                <p><strong>Periodo:</strong> ${desde} → ${hasta}</p>
-            </div>
-
-            <h3 style="font-size:18px; margin:10px 0;">Resumen Financiero</h3>
-
-            <table style="width:100%; font-size:14px; margin-bottom:20px;">
-                <tr><td><strong>Ingresos:</strong></td><td style="color:#1a7f37; font-weight:bold;">S/ ${Number(resumen.ingresos).toFixed(2)}</td></tr>
-                <tr><td><strong>Egresos:</strong></td><td style="color:#c92a2a; font-weight:bold;">S/ ${Number(resumen.egresos).toFixed(2)}</td></tr>
-                <tr><td><strong>Balance:</strong></td><td style="color:${resumen.balance>=0?'#1a7f37':'#c92a2a'}; font-weight:bold;">S/ ${Number(resumen.balance).toFixed(2)}</td></tr>
-            </table>
-
-            <h3 style="font-size:18px;">Movimientos Registrados</h3>
-
-            ${tablaHTML}
-
-            <div style="margin-top:35px; text-align:center; font-size:12px; color:#777;">
-                <hr style="border:0; border-top:1px solid #aaa;">
-                <p>Tecno CuseVi – Sistema de Gestión Empresarial</p>
-                <p>Documento generado automáticamente</p>
-            </div>
-
+        <div style="text-align:center; margin-top:0;">
+            <h1 style="margin:0; padding-top:0; font-size:30px; letter-spacing:1px;">TECNO CUSEVI</h1>
+            <h2 style="margin:0; font-size:18px; color:#444;">REPORTE FINANCIERO OFICIAL</h2>
+            <p style="margin:5px 0; font-size:12px; color:#777;">Generado automáticamente por el sistema</p>
+            <hr style="border:0; border-top:2px solid #444; margin:10px 0;">
         </div>
-        `;
+
+        <div style="font-size:14px; margin-bottom:20px;">
+            <p><strong>Fecha de generación:</strong> ${new Date().toLocaleString("es-PE")}</p>
+            <p><strong>Periodo:</strong> ${desde} → ${hasta}</p>
+        </div>
+
+        <h3 style="font-size:18px; margin:10px 0;">Resumen Financiero</h3>
+
+        <table style="width:100%; font-size:14px; margin-bottom:20px;">
+            <tr><td><strong>Ingresos:</strong></td><td style="color:#1a7f37; font-weight:bold;">S/ ${Number(resumen.ingresos).toFixed(2)}</td></tr>
+            <tr><td><strong>Egresos:</strong></td><td style="color:#c92a2a; font-weight:bold;">S/ ${Number(resumen.egresos).toFixed(2)}</td></tr>
+            <tr><td><strong>Balance:</strong></td><td style="color:${resumen.balance >= 0 ? '#1a7f37' : '#c92a2a'}; font-weight:bold;">S/ ${Number(resumen.balance).toFixed(2)}</td></tr>
+        </table>
+
+        <h3 style="font-size:18px;">Movimientos Registrados</h3>
+
+        ${tablaHTML}
+
+        <div style="margin-top:35px; text-align:center; font-size:12px; color:#777;">
+            <hr style="border:0; border-top:1px solid #aaa;">
+            <p>Tecno CuseVi – Sistema de Gestión Empresarial</p>
+            <p>Documento generado automáticamente</p>
+        </div>
+
+    </div>
+    `;
 
         const wrapper = document.createElement("div");
         wrapper.innerHTML = contenido;
@@ -312,14 +361,22 @@ document.addEventListener("DOMContentLoaded", () => {
             .save();
     };
 
-
     // ===============================
-    // EXPORTAR EXCEL (SIN CAMBIOS)
+    // EXCEL — sin cambios
     // ===============================
     btnExcel.onclick = () => {
+
+      
         const tabla = document.querySelector("#tabla-movimientos");
+
+      
         const wb = XLSX.utils.table_to_book(tabla, { sheet: "Movimientos" });
-        XLSX.writeFile(wb, `Movimientos_${new Date().toISOString().slice(0, 10)}.xlsx`);
+
+       
+        XLSX.writeFile(
+            wb,
+            `Movimientos_${new Date().toISOString().slice(0, 10)}.xlsx`
+        );
     };
 
 
