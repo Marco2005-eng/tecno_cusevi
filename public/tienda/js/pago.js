@@ -1,5 +1,5 @@
 /**************************************************************
- * PAGO.JS — NGROK READY + OPTIMIZADO
+ * PAGO.JS — COMPATIBLE CON CLOUDINARY + RENDER
  **************************************************************/
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -51,6 +51,7 @@ async function cargarPedido(id) {
         document.getElementById("pago-estado").textContent = pedido.estado;
 
         const cont = document.getElementById("pago-productos-list");
+
         cont.innerHTML = detalles?.length
             ? detalles.map(prod => `
                 <div class="pago-producto-item">
@@ -89,11 +90,19 @@ function asignarEventosPago(pedidoID) {
 }
 
 /**************************************************************
- * MOSTRAR DETALLES DEL MÉTODO
+ * MOSTRAR DETALLES DE MÉTODO DE PAGO
  **************************************************************/
 function mostrarDetallesMetodo(metodo) {
-    const ids = ["pago-qr-box", "pago-efectivo", "pago-recojo", "comprobante-box", "numero-yape", "numero-plin"];
-    ids.forEach(id => document.getElementById(id).style.display = "none");
+    const ids = [
+        "pago-qr-box",
+        "pago-efectivo",
+        "pago-recojo",
+        "comprobante-box",
+        "numero-yape",
+        "numero-plin"
+    ];
+
+    ids.forEach(id => (document.getElementById(id).style.display = "none"));
 
     if (metodo === "yape") {
         mostrar("pago-qr-box");
@@ -120,14 +129,15 @@ function mostrar(id) {
 }
 
 /**************************************************************
- * CONFIRMAR PAGO — usa apiPutForm()
+ * CONFIRMAR PAGO — usa apiPutForm() (Cloudinary compatible)
  **************************************************************/
 async function confirmarPedido(pedidoID) {
     const metodo = document.querySelector(".metodo-btn.active")?.dataset.metodo;
     const fileInput = document.getElementById("file-comprobante");
     const btn = document.getElementById("btn-confirmar-pago");
 
-    if (!metodo) return mostrarNotificacion("Selecciona un método de pago.", "warning");
+    if (!metodo)
+        return mostrarNotificacion("Selecciona un método de pago.", "warning");
 
     if ((metodo === "yape" || metodo === "plin") && !fileInput.files.length)
         return mostrarNotificacion("Adjunta un comprobante.", "warning");
@@ -135,11 +145,13 @@ async function confirmarPedido(pedidoID) {
     const formData = new FormData();
     formData.append("metodo_pago", metodo);
     formData.append("notas", `Pago con ${metodo}`);
+
+    // Esta parte envía el archivo directamente a Cloudinary vía backend
     if (fileInput.files[0]) formData.append("comprobante", fileInput.files[0]);
 
     try {
         btn.disabled = true;
-        btn.textContent = "Procesando...";
+        btn.textContent = "Procesando…";
 
         const data = await apiPutForm(`/pedidos/${pedidoID}/cliente-confirmar`, formData);
 
@@ -160,7 +172,7 @@ async function confirmarPedido(pedidoID) {
 }
 
 /**************************************************************
- * NOTIFICACIÓN (NUEVA, IGUAL QUE PEDIDOS Y PERFIL)
+ * NOTIFICACIONES
  **************************************************************/
 function mostrarNotificacion(msg, tipo = "info") {
     const div = document.createElement("div");
