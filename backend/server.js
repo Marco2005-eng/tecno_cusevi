@@ -85,6 +85,7 @@ app.use('/api/reportes-analitica', require('./routes/reportesAnaliticaRoutes'));
 app.use('/api/config', require('./routes/configPublicRoutes'));
 app.use('/api/configuracion', require('./routes/configuracionRoutes'));
 app.use('/api/catalogo-public', require('./routes/catalogoPublicRoutes'));
+app.use('/api/finanzas', require('./routes/finanzasRoutes'));
 
 // ============================================================
 //  SERVER LISTEN
