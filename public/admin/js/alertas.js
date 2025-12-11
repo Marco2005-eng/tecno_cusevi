@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_URL = "http://localhost:3000/api/alertas";
+    // ============================================
+    // 🔥 API BASE — FUNCIONA EN LOCAL, RENDER, NGROK
+    // ============================================
+    const API_URL = window.location.origin + "/api/alertas";
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -13,15 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const alertCounter = document.getElementById("alert-counter");
     const paginationControls = document.getElementById("pagination-controls");
 
-    // Estado interno
     let alertas = [];
     let paginaActual = 1;
     const porPagina = 8;
     let filtroActivo = "all";
 
-    // ============================
-    // ICONO POR TIPO
-    // ============================
     function getIcono(tipo) {
         switch (tipo) {
             case "stock": return { icon: "fa-box", color: "alert-warning" };
@@ -32,9 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // CARGAR ALERTAS DESDE API
-    // ============================
     async function cargarAlertas() {
         try {
             const res = await fetch(API_URL, {
@@ -42,9 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await res.json();
-            if (!data.success) {
-                return alert("Error al cargar alertas");
-            }
+            if (!data.success) return;
 
             alertas = data.data || [];
             actualizarContador();
@@ -55,12 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // CONTADOR DE NO LEÍDAS
-    // ============================
     function actualizarContador() {
         const noLeidas = alertas.filter(a => !a.leida).length;
-
         if (noLeidas > 0) {
             alertCounter.style.display = "inline-block";
             alertCounter.textContent = noLeidas;
@@ -69,12 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // MARCAR UNA ALERTA COMO LEÍDA
-    // ============================
     async function marcarLeida(id) {
         try {
-            await fetch(`${API_URL}/${id}/leer`, {
+            await fetch(`${API_URL}/${id}/leida`, {
                 method: "PUT",
                 headers: { Authorization: "Bearer " + token }
             });
@@ -91,12 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // MARCAR TODAS COMO LEÍDAS
-    // ============================
     async function marcarTodas() {
         try {
-            await fetch(`${API_URL}/marcar-todas`, {
+            await fetch(`${API_URL}/leida/todas`, {
                 method: "PUT",
                 headers: { Authorization: "Bearer " + token }
             });
@@ -110,17 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // FILTRAR ALERTAS
-    // ============================
     function filtrarAlertas() {
         if (filtroActivo === "all") return alertas;
         return alertas.filter(a => a.tipo === filtroActivo);
     }
 
-    // ============================
-    // PAGINACIÓN
-    // ============================
     function getAlertasPaginadas(lista) {
         const inicio = (paginaActual - 1) * porPagina;
         return lista.slice(inicio, inicio + porPagina);
@@ -128,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderPaginacion(total) {
         paginationControls.innerHTML = "";
-
         const totalPaginas = Math.ceil(total / porPagina);
         if (totalPaginas <= 1) return;
 
@@ -146,9 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================
-    // RENDERIZAR ALERTAS
-    // ============================
     function renderAlertas() {
         alertsList.innerHTML = "";
 
@@ -184,12 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button class="alert-action-btn btn-leer" data-id="${a.id}">
                         <i class="fas fa-check"></i>
                     </button>
-
-                    ${a.id_referencia ?
-                        `<a href="${resolverRuta(a)}" class="alert-action-btn">
-                            <i class="fas fa-eye"></i>
-                        </a>` : ""
-                    }
                 </div>
             `;
 
@@ -199,26 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
         renderPaginacion(filtradas.length);
     }
 
-    // ============================
-    // Resolver ruta según tipo
-    // ============================
-    function resolverRuta(alerta) {
-        switch (alerta.tipo) {
-            case "stock": return "stock.html?id=" + alerta.id_referencia;
-            case "pedido": return "pedidos.html?id=" + alerta.id_referencia;
-            case "usuario": return "usuarios.html?id=" + alerta.id_referencia;
-            case "sistema": return "configuracion.html";
-            default: return "#";
-        }
-    }
-
-    // ============================
-    // EVENTOS
-    // ============================
     alertsList.addEventListener("click", e => {
         const btn = e.target.closest(".btn-leer");
         if (!btn) return;
-
         marcarLeida(Number(btn.dataset.id));
     });
 
@@ -230,8 +181,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     markAllBtn.addEventListener("click", marcarTodas);
 
-    // ============================
-    // CARGA INICIAL
-    // ============================
     cargarAlertas();
 });
