@@ -87,18 +87,19 @@ const getOfertaById = async (req, res) => {
                 c.precio_venta AS precio_original,
                 c.imagen_url,
 
-                p.id_categoria,
+                c.id_categoria,
                 cat.nombre AS nombre_categoria
+
             FROM ofertas o
             JOIN catalogo c ON o.id_catalogo = c.id
-            JOIN productos p ON c.id_producto = p.id
-            JOIN categorias cat ON p.id_categoria = cat.id
+            JOIN categorias cat ON c.id_categoria = cat.id
             WHERE o.id = ?
         `;
+
         const [rows] = await pool.query(sql, [id]);
 
         if (rows.length === 0) {
-            return res.status(404).json({ success: false, message: "Oferta no encontrada" });
+            return res.json({ success: false, message: "Oferta no encontrada" });
         }
 
         res.json({ success: true, data: rows[0] });
@@ -108,6 +109,7 @@ const getOfertaById = async (req, res) => {
         res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
 };
+
 
 // =============================================================
 // VALIDAR OFERTA ACTIVA (NO PERMITIR DUPLICADOS)
