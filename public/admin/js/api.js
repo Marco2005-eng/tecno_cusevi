@@ -1,42 +1,17 @@
 /**************************************************************
- * API.JS — PANEL ADMIN (FUNCIONA EN LOCAL, FILE://, NGROK Y RENDER)
+ * API.JS — PANEL ADMIN (Render FIXED VERSION)
  **************************************************************/
 
-/* ============================================================
-   DETECTAR API BASE DE FORMA INTELIGENTE
-============================================================ */
+// ============================================================
+//  API BASE FIJA A RENDER (SIEMPRE USA EL SERVIDOR ONLINE)
+// ============================================================
 
-function detectarApiBase() {
-    const origen = window.location.origin;
+const ADMIN_API_BASE = "https://tecno-cusevi.onrender.com/api";
 
-    // 1️⃣ Si estamos en Render → usar Render
-    if (origen.includes("render.com")) {
-        return origen + "/api";
-    }
-
-    // 2️⃣ Si estamos en ngrok → usar ngrok
-    if (origen.includes("ngrok")) {
-        return origen + "/api";
-    }
-
-    // 3️⃣ Si estamos en localhost → usar backend local
-    if (origen.includes("localhost") || origen.includes("127.0.0.1")) {
-        return "http://localhost:3000/api";
-    }
-
-    // 4️⃣ Si estamos en file:// → usar API de Render (IMPORTANTE)
-    if (origen.startsWith("file://")) {
-        return "https://tecno-cusevi.onrender.com/api";
-    }
-
-    // 5️⃣ Fallback general (por si lo subes a otro hosting)
-    return origen + "/api";
-}
-
-const ADMIN_API_BASE = detectarApiBase();
+console.log("%cADMIN API BASE → ", "color:#00aaff; font-weight:bold;", ADMIN_API_BASE);
 
 /**************************************************************
- * REQUEST GENERAL
+ * REQUEST GENERAL — TOKEN + ERRORES + AUTO-LOGOUT
  **************************************************************/
 async function adminApiRequest(endpoint, options = {}) {
     const url = `${ADMIN_API_BASE}${endpoint}`;
@@ -51,35 +26,68 @@ async function adminApiRequest(endpoint, options = {}) {
         if (res.status === 401) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-            alert("Sesión expirada. Inicia nuevamente.");
+
+            alert("Sesión expirada. Por favor inicia sesión nuevamente.");
             window.location.href = "../auth/login.html";
             return { success: false };
         }
 
         return await res.json();
 
-    } catch (err) {
-        console.error("❌ ERROR API:", err);
-        return { success: false, message: "No se pudo conectar con el servidor" };
+    } catch (error) {
+        console.error("❌ ERROR API:", error);
+        return { success: false, message: "Error al conectar con el servidor." };
     }
 }
 
 /**************************************************************
- * MÉTODOS BÁSICOS
+ * MÉTODOS BÁSICOS (GET / POST / PUT / PATCH / DELETE)
  **************************************************************/
-function adminApiGet(e) { return adminApiRequest(e, { method: "GET" }); }
-function adminApiPost(e, b) { return adminApiRequest(e, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }); }
-function adminApiPut(e, b) { return adminApiRequest(e, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }); }
-function adminApiPatch(e, b) { return adminApiRequest(e, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }); }
-function adminApiDelete(e) { return adminApiRequest(e, { method: "DELETE" }); }
+function adminApiGet(endpoint) {
+    return adminApiRequest(endpoint, { method: "GET" });
+}
+
+function adminApiPost(endpoint, body) {
+    return adminApiRequest(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+}
+
+function adminApiPut(endpoint, body) {
+    return adminApiRequest(endpoint, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+}
+
+function adminApiPatch(endpoint, body) {
+    return adminApiRequest(endpoint, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+}
+
+function adminApiDelete(endpoint) {
+    return adminApiRequest(endpoint, { method: "DELETE" });
+}
 
 /**************************************************************
- * FORM DATA — subida de imágenes
+ * FORM DATA (UPLOADS)
  **************************************************************/
-function adminApiUpload(e, f) { return adminApiRequest(e, { method: "POST", body: f }); }
-function adminApiPutUpload(e, f) { return adminApiRequest(e, { method: "PUT", body: f }); }
+function adminApiUpload(endpoint, formData) {
+    return adminApiRequest(endpoint, {
+        method: "POST",
+        body: formData
+    });
+}
 
-/**************************************************************
- * DEBUG
- **************************************************************/
-console.log("%cADMIN API BASE → ", "color:#00aaff;font-weight:bold;", ADMIN_API_BASE);
+function adminApiPutUpload(endpoint, formData) {
+    return adminApiRequest(endpoint, {
+        method: "PUT",
+        body: formData
+    });
+}
