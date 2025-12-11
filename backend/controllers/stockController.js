@@ -12,7 +12,7 @@ const getStock = async (req, res) => {
                 (p.cantidad_disponible <= 3) AS bajo_stock
             FROM productos p
             JOIN marcas m ON m.id = p.id_marca
-            ORDER BY p.nombre
+            ORDER BY p.id DESC
         `;
 
         const [rows] = await pool.query(sql);

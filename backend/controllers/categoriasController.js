@@ -4,7 +4,7 @@ const pool = require('../config/database'); // Importamos la conexión a la BD
 // Obtener todas las categorías
 const getAllCategorias = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM categorias ORDER BY nombre ASC');
+        const [rows] = await pool.query('SELECT * FROM categorias ORDER BY id DESC');
         res.json({ success: true, data: rows });
     } catch (error) {
         console.error('Error al obtener categorías:', error);

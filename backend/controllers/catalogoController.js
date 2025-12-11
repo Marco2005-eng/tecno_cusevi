@@ -38,7 +38,7 @@ const getAllCatalogo = async (req, res) => {
                 AND o.activa = 1 
                 AND NOW() BETWEEN o.fecha_inicio AND o.fecha_fin
             WHERE 1
-            ORDER BY c.nombre_venta ASC
+            ORDER BY c.id DESC
         `;
 
         const [rows] = await pool.query(sql);
@@ -95,7 +95,7 @@ const getProductosForCatalogo = async (req, res) => {
             `;
         }
 
-        sql += ` ORDER BY p.nombre ASC`;
+        sql += ` ORDER BY p.id DESC`;
 
         const [rows] = await pool.query(sql);
 

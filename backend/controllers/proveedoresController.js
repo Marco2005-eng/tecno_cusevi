@@ -5,7 +5,7 @@ const pool = require('../config/database');
 const getAllProveedores = async (req, res) => {
     try {
         const [rows] = await pool.query(
-            "SELECT * FROM proveedores ORDER BY nombre_empresa ASC"
+            "SELECT * FROM proveedores ORDER BY id DESC"
         );
         res.json({ success: true, data: rows });
     } catch (error) {
