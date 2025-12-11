@@ -7,7 +7,7 @@ require('dotenv').config();
 //  BASE_URL DINÁMICO (NGROK / RENDER / LOCAL)
 // ============================================================
 global.BASE_URL = "";
-global.PUBLIC_URL = process.env.PUBLIC_URL || null;
+global.PUBLIC_URL = process.env.PUBLIC_URL || "";
 
 // ============================================================
 //  SOCKET.IO
@@ -21,7 +21,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: "*",
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"]
     }
 });
@@ -34,11 +34,10 @@ io.on("connection", (socket) => {
 });
 
 // ============================================================
-//  MIDDLEWARE PARA BASE_URL DINÁMICO
+//  MIDDLEWARE BASE_URL
 // ============================================================
 app.use((req, res, next) => {
-    const currentUrl = `${req.protocol}://${req.get('host')}`;
-    global.BASE_URL = currentUrl;
+    global.BASE_URL = `${req.protocol}://${req.get('host')}`;
     next();
 });
 
@@ -54,14 +53,17 @@ app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 // ============================================================
 //  ARCHIVOS ESTÁTICOS
 // ============================================================
+
+// Public (Frontend tienda y admin)
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Carpeta uploads (Render no guarda archivos permanentemente)
+// Uploads (⚠ Render los borra al reiniciar)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ============================================================
 //  RUTAS API
 // ============================================================
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/marcas', require('./routes/marcasRoutes'));
 app.use('/api/proveedores', require('./routes/proveedoresRoutes'));
@@ -80,14 +82,26 @@ app.use('/api/usuarios', require('./routes/usuariosRoutes'));
 app.use('/api/stock', require('./routes/stockRoutes'));
 app.use('/api/reportes', require('./routes/reportesRoutes'));
 app.use('/api/reportes-analitica', require('./routes/reportesAnaliticaRoutes'));
-app.use("/api/config", require("./routes/configPublicRoutes"));
+app.use('/api/config', require('./routes/configPublicRoutes'));
 app.use('/api/configuracion', require('./routes/configuracionRoutes'));
 app.use('/api/catalogo-public', require('./routes/catalogoPublicRoutes'));
 
 // ============================================================
-//  INICIAR SERVIDOR
+//  SERVER LISTEN
 // ============================================================
 server.listen(PORT, () => {
+    console.log("=====================================");
     console.log(`🚀 Servidor API encendido en puerto ${PORT}`);
+
+    console.log("📂 PUBLIC_URL:", PUBLIC_URL || "(no definido)");
+    console.log("📡 BASE_URL (dinámico): se actualiza por request");
+
+    console.log("-------------------------------------");
+    console.log("🔧 Base de Datos");
+    console.log("➡ Host:", process.env.DB_HOST);
+    console.log("➡ Base:", process.env.DB_NAME);
+    console.log("➡ Puerto:", process.env.DB_PORT);
+    console.log("=====================================");
+
     console.log("📡 WebSocket listo para alertas en tiempo real");
 });
