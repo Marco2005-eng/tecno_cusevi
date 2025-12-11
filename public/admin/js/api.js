@@ -1,41 +1,21 @@
 /**************************************************************
- * API.JS — PANEL ADMIN (NGROK + PRODUCCIÓN + TOKEN READY)
+ * API.JS — PANEL ADMIN (UNIVERSAL PARA LOCAL, NGROK Y RENDER)
  **************************************************************/
 
 /* ============================================================
-   DETECTAR URL BASE AUTOMÁTICAMENTE
+   API BASE UNIVERSAL
 ============================================================ */
 
-function detectarApiBase() {
-    const stored = localStorage.getItem("ADMIN_API_BASE_URL");
-    if (stored) return stored;
+// Siempre usar el dominio actual
+const ADMIN_API_BASE = window.location.origin + "/api";
 
-    const host = location.hostname;
-
-    // LOCALHOST
-    if (host === "localhost" || host === "127.0.0.1") {
-        return "http://localhost:3000/api";
-    }
-
-    // NGROK (subdominios aleatorios + extensión .ngrok-free.app)
-    if (host.includes("ngrok")) {
-        return `${location.origin}/api`;
-    }
-
-    // PRODUCCIÓN (Render / VPS / Railway / Hostinger / CPanel)
-    return `${location.origin}/api`;
-}
-
-const ADMIN_API_BASE = detectarApiBase();
-
-/* ============================================================
-   HELPER GENERAL — TOKEN + ERRORES + AUTO-LOGOUT
-============================================================ */
-
+/**************************************************************
+ * REQUEST GENERAL — TOKEN + ERRORES + AUTO-LOGOUT
+ **************************************************************/
 async function adminApiRequest(endpoint, options = {}) {
     const url = `${ADMIN_API_BASE}${endpoint}`;
 
-    // Agregar token automáticamente
+    // Token automático
     options.headers = options.headers || {};
     options.headers["Authorization"] =
         `Bearer ${localStorage.getItem("token") || ""}`;
@@ -43,18 +23,23 @@ async function adminApiRequest(endpoint, options = {}) {
     try {
         const res = await fetch(url, options);
 
-        // Si el token expiró
+        // Token inválido o expirado
         if (res.status === 401) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
 
             alert("Sesión expirada. Por favor inicia sesión nuevamente.");
             window.location.href = "../auth/login.html";
-            return;
+            return { success: false };
         }
 
-        const data = await res.json();
-        return data;
+        // Si no es JSON válido
+        if (!res.ok) {
+            console.error("❌ Error API:", res.status, res.statusText);
+            return { success: false };
+        }
+
+        return await res.json();
 
     } catch (error) {
         console.error("❌ ERROR API:", error);
@@ -66,9 +51,8 @@ async function adminApiRequest(endpoint, options = {}) {
 }
 
 /**************************************************************
- * MÉTODOS GET / POST / PUT / DELETE — ESTÁNDAR PARA TODO EL PANEL
+ * MÉTODOS BÁSICOS (GET / POST / PUT / DELETE)
  **************************************************************/
-
 function adminApiGet(endpoint) {
     return adminApiRequest(endpoint, { method: "GET" });
 }
@@ -89,16 +73,21 @@ function adminApiPut(endpoint, body) {
     });
 }
 
-function adminApiDelete(endpoint) {
+function adminApiPatch(endpoint, body) {
     return adminApiRequest(endpoint, {
-        method: "DELETE"
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
     });
+}
+
+function adminApiDelete(endpoint) {
+    return adminApiRequest(endpoint, { method: "DELETE" });
 }
 
 /**************************************************************
  * FORM DATA — SUBIR IMÁGENES O ARCHIVOS
  **************************************************************/
-
 function adminApiUpload(endpoint, formData) {
     return adminApiRequest(endpoint, {
         method: "POST",
@@ -114,42 +103,10 @@ function adminApiPutUpload(endpoint, formData) {
 }
 
 /**************************************************************
- * DEBUG
+ * DEBUG (Para ver que Render lo detectó)
  **************************************************************/
 console.log(
     "%cADMIN API BASE → ",
-    "color:#00aaff;font-weight:bold;",
+    "color:#00aaff; font-weight:bold;",
     ADMIN_API_BASE
 );
-function adminApiGet(endpoint) {
-    return adminApiRequest(endpoint, { method: "GET" });
-}
-
-function adminApiPost(endpoint, body) {
-    return adminApiRequest(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-}
-
-function adminApiPut(endpoint, body) {
-    return adminApiRequest(endpoint, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-}
-
-/* 🔥 AQUÍ ESTÁ LA NUEVA FUNCIÓN */
-function adminApiPatch(endpoint, body) {
-    return adminApiRequest(endpoint, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-}
-
-function adminApiDelete(endpoint) {
-    return adminApiRequest(endpoint, { method: "DELETE" });
-}
