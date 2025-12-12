@@ -113,7 +113,7 @@ const login = async (req, res) => {
             });
         }
 
-        // 🔍 BUSCAR SI EXISTE CLIENTE RELACIONADO
+       
         const [[cliente]] = await pool.query(
             "SELECT id FROM clientes WHERE email = ?",
             [usuario.email]
