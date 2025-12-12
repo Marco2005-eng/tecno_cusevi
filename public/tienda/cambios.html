@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Políticas de Garantía - Tecno CuseVi</title>
+    <title>Cambios y Devoluciones - Tecno CuseVi</title>
 
     <link rel="stylesheet" href="css/tienda.css">
 
@@ -84,14 +84,14 @@
             font-weight: bold;
         }
 
-        /* Estilos para la página de garantía simplificada */
-        .guarantee-container {
+        /* Estilos para la página de cambios y devoluciones */
+        .returns-container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
 
-        .guarantee-header {
+        .returns-header {
             text-align: center;
             margin-bottom: 50px;
             padding: 40px 0;
@@ -100,47 +100,47 @@
             color: white;
         }
 
-        .guarantee-title {
+        .returns-title {
             font-size: 2.5rem;
             margin-bottom: 15px;
             font-weight: 700;
         }
 
-        .guarantee-subtitle {
+        .returns-subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
         }
 
-        .guarantee-content {
+        .returns-content {
             background: white;
             border-radius: 12px;
             padding: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .guarantee-section {
+        .returns-section {
             margin-bottom: 40px;
         }
 
-        .guarantee-section h2 {
+        .returns-section h2 {
             color: #1a1a2e;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #e0e0e0;
         }
 
-        .guarantee-section p {
+        .returns-section p {
             line-height: 1.8;
             color: #555;
             margin-bottom: 15px;
         }
 
-        .guarantee-list {
+        .returns-list {
             list-style: none;
             padding: 0;
         }
 
-        .guarantee-list li {
+        .returns-list li {
             margin-bottom: 15px;
             padding-left: 30px;
             position: relative;
@@ -148,7 +148,7 @@
             color: #333;
         }
 
-        .guarantee-list li:before {
+        .returns-list li:before {
             content: "✓";
             position: absolute;
             left: 0;
@@ -156,65 +156,30 @@
             font-weight: bold;
         }
 
-        /* Tabla responsive para mobile */
-        .guarantee-table-container {
-            overflow-x: auto;
+        .returns-table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 30px 0;
         }
 
-        .guarantee-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-
-        .guarantee-table th,
-        .guarantee-table td {
+        .returns-table th,
+        .returns-table td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .guarantee-table th {
+        .returns-table th {
             background-color: #f5f5f5;
             font-weight: 600;
             color: #1a1a2e;
         }
 
-        .guarantee-table tr:hover {
+        .returns-table tr:hover {
             background-color: #f9f9f9;
         }
 
-        /* Estilos para mobile */
-        @media (max-width: 768px) {
-            .guarantee-table {
-                min-width: 100%;
-                font-size: 0.9rem;
-            }
-
-            .guarantee-table th,
-            .guarantee-table td {
-                padding: 10px;
-            }
-
-            .guarantee-title {
-                font-size: 2rem;
-            }
-
-            .guarantee-subtitle {
-                font-size: 1rem;
-            }
-
-            .guarantee-content {
-                padding: 20px;
-            }
-
-            .guarantee-section {
-                margin-bottom: 30px;
-            }
-        }
-
-        .guarantee-conditions {
+        .returns-conditions {
             background-color: #f8f9fa;
             border-left: 4px solid #25D366;
             padding: 20px;
@@ -222,12 +187,12 @@
             border-radius: 0 8px 8px 0;
         }
 
-        .guarantee-conditions h3 {
+        .returns-conditions h3 {
             color: #1a1a2e;
             margin-top: 0;
         }
 
-        .contact-guarantee {
+        .contact-returns {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: white;
             padding: 30px;
@@ -236,17 +201,17 @@
             margin-top: 40px;
         }
 
-        .contact-guarantee h3 {
+        .contact-returns h3 {
             margin-bottom: 20px;
             font-size: 1.5rem;
         }
 
-        .contact-guarantee p {
+        .contact-returns p {
             margin-bottom: 20px;
             opacity: 0.9;
         }
 
-        .btn-guarantee {
+        .btn-returns {
             background-color: #25D366;
             color: white;
             padding: 12px 30px;
@@ -257,67 +222,50 @@
             transition: background-color 0.3s;
         }
 
-        .btn-guarantee:hover {
+        .btn-returns:hover {
             background-color: #1da852;
         }
 
-        .emerging-badge {
-            display: inline-block;
-            background: #ff6b6b;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .timeline {
+            position: relative;
+            padding: 20px 0;
         }
 
-        .simple-guarantee {
-            font-size: 1.1rem;
-            line-height: 1.7;
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
         }
 
-        .store-info {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 30px 0;
-            text-align: center;
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 30px;
         }
 
-        .store-info h3 {
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #25D366;
+        }
+
+        .timeline-item h3 {
             color: #1a1a2e;
-            margin-bottom: 15px;
-        }
-
-        .store-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .store-feature {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .store-feature i {
-            font-size: 1.5rem;
-            color: #25D366;
             margin-bottom: 10px;
         }
 
-        .store-feature h4 {
-            color: #1a1a2e;
-            margin-bottom: 5px;
-        }
-
-        .store-feature p {
+        .timeline-item p {
             color: #666;
-            font-size: 0.9rem;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -403,127 +351,115 @@
 
     <!-- ================== MAIN ================== -->
     <main class="main-content">
-        <div class="guarantee-container">
-            <div class="guarantee-header">
-                <h1 class="guarantee-title">Nuestra Garantía</h1>
-                <p class="guarantee-subtitle">Compromiso con tu compra</p>
-                <span class="emerging-badge">Tecno CuseVi</span>
+        <div class="returns-container">
+            <div class="returns-header">
+                <h1 class="returns-title">Cambios y Devoluciones</h1>
+                <p class="returns-subtitle">Políticas de satisfacción garantizada</p>
             </div>
 
-            <div class="guarantee-content">
-                <section class="guarantee-section simple-guarantee">
-                    <h2>Garantía Básica</h2>
-                    <p>Todos nuestros productos vienen con garantía mínima de 6 meses contra defectos de fabricación. Como empresa local, nos aseguramos que tus compras estén protegidas y que recibas el mejor servicio cercano.</p>
+            <div class="returns-content">
+                <section class="returns-section">
+                    <h2>Política de Devoluciones</h2>
+                    <p>En Tecno CuseVi nos comprometemos a que estés satisfecho con tu compra. Ofrecemos una política de devoluciones flexible para tu tranquilidad.</p>
                     
-                    <div class="guarantee-conditions">
-                        <h3>Qué Cubre Nuestra Garantía</h3>
-                        <ul class="guarantee-list">
-                            <li>Defectos de fábrica</li>
-                            <li>Fallas en el funcionamiento normal</li>
-                            <li>Problemas con piezas originales</li>
-                            <li>Soporte técnico directo en nuestra tienda</li>
+                    <div class="returns-conditions">
+                        <h3>Condiciones para Devoluciones</h3>
+                        <ul class="returns-list">
+                            <li>Devoluciones hasta 30 días después de la compra</li>
+                            <li>Producto en perfectas condiciones (sin uso)</li>
+                            <li>Con todos sus accesorios y embalaje original</li>
+                            <li>Con comprobante de compra válido</li>
                         </ul>
                     </div>
                 </section>
 
-                <section class="guarantee-section simple-guarantee">
-                    <h2>¿Cómo Hacemos el Reclamo?</h2>
-                    <p>Es muy sencillo, ven a nuestra tienda y te ayudamos personalmente:</p>
+                <section class="returns-section">
+                    <h2>Proceso de Devolución</h2>
+                    <p>Sigue estos sencillos pasos para realizar una devolución:</p>
                     
-                    <div class="store-info">
-                        <h3>Visítanos en Nuestra Tienda</h3>
-                        <p>Te atendemos con gusto y resolvemos tu problema en el momento</p>
-                        
-                        <div class="store-features">
-                            <div class="store-feature">
-                                <i>📍</i>
-                                <h4>Ubicación</h4>
-                                <p>Calle principal de Rioja</p>
-                            </div>
-                            <div class="store-feature">
-                                <i>🕒</i>
-                                <h4>Horario</h4>
-                                <p>Lunes a Sábado 9:00 AM - 8:00 PM</p>
-                            </div>
-                            <div class="store-feature">
-                                <i>🤝</i>
-                                <h4>Atención Personal</h4>
-                                <p>Te ayudamos directamente</p>
-                            </div>
-                            <div class="store-feature">
-                                <i>🔧</i>
-                                <h4>Reparaciones</h4>
-                                <p>En sitio cuando es posible</p>
-                            </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3>Paso 1: Contacta con nosotros</h3>
+                            <p>Envía un correo a tecnocusevi@gmail.com o contáctanos por WhatsApp</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Paso 2: Recibe autorización</h3>
+                            <p>Nuestro equipo revisará tu solicitud y te enviará una autorización</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Paso 3: Empaqueta el producto</h3>
+                            <p>Usa el embalaje original y asegúrate de que el producto esté protegido</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Paso 4: Envía el paquete</h3>
+                            <p>Envía el paquete a nuestra dirección en Rioja, San Martín</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Paso 5: Recibe tu reembolso</h3>
+                            <p>Procesaremos tu reembolso dentro de 5-7 días hábiles</p>
                         </div>
                     </div>
                 </section>
 
-                <section class="guarantee-section simple-guarantee">
-                    <h2>Plazos de Garantía</h2>
-                    <div class="guarantee-table-container">
-                        <table class="guarantee-table">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Garantía</th>
-                                    <th>Qué Hacemos</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Celulares y Tablets</td>
-                                    <td>6 meses</td>
-                                    <td>Cambio o reparación</td>
-                                </tr>
-                                <tr>
-                                    <td>Accesorios</td>
-                                    <td>3 meses</td>
-                                    <td>Cambio directo</td>
-                                </tr>
-                                <tr>
-                                    <td>Componentes</td>
-                                    <td>6 meses</td>
-                                    <td>Reparación en tienda</td>
-                                </tr>
-                                <tr>
-                                    <td>Software y Licencias</td>
-                                    <td>90 días</td>
-                                    <td>Soporte técnico</td>
-                                </tr>
-                                <tr>
-                                    <td>Audífonos y Bocinas</td>
-                                    <td>4 meses</td>
-                                    <td>Cambio o reparación</td>
-                                </tr>
-                                <tr>
-                                    <td>Cargadores y Cables</td>
-                                    <td>3 meses</td>
-                                    <td>Cambio directo</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <section class="returns-section">
+                    <h2>Plazos y Métodos de Reembolso</h2>
+                    <table class="returns-table">
+                        <thead>
+                            <tr>
+                                <th>Método de Reembolso</th>
+                                <th>Plazo de Procesamiento</th>
+                                <th>Notas Importantes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Transferencia Bancaria</td>
+                                <td>3-5 días hábiles</td>
+                                <td>Requiere datos bancarios válidos</td>
+                            </tr>
+                            <tr>
+                                <td>Crédito en Tienda</td>
+                                <td>1-2 días hábiles</td>
+                                <td>Puedes usarlo en tu próxima compra</td>
+                            </tr>
+                            <tr>
+                                <td>Reembolso a Método Original</td>
+                                <td>5-7 días hábiles</td>
+                                <td>Depende del banco emisor</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
 
-                <section class="guarantee-section simple-guarantee">
-                    <h2>Qué No Cubre la Garantía</h2>
-                    <p>Para que todo funcione mejor, te pedimos:</p>
+                <section class="returns-section">
+                    <h2>Productos No Devolvibles</h2>
+                    <p>Ciertos productos no están sujetos a devolución por razones de higiene, seguridad o por ser personalizados:</p>
                     
-                    <ul class="guarantee-list">
-                        <li>Daños por mal uso o caídas</li>
-                        <li>Uso incorrecto del producto</li>
-                        <li>Modificaciones no autorizadas</li>
-                        <li>Daños por agua o humedad</li>
-                        <li>Productos sin su embalaje original</li>
-                        <li>Uso fuera de las especificaciones</li>
+                    <ul class="returns-list">
+                        <li>Software y licencias digitales</li>
+                        <li>Productos de higiene personal</li>
+                        <li>Artículos personalizados o grabados</li>
+                        <li>Baterías y consumibles</li>
+                        <li>Productos dañados por mal uso</li>
                     </ul>
                 </section>
 
-                <section class="contact-guarantee">
-                    <h3>¿Tienes una Duda?</h3>
-                    <p>Ven a nuestra tienda o contáctanos, te ayudamos con gusto.</p>
-                    <button class="btn-guarantee" onclick="window.location.href='https://wa.me/51944670870'">Hablar con Nosotros</button>
+                <section class="returns-section">
+                    <h2>Política de Cambios</h2>
+                    <p>Si prefieres cambiar tu producto por otro modelo o artículo, te ofrecemos las siguientes opciones:</p>
+                    
+                    <ul class="returns-list">
+                        <li>Cambio por otro producto de igual o mayor valor (pagando la diferencia)</li>
+                        <li>Cambio por producto de menor valor (recibiendo la diferencia)</li>
+                        <li>Cambio dentro de los 15 días posteriores a la compra</li>
+                        <li>El producto debe estar en perfectas condiciones</li>
+                    </ul>
+                </section>
+
+                <section class="contact-returns">
+                    <h3>¿Necesitas Ayuda con tu Devolución?</h3>
+                    <p>Nuestro equipo de atención al cliente está listo para ayudarte con cualquier consulta sobre cambios y devoluciones.</p>
+                    <button class="btn-returns" onclick="window.location.href='mailto:tecnocusevi@gmail.com'">Solicitar Devolución</button>
                 </section>
             </div>
         </div>

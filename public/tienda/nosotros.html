@@ -4,15 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecno CuseVi - Tu Tienda de Tecnología</title>
-
+    <title>Sobre Nosotros - Tecno CuseVi</title>
 
     <link rel="stylesheet" href="css/tienda.css">
 
-
     <script defer src="js/api.js"></script>
     <script defer src="js/index.js"></script>
-
 
     <style>
         .whatsapp-btn {
@@ -37,7 +34,6 @@
         .whatsapp-btn:hover {
             transform: scale(1.1);
         }
-
 
         .whatsapp-menu {
             position: fixed;
@@ -76,7 +72,6 @@
             background: #e2e2e2;
         }
 
-
         .footer-info {
             margin-top: 15px;
             line-height: 1.7;
@@ -88,11 +83,198 @@
             color: #fff;
             font-weight: bold;
         }
+
+        /* Estilos para la página sobre nosotros simplificada */
+        .about-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .about-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .about-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .about-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section {
+            margin-bottom: 40px;
+        }
+
+        .about-section h2 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .about-section p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .about-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .about-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #25D366;
+            font-weight: bold;
+        }
+
+        .contact-about {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-about h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .contact-about p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .btn-about {
+            background-color: #25D366;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-about:hover {
+            background-color: #1da852;
+        }
+
+        .emerging-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .simple-about {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .store-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .store-info h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+
+        .store-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .store-feature {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .store-feature i {
+            font-size: 1.5rem;
+            color: #25D366;
+            margin-bottom: 10px;
+        }
+
+        .store-feature h4 {
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .store-feature p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos para mobile */
+        @media (max-width: 768px) {
+            .about-title {
+                font-size: 2rem;
+            }
+
+            .about-subtitle {
+                font-size: 1rem;
+            }
+
+            .about-content {
+                padding: 20px;
+            }
+
+            .about-section {
+                margin-bottom: 30px;
+            }
+
+            .store-features {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
 <body>
-
 
     <header class="site-header">
         <div class="container">
@@ -106,7 +288,7 @@
                 <!-- Navegación -->
                 <nav class="main-nav" role="navigation">
                     <ul class="main-nav__list">
-                        <li><a href="index.html" class="main-nav__link active">Inicio</a></li>
+                        <li><a href="index.html" class="main-nav__link">Inicio</a></li>
                         <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
                         <li><a href="ofertas.html" class="main-nav__link">Ofertas</a></li>
                         <li><a href="pedidos.html" class="main-nav__link">Mis Pedidos</a></li>
@@ -114,8 +296,6 @@
                 </nav>
 
                 <div class="header__actions">
-
-
 
                     <!-- botón de cambio de tema  -->
                     <div class="header__action-icon theme-toggle" title="Cambiar tema">
@@ -175,41 +355,64 @@
 
     <!-- ================== MAIN ================== -->
     <main class="main-content">
-        <div class="container">
+        <div class="about-container">
+            <div class="about-header">
+                <h1 class="about-title">Sobre Nosotros</h1>
+                <p class="about-subtitle">Conoce nuestra historia y compromiso</p>
+                <span class="emerging-badge">Tecno CuseVi</span>
+            </div>
 
-            <section class="hero-banner">
-                <div class="hero-banner__content">
-                    <h1 class="hero-banner__title">Bienvenido a Tecno CuseVi</h1>
-                    <p class="hero-banner__subtitle">Encuentra lo mejor en tecnología al mejor precio.</p>
-                    <div class="hero-banner__actions">
-                        <a href="catalogo.html" class="btn btn--primary">Ver Catálogo</a>
-                        <a href="ofertas.html" class="btn btn--light">Ver Ofertas</a>
+            <div class="about-content">
+                <section class="about-section simple-about">
+                    <h2>Nuestra Historia</h2>
+                    <p>Tecno CuseVi nace en 2023 con el sueño de llevar tecnología de calidad a nuestra comunidad de Rioja. Somos una empresa nueva que comenzó con una pequeña tienda en el centro de la ciudad, con el objetivo de ofrecer productos tecnológicos modernos y a precios justos para todos.</p>
+                </section>
+
+                <section class="about-section simple-about">
+                    <h2>Nuestra Misión</h2>
+                    <p>Brindar acceso a tecnología de calidad a precios accesibles para nuestra comunidad de Rioja y la región San Martín, mejorando la vida de nuestros clientes con productos confiables y un servicio cercano y personalizado.</p>
+                </section>
+
+                <section class="about-section simple-about">
+                    <h2>Nuestro Compromiso</h2>
+                    <div class="store-info">
+                        <h3>¿Por qué elegir Tecno CuseVi?</h3>
+                        <div class="store-features">
+                            <div class="store-feature">
+                                <i>📍</i>
+                                <h4>Tienda Local</h4>
+                                <p>Estamos aquí para ti en el Jr libertad 342 Rioja </p>
+                            </div>
+                            <div class="store-feature">
+                                <i>🤝</i>
+                                <h4>Atención Personal</h4>
+                                <p>Te ayudamos directamente</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>💼</i>
+                                <h4>Calidad</h4>
+                                <p>Productos seleccionados para ti</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>🌱</i>
+                                <h4>Compromiso</h4>
+                                <p>Con nuestra comunidad</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Búsqueda -->
-            <section id="search-results-section" class="section" style="display: none;">
-                <h2 class="section__title">Resultados de Búsqueda</h2>
-                <p class="section__subtitle">Mostrando resultados para: "<span id="search-term-display"></span>"</p>
-                <div id="search-results-container" class="productos-grid"></div>
-            </section>
+                <section class="about-section simple-about">
+                    <h2>Nuestro Equipo</h2>
+                    <p>Somos una pequeña familia de profesionales apasionados por la tecnología y comprometidos con el servicio al cliente. Estamos aquí para ayudarte a encontrar la mejor solución tecnológica para tus necesidades.</p>
+                </section>
 
-            <section class="section">
-                <h2 class="section__title">Explora por Categorías</h2>
-                <div id="categorias-container" class="categorias-grid"></div>
-            </section>
-
-            <section class="section section--bg-light">
-                <h2 class="section__title">Ofertas del Día</h2>
-                <div id="ofertas-container" class="productos-grid"></div>
-            </section>
-
-            <section class="section">
-                <h2 class="section__title">Productos Destacados</h2>
-                <div id="destacados-container" class="productos-grid"></div>
-            </section>
-
+                <section class="contact-about">
+                    <h3>Únete a Nuestra Comunidad</h3>
+                    <p>Visítanos en nuestra tienda o síguenos en redes sociales. Estamos aquí para ayudarte.</p>
+                    <button class="btn-about" onclick="window.location.href='https://wa.me/51944670870'">Contáctanos</button>
+                </section>
+            </div>
         </div>
     </main>
 
@@ -241,7 +444,6 @@
         </div>
     </footer>
 
-
     <!-- ================== BOTÓN FLOTANTE WHATSAPP ================== -->
     <div class="whatsapp-btn" id="open-whatsapp-menu">
         <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -262,7 +464,7 @@
         <button onclick="sendWAMessage('¿Qué métodos de pago aceptan?')">Métodos de pago</button>
     </div>
 
-    <!-- Manejo de  whatsApp -->
+
     <script>
         const waMenu = document.getElementById("whatsapp-menu");
         const waBtn = document.getElementById("open-whatsapp-menu");

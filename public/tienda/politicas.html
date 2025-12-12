@@ -4,15 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecno CuseVi - Tu Tienda de Tecnología</title>
-
+    <title>Políticas de Servicio - Tecno CuseVi</title>
 
     <link rel="stylesheet" href="css/tienda.css">
 
-
     <script defer src="js/api.js"></script>
     <script defer src="js/index.js"></script>
-
 
     <style>
         .whatsapp-btn {
@@ -37,7 +34,6 @@
         .whatsapp-btn:hover {
             transform: scale(1.1);
         }
-
 
         .whatsapp-menu {
             position: fixed;
@@ -76,7 +72,6 @@
             background: #e2e2e2;
         }
 
-
         .footer-info {
             margin-top: 15px;
             line-height: 1.7;
@@ -88,11 +83,198 @@
             color: #fff;
             font-weight: bold;
         }
+
+        /* Estilos para la página de políticas simplificada */
+        .policies-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .policies-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .policies-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .policies-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .policies-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .policies-section {
+            margin-bottom: 40px;
+        }
+
+        .policies-section h2 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .policies-section p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .policies-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .policies-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .policies-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #25D366;
+            font-weight: bold;
+        }
+
+        .contact-policies {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-policies h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .contact-policies p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .btn-policies {
+            background-color: #25D366;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-policies:hover {
+            background-color: #1da852;
+        }
+
+        .emerging-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .simple-policies {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .store-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .store-info h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+
+        .store-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .store-feature {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .store-feature i {
+            font-size: 1.5rem;
+            color: #25D366;
+            margin-bottom: 10px;
+        }
+
+        .store-feature h4 {
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .store-feature p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos para mobile */
+        @media (max-width: 768px) {
+            .policies-title {
+                font-size: 2rem;
+            }
+
+            .policies-subtitle {
+                font-size: 1rem;
+            }
+
+            .policies-content {
+                padding: 20px;
+            }
+
+            .policies-section {
+                margin-bottom: 30px;
+            }
+
+            .store-features {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
 <body>
-
 
     <header class="site-header">
         <div class="container">
@@ -106,7 +288,7 @@
                 <!-- Navegación -->
                 <nav class="main-nav" role="navigation">
                     <ul class="main-nav__list">
-                        <li><a href="index.html" class="main-nav__link active">Inicio</a></li>
+                        <li><a href="index.html" class="main-nav__link">Inicio</a></li>
                         <li><a href="catalogo.html" class="main-nav__link">Catálogo</a></li>
                         <li><a href="ofertas.html" class="main-nav__link">Ofertas</a></li>
                         <li><a href="pedidos.html" class="main-nav__link">Mis Pedidos</a></li>
@@ -114,8 +296,6 @@
                 </nav>
 
                 <div class="header__actions">
-
-
 
                     <!-- botón de cambio de tema  -->
                     <div class="header__action-icon theme-toggle" title="Cambiar tema">
@@ -175,41 +355,104 @@
 
     <!-- ================== MAIN ================== -->
     <main class="main-content">
-        <div class="container">
+        <div class="policies-container">
+            <div class="policies-header">
+                <h1 class="policies-title">Nuestras Políticas</h1>
+                <p class="policies-subtitle">Compromiso con nuestros clientes</p>
+                <span class="emerging-badge">Tecno CuseVi</span>
+            </div>
 
-            <section class="hero-banner">
-                <div class="hero-banner__content">
-                    <h1 class="hero-banner__title">Bienvenido a Tecno CuseVi</h1>
-                    <p class="hero-banner__subtitle">Encuentra lo mejor en tecnología al mejor precio.</p>
-                    <div class="hero-banner__actions">
-                        <a href="catalogo.html" class="btn btn--primary">Ver Catálogo</a>
-                        <a href="ofertas.html" class="btn btn--light">Ver Ofertas</a>
+            <div class="policies-content">
+                <section class="policies-section simple-policies">
+                    <h2>Política de Envío</h2>
+                    <p>Ofrecemos envío a toda la provincia de Rioja y zonas cercanas. Nuestro servicio es rápido y confiable.</p>
+                    
+                    <div class="store-info">
+                        <h3>Detalles de Envío</h3>
+                        <div class="store-features">
+                            <div class="store-feature">
+                                <i>🚚</i>
+                                <h4>Costo</h4>
+                                <p>S/ 8.00 a Moyobamba</p>
+                                <p>S/ 5.00 a Nueva Cajamarca</p>
+                                <p>S/ 8.00 a Naranjos</p>
+                                <p>Para mas informacion contactanos </p>
+                            </div>
+                            <div class="store-feature">
+                                <i>🕒</i>
+                                <h4>Tiempo</h4>
+                                <p>1-2 días hábiles</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>📦</i>
+                                <h4>Seguimiento</h4>
+                                <p>Con número de seguimiento</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>🎁</i>
+                                <h4>Envío Gratis</h4>
+                                <p>Para compras > S/ 99.00</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Búsqueda -->
-            <section id="search-results-section" class="section" style="display: none;">
-                <h2 class="section__title">Resultados de Búsqueda</h2>
-                <p class="section__subtitle">Mostrando resultados para: "<span id="search-term-display"></span>"</p>
-                <div id="search-results-container" class="productos-grid"></div>
-            </section>
+                <section class="policies-section simple-policies">
+                    <h2>Política de Cambios y Devoluciones</h2>
+                    <p>Estamos aquí para ayudarte. Si no quedas satisfecho con tu compra, te ofrecemos opciones sencillas.</p>
+                    
+                    <ul class="policies-list">
+                        <li>Cambios hasta 15 días después de la compra</li>
+                        <li>Devoluciones en efectivo o crédito en tienda</li>
+                        <li>Producto en perfectas condiciones</li>
+                        <li>Con comprobante de compra</li>
+                    </ul>
+                </section>
 
-            <section class="section">
-                <h2 class="section__title">Explora por Categorías</h2>
-                <div id="categorias-container" class="categorias-grid"></div>
-            </section>
+                <section class="policies-section simple-policies">
+                    <h2>Garantía</h2>
+                    <p>Todos nuestros productos vienen con garantía mínima de 6 meses contra defectos de fabricación.</p>
+                    
+                    <div class="store-info">
+                        <h3>Qué Cubre</h3>
+                        <div class="store-features">
+                            <div class="store-feature">
+                                <i>🔧</i>
+                                <h4>Reparaciones</h4>
+                                <p>En nuestra tienda cuando es posible</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>🔄</i>
+                                <h4>Cambios</h4>
+                                <p>Por productos con defectos</p>
+                            </div>
+                            <div class="store-feature">
+                                <i>📞</i>
+                                <h4>Soporte</h4>
+                                <p>Te ayudamos directamente</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <section class="section section--bg-light">
-                <h2 class="section__title">Ofertas del Día</h2>
-                <div id="ofertas-container" class="productos-grid"></div>
-            </section>
+                <section class="policies-section simple-policies">
+                    <h2>Política de Pagos</h2>
+                    <p>Aceptamos diferentes formas de pago para tu comodidad.</p>
+                    
+                    <ul class="policies-list">
+                        <li>Efectivo en tienda</li>
+                        <li>Transferencia bancaria</li>
+                        <li>Yape y Plin (medios digitales)</li>
+                        <li>Crédito en tienda (condiciones)</li>
+                    </ul>
+                </section>
 
-            <section class="section">
-                <h2 class="section__title">Productos Destacados</h2>
-                <div id="destacados-container" class="productos-grid"></div>
-            </section>
-
+                <section class="contact-policies">
+                    <h3>¿Tienes una Duda?</h3>
+                    <p>Visítanos en nuestra tienda o contáctanos, te ayudamos con gusto.</p>
+                    <button class="btn-policies" onclick="window.location.href='https://wa.me/51944670870'">Hablar con Nosotros</button>
+                </section>
+            </div>
         </div>
     </main>
 
@@ -237,10 +480,9 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2025 Tecno CuseVi. Todos los derechos reservados.</p>
+            <p>&copy; 2023 Tecno CuseVi. Todos los derechos reservados.</p>
         </div>
     </footer>
-
 
     <!-- ================== BOTÓN FLOTANTE WHATSAPP ================== -->
     <div class="whatsapp-btn" id="open-whatsapp-menu">
