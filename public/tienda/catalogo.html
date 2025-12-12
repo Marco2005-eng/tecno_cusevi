@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <script defer src="js/header.js"></script> <!-- 🔥 Nuevo para el tema y logo -->
     <script defer src="js/catalogo-public.js"></script>
 </head>
+
 <body>
 
     <!-- ================== HEADER ================== -->
@@ -37,23 +39,10 @@
 
                 <!-- Acciones -->
                 <div class="header__actions">
-
-                    <!-- Buscador (JS lee este ID) -->
-                    <div class="search-bar">
-                        <input type="search" id="search-bar" class="search-bar__input"
-                               placeholder="Buscar productos...">
-                        <button class="search-bar__button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="currentColor" fill="none">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- 🔥 Botón de Cambio de Tema (Nuevo) -->
                     <div class="header__action-icon theme-toggle" title="Cambiar tema">
-                        <!-- Sol (visible en modo oscuro) -->
-                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
                             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -63,22 +52,27 @@
                             <line x1="21" y1="12" x2="23" y2="12"></line>
                         </svg>
 
-                        <!-- Luna (visible en modo claro) -->
-                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+
+                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
+                            stroke="currentColor" stroke-width="2">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </div>
 
                     <!-- Favoritos -->
                     <a href="favoritos.html" class="header__action-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78"></path>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor"
+                            fill="none">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78">
+                            </path>
                         </svg>
                     </a>
 
                     <!-- Carrito (JS actualiza #cart-count) -->
                     <a href="carrito.html" class="header__action-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor"
+                            fill="none">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
@@ -88,7 +82,8 @@
 
                     <!-- Perfil -->
                     <a href="perfil.html" class="header__action-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor"
+                            fill="none">
                             <circle cx="12" cy="7" r="4"></circle>
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         </svg>
@@ -102,225 +97,243 @@
 
     <!-- ================== MAIN ================== -->
     <main class="main-content">
-        <div class="container">
-
-            <div class="catalogo__layout">
-
-                <!-- ================== SIDEBAR ================== -->
-                <aside class="catalogo__sidebar">
-                    <h2>Filtrar productos</h2>
-
-                    <form id="filtros-form" class="filtros-form">
-
-                        <!-- Categoría -->
-                        <div class="filtros__group">
-                            <label for="filtro-categoria">Categoría</label>
-                            <select id="filtro-categoria">
-                                <option value="">Todas las categorías</option>
-                            </select>
-                        </div>
-
-                        <!-- Marca -->
-                        <div class="filtros__group">
-                            <label for="filtro-marca">Marca</label>
-                            <select id="filtro-marca">
-                                <option value="">Todas las marcas</option>
-                            </select>
-                        </div>
-
-                        <!-- Precio -->
-                        <div class="filtros__group">
-                            <label>Rango de precio</label>
-                            <div class="filtros__price-range">
-                                <input type="number" id="precio-min" placeholder="Mín." min="0">
-                                <span>-</span>
-                                <input type="number" id="precio-max" placeholder="Máx." min="0">
-                            </div>
-                        </div>
-
-                        <!-- Ordenar -->
-                        <div class="filtros__group">
-                            <label for="ordenar-por">Ordenar por</label>
-                            <select id="ordenar-por">
-                                <option value="relevancia">Más relevantes</option>
-                                <option value="precio-asc">Precio: Menor a mayor</option>
-                                <option value="precio-desc">Precio: Mayor a menor</option>
-                                <option value="nombre-asc">Nombre: A a Z</option>
-                                <option value="nombre-desc">Nombre: Z a A</option>
-                            </select>
-                        </div>
-
-                        <!-- Botones -->
-                        <div class="filtros__actions">
-                            <button type="submit" class="btn btn--primary">Aplicar filtros</button>
-                            <button type="button" id="btn-limpiar-filtros" class="btn btn--secondary">Limpiar</button>
-                        </div>
-                    </form>
-                </aside>
 
 
-                <!-- ================== PRODUCTOS ================== -->
-                <section class="catalogo__content">
-
-                    <div class="catalogo__header">
-                        <h1>Catálogo de Productos</h1>
-                        <p class="catalogo__result-count">
-                            Mostrando <span id="result-count">0</span> productos
-                        </p>
-                    </div>
-
-                    <div id="productos-list" class="productos-grid">
-                        <!-- Los productos se cargarán aquí con JS -->
-                    </div>
-
-                    <div id="no-results" class="no-results" style="display:none;">
-                        <svg width="64" height="64" stroke="currentColor" fill="none">
+        <div class="catalogo-search-section">
+            <div class="catalogo-search-container">
+                <div class="catalogo-search-bar">
+                    <input type="search" id="search-bar" class="catalogo-search-input"
+                        placeholder="Buscar productos...">
+                    <button id="btn-buscar" class="catalogo-search-btn">
+                        <svg width="20" height="20" stroke="currentColor" fill="none">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
-                            <path d="M8 11h6"></path>
                         </svg>
-                        <h3>No se encontraron productos</h3>
-                        <p>Intenta ajustar los filtros.</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ================== SIDEBAR ================== -->
+            <aside class="catalogo__sidebar">
+                <h2>Filtrar productos</h2>
+
+                <form id="filtros-form" class="filtros-form">
+
+                    <!-- Categoría -->
+                    <div class="filtros__group">
+                        <label for="filtro-categoria">Categoría</label>
+                        <select id="filtro-categoria">
+                            <option value="">Todas las categorías</option>
+                        </select>
                     </div>
 
-                </section>
+                    <!-- Marca -->
+                    <div class="filtros__group">
+                        <label for="filtro-marca">Marca</label>
+                        <select id="filtro-marca">
+                            <option value="">Todas las marcas</option>
+                        </select>
+                    </div>
 
-            </div>
+                    <!-- Precio -->
+                    <div class="filtros__group">
+                        <label>Rango de precio</label>
+                        <div class="filtros__price-range">
+                            <input type="number" id="precio-min" placeholder="Mín." min="0">
+                            <span>-</span>
+                            <input type="number" id="precio-max" placeholder="Máx." min="0">
+                        </div>
+                    </div>
+
+                    <!-- Ordenar -->
+                    <div class="filtros__group">
+                        <label for="ordenar-por">Ordenar por</label>
+                        <select id="ordenar-por">
+                            <option value="relevancia">Más relevantes</option>
+                            <option value="precio-asc">Precio: Menor a mayor</option>
+                            <option value="precio-desc">Precio: Mayor a menor</option>
+                            <option value="nombre-asc">Nombre: A a Z</option>
+                            <option value="nombre-desc">Nombre: Z a A</option>
+                        </select>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="filtros__actions">
+                        <button type="submit" class="btn btn--primary">Aplicar filtros</button>
+                        <button type="button" id="btn-limpiar-filtros" class="btn btn--secondary">Limpiar</button>
+                    </div>
+                </form>
+            </aside>
+
+
+            <!-- ================== PRODUCTOS ================== -->
+            <section class="catalogo__content">
+
+                <div class="catalogo__header">
+                    <h1>Catálogo de Productos</h1>
+                    <p class="catalogo__result-count">
+                        Mostrando <span id="result-count">0</span> productos
+                    </p>
+                </div>
+
+                <div id="productos-list" class="productos-grid">
+                    <!-- Los productos se cargarán aquí con JS -->
+                </div>
+
+                <div id="no-results" class="no-results" style="display:none;">
+                    <svg width="64" height="64" stroke="currentColor" fill="none">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                        <path d="M8 11h6"></path>
+                    </svg>
+                    <h3>No se encontraron productos</h3>
+                    <p>Intenta ajustar los filtros.</p>
+                </div>
+
+            </section>
+
+        </div>
 
         </div>
     </main>
 
-   <footer class="site-footer">
-    <div class="footer-container">
-        <div class="footer-col">
-            <h3>Contacto</h3>
-            <ul class="footer-list">
-                <li>📍 Rioja, San Martín - Perú</li>
-                <li>📞 <a href="https://wa.me/51944670870" target="_blank">+51 944 670 870</a></li>
-                <li>✉️ <a href="mailto:tecnocusevi@gmail.com">tecnocusevi@gmail.com</a></li>
-                <li>🕒 Lunes a Sábado: 9:00 AM - 8:00 PM</li>
-            </ul>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Contacto</h3>
+                <ul class="footer-list">
+                    <li>📍 Rioja, San Martín - Perú</li>
+                    <li>📞 <a href="https://wa.me/51944670870" target="_blank">+51 944 670 870</a></li>
+                    <li>✉️ <a href="mailto:tecnocusevi@gmail.com">tecnocusevi@gmail.com</a></li>
+                    <li>🕒 Lunes a Sábado: 9:00 AM - 8:00 PM</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Información</h3>
+                <ul class="footer-list">
+                    <li><a href="#">Políticas de Garantía</a></li>
+                    <li><a href="#">Políticas de Envío</a></li>
+                    <li><a href="#">Cambios y Devoluciones</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                </ul>
+            </div>
         </div>
 
-        <div class="footer-col">
-            <h3>Información</h3>
-            <ul class="footer-list">
-                <li><a href="#">Políticas de Garantía</a></li>
-                <li><a href="#">Políticas de Envío</a></li>
-                <li><a href="#">Cambios y Devoluciones</a></li>
-                <li><a href="#">Sobre Nosotros</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Tecno CuseVi. Todos los derechos reservados.</p>
         </div>
+    </footer>
+
+
+    <!-- ================== BOTÓN FLOTANTE WHATSAPP ================== -->
+    <div class="whatsapp-btn" id="open-whatsapp-menu">
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.671.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.174.2-.298.3-.498.099-.198.05-.371-.025-.52-.075-.143-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.224-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.091.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
     </div>
 
-    <div class="footer-bottom">
-        <p>&copy; 2025 Tecno CuseVi. Todos los derechos reservados.</p>
+    <div class="whatsapp-menu" id="whatsapp-menu">
+        <div class="whatsapp-menu-header">¿Qué deseas consultar?</div>
+
+        <button onclick="sendWAMessage('Hola, quiero consultar sobre un producto.')">Consultar sobre un
+            producto</button>
+        <button onclick="sendWAMessage('Hola, quiero saber el estado de mi pedido.')">Estado de mi pedido</button>
+        <button onclick="sendWAMessage('¿Cuánto cuesta el envío a mi distrito?')">Costo de envío</button>
+        <button onclick="sendWAMessage('¿Qué métodos de pago aceptan?')">Métodos de pago</button>
     </div>
-</footer>
 
+    <script>
+        const waMenu = document.getElementById("whatsapp-menu");
+        const waBtn = document.getElementById("open-whatsapp-menu");
 
-  <!-- ================== BOTÓN FLOTANTE WHATSAPP ================== -->
-<div class="whatsapp-btn" id="open-whatsapp-menu">
-    <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.671.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.174.2-.298.3-.498.099-.198.05-.371-.025-.52-.075-.143-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.224-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.091.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-    </svg>
-</div>
+        // abrir/cerrar menú
+        waBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            waMenu.style.display = waMenu.style.display === "flex" ? "none" : "flex";
+        });
 
-<div class="whatsapp-menu" id="whatsapp-menu">
-    <div class="whatsapp-menu-header">¿Qué deseas consultar?</div>
+        // cerrar si se hace click fuera
+        document.addEventListener("click", (e) => {
+            if (!waMenu.contains(e.target) && e.target !== waBtn) {
+                waMenu.style.display = "none";
+            }
+        });
 
-    <button onclick="sendWAMessage('Hola, quiero consultar sobre un producto.')">Consultar sobre un producto</button>
-    <button onclick="sendWAMessage('Hola, quiero saber el estado de mi pedido.')">Estado de mi pedido</button>
-    <button onclick="sendWAMessage('¿Cuánto cuesta el envío a mi distrito?')">Costo de envío</button>
-    <button onclick="sendWAMessage('¿Qué métodos de pago aceptan?')">Métodos de pago</button>
-</div>
-
-<script>
-    const waMenu = document.getElementById("whatsapp-menu");
-    const waBtn = document.getElementById("open-whatsapp-menu");
-
-    // abrir/cerrar menú
-    waBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        waMenu.style.display = waMenu.style.display === "flex" ? "none" : "flex";
-    });
-
-    // cerrar si se hace click fuera
-    document.addEventListener("click", (e) => {
-        if (!waMenu.contains(e.target) && e.target !== waBtn) {
+        function sendWAMessage(message) {
+            const phone = "51944670870";
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, "_blank");
             waMenu.style.display = "none";
         }
-    });
+    </script>
 
-    function sendWAMessage(message) {
-        const phone = "51944670870";
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank");
-        waMenu.style.display = "none";
-    }
-</script>
+    <style>
+        /* botón */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 9999;
+            transition: .2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-<style>
-    /* botón */
-    .whatsapp-btn {
-        position: fixed;
-        bottom: 22px;
-        right: 22px;
-        width: 58px;
-        height: 58px;
-        background: #25D366;
-        color: #fff;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 32px;
-        cursor: pointer;
-        z-index: 9999;
-        transition: .2s;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+        .whatsapp-btn:hover {
+            transform: scale(1.12);
+        }
 
-    .whatsapp-btn:hover {
-        transform: scale(1.12);
-    }
+        /* menú */
+        .whatsapp-menu {
+            position: fixed;
+            bottom: 90px;
+            right: 22px;
+            width: 250px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
 
-    /* menú */
-    .whatsapp-menu {
-        position: fixed;
-        bottom: 90px;
-        right: 22px;
-        width: 250px;
-        background: #fff;
-        border-radius: 12px;
-        padding: 12px;
-        display: none;
-        flex-direction: column;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        z-index: 9999;
-    }
+        .whatsapp-menu-header {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-    .whatsapp-menu-header {
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 10px;
-    }
+        .whatsapp-menu button {
+            padding: 10px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            border: none;
+            background: #f4f4f4;
+            cursor: pointer;
+            transition: .2s;
+            text-align: left;
+        }
 
-    .whatsapp-menu button {
-        padding: 10px;
-        margin-bottom: 6px;
-        border-radius: 6px;
-        border: none;
-        background: #f4f4f4;
-        cursor: pointer;
-        transition: .2s;
-        text-align: left;
-    }
-
-    .whatsapp-menu button:hover {
-        background: #e3e3e3;
-    }
-</style>
+        .whatsapp-menu button:hover {
+            background: #e3e3e3;
+        }
+    </style>
 
 </body>
+
 </html>

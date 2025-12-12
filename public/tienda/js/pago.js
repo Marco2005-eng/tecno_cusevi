@@ -1,5 +1,5 @@
 /**************************************************************
- * PAGO.JS — COMPATIBLE CON CLOUDINARY + RENDER
+ * PAGO.JS — COMPLETO, CORREGIDO Y CON WHATSAPP
  **************************************************************/
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -34,6 +34,77 @@ function inicializarTema() {
 }
 
 /**************************************************************
+ * OBTENER DATOS DEL PERFIL
+ **************************************************************/
+function obtenerDatosPerfil() {
+    const u = JSON.parse(localStorage.getItem("user") || "{}");
+
+    return {
+        nombre: u.nombre || "",
+        email: u.email || "",
+        telefono: u.telefono || "",
+        direccion: u.direccion || ""
+    };
+}
+
+/**************************************************************
+ * OBTENER PRODUCTOS DEL PEDIDO (desde el DOM)
+ **************************************************************/
+function obtenerProductosDelPedido() {
+    const items = document.querySelectorAll(".pago-producto-item");
+    let productos = [];
+
+    items.forEach(item => {
+        const nombre = item.querySelector("h4")?.textContent || "";
+        const cantidad = Number(item.querySelector("p:nth-child(2)")?.textContent.replace(/\D/g, "")) || 1;
+        const subtotal = Number(item.querySelector("p:nth-child(3)")?.textContent.replace("Subtotal: S/ ", "")) || 0;
+
+        productos.push({ nombre, cantidad, subtotal });
+    });
+
+    return productos;
+}
+
+/**************************************************************
+ * GENERAR MENSAJE WHATSAPP
+ **************************************************************/
+function generarMensajeWhatsApp(tipo, total) {
+    const perfil = obtenerDatosPerfil();
+    const productos = obtenerProductosDelPedido();
+
+    let lista = productos
+        .map(p => `• ${p.nombre} x${p.cantidad} — S/ ${p.subtotal.toFixed(2)}`)
+        .join("\n");
+
+    let msg = `Hola, quiero confirmar mi pedido.\n\n`;
+
+    msg += `🧍 Cliente: ${perfil.nombre}\n`;
+    msg += `📱 Teléfono: ${perfil.telefono}\n`;
+    msg += `✉️ Correo: ${perfil.email}\n`;
+
+    if (tipo === "entrega")
+        msg += `📍 Dirección: ${perfil.direccion}\n`;
+
+    msg += `\n🛒 Productos:\n${lista}\n`;
+    msg += `\n💵 Total: S/ ${total}\n`;
+
+    msg += tipo === "entrega"
+        ? `\n🚚 Método: Contra Entrega`
+        : `\n🏬 Método: Recojo en Tienda`;
+
+    return msg;
+}
+
+/**************************************************************
+ * ABRIR WhatsApp
+ **************************************************************/
+function enviarWhatsApp(msg) {
+    const admin = "51944670870";
+    const url = `https://wa.me/${admin}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+}
+
+/**************************************************************
  *  CARGA DE PEDIDO — usa apiGet()
  **************************************************************/
 async function cargarPedido(id) {
@@ -53,7 +124,8 @@ async function cargarPedido(id) {
         const cont = document.getElementById("pago-productos-list");
 
         cont.innerHTML = detalles?.length
-            ? detalles.map(prod => `
+            ? detalles
+                .map(prod => `
                 <div class="pago-producto-item">
                     <img src="${prod.imagen_url || 'assets/placeholder.png'}" alt="${prod.producto}">
                     <div class="pago-producto-detalles">
@@ -62,7 +134,8 @@ async function cargarPedido(id) {
                         <p>Subtotal: S/ ${Number(prod.subtotal).toFixed(2)}</p>
                     </div>
                 </div>
-            `).join("")
+            `)
+                .join("")
             : "<p>No hay productos para mostrar en este pedido.</p>";
 
     } catch (error) {
@@ -93,7 +166,7 @@ function asignarEventosPago(pedidoID) {
  * MOSTRAR DETALLES DE MÉTODO DE PAGO
  **************************************************************/
 function mostrarDetallesMetodo(metodo) {
-    const ids = [
+    const secciones = [
         "pago-qr-box",
         "pago-efectivo",
         "pago-recojo",
@@ -102,7 +175,7 @@ function mostrarDetallesMetodo(metodo) {
         "numero-plin"
     ];
 
-    ids.forEach(id => (document.getElementById(id).style.display = "none"));
+    secciones.forEach(id => (document.getElementById(id).style.display = "none"));
 
     if (metodo === "yape") {
         mostrar("pago-qr-box");
@@ -117,7 +190,7 @@ function mostrarDetallesMetodo(metodo) {
         document.getElementById("qr-imagen").src = "assets/qr-plin.png";
 
     } else if (metodo === "efectivo") {
-        mostrar("pago-efectivo");
+        mostrar("pago-efectivo"); // CONTRA ENTREGA
 
     } else if (metodo === "recojo") {
         mostrar("pago-recojo");
@@ -146,8 +219,8 @@ async function confirmarPedido(pedidoID) {
     formData.append("metodo_pago", metodo);
     formData.append("notas", `Pago con ${metodo}`);
 
-    // Esta parte envía el archivo directamente a Cloudinary vía backend
-    if (fileInput.files[0]) formData.append("comprobante", fileInput.files[0]);
+    if (fileInput.files[0])
+        formData.append("comprobante", fileInput.files[0]);
 
     try {
         btn.disabled = true;
@@ -157,7 +230,20 @@ async function confirmarPedido(pedidoID) {
 
         if (!data.success) throw new Error(data.message);
 
-        mostrarNotificacion("Pago enviado correctamente. Validando comprobante…", "success");
+        mostrarNotificacion("Pago enviado correctamente.", "success");
+
+        // ⚡ WhatsApp automático SOLO para efectivo (contra entrega) o recojo
+        const total = document.getElementById("pago-total").textContent;
+
+        if (metodo === "efectivo") {
+            const msg = generarMensajeWhatsApp("entrega", total);
+            enviarWhatsApp(msg);
+        }
+
+        if (metodo === "recojo") {
+            const msg = generarMensajeWhatsApp("recojo", total);
+            enviarWhatsApp(msg);
+        }
 
         setTimeout(() => window.location.href = "pedidos.html", 2500);
 

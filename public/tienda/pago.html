@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagar Pedido - Tecno CuseVi</title>
-    
+
     <link rel="stylesheet" href="css/tienda.css">
-    <script defer src="js/header.js"></script> <!-- Para el tema -->
+    <script defer src="js/header.js"></script>
     <script defer src="js/api.js"></script>
     <script defer src="js/pago.js"></script>
 </head>
@@ -15,11 +15,12 @@
 <header class="site-header">
     <div class="container">
         <div class="header__content">
+
             <a href="index.html" class="header__logo-link">
                 <img src="assets/logo.png" id="site-logo" class="header__logo">
             </a>
+
             <nav class="main-nav">
-                
                 <ul class="main-nav__list">
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="catalogo.html">Catálogo</a></li>
@@ -28,135 +29,141 @@
             </nav>
 
             <div class="header__actions">
-                <!-- Botón de Cambio de Tema -->
+
+                <!-- Tema -->
                 <div class="header__action-icon theme-toggle" title="Cambiar tema">
-                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg class="sun-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
                     </svg>
-                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg class="moon-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </div>
 
-                <!-- FAVORITOS -->
-                <a href="favoritos.html" aria-label="Ver favoritos" class="header__action-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                <a href="favoritos.html" class="header__action-icon">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
+                        a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78"></path>
                     </svg>
                 </a>
 
-                <!-- CARRITO -->
-                <a href="carrito.html" aria-label="Ver carrito de compras" class="header__action-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.6 13.5a2 2 0 0 0 2 1.5h10a2 2 0 0 0 2-1.5L23 6H6"></path>
+                <a href="carrito.html" class="header__action-icon">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.6 13.5a2 2 0 0 0 2 1.5h10a2 2 0 0 0 2-1.5L23 6H6"/>
                     </svg>
-                    <span class="cart-count" id="cart-count">0</span>
+                    <span id="cart-count" class="cart-count">0</span>
                 </a>
 
-                <!-- PERFIL -->
-                <a href="perfil.html" aria-label="Mi perfil" class="header__action-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
+                <a href="perfil.html" class="header__action-icon">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="7" r="4"/>
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     </svg>
                 </a>
+
             </div>
         </div>
     </div>
 </header>
 
+
 <main class="main-content">
     <div class="container">
+
         <section class="section">
+
             <h1 class="section__title">Pagar Pedido</h1>
-            <p class="section__subtitle">Selecciona el método de pago y confirma tu pedido.</p>
+            <p class="section__subtitle">Selecciona tu método de pago y confirma.</p>
 
             <div class="pago-layout">
+
                 <!-- RESUMEN DEL PEDIDO -->
-                <div class="pago-box" id="pedido-info">
+                <div class="pago-box">
                     <h2>Resumen del Pedido</h2>
-                    <div class="pago-resumen-header">
-                        <p><strong>ID Pedido:</strong> <span id="pago-id-pedido">Cargando...</span></p>
-                        <p><strong>Estado:</strong> <span id="pago-estado" class="pago-estado--pendiente">Pendiente de Pago</span></p>
-                    </div>
+
+                    <p><strong>ID Pedido:</strong> <span id="pago-id-pedido">...</span></p>
+                    <p><strong>Estado:</strong> <span id="pago-estado">Pendiente</span></p>
+
                     <hr>
-                    <div id="pago-productos-list">
-                        <!-- Los productos se cargarán aquí con JS -->
-                    </div>
+
+                    <div id="pago-productos-list"></div>
+
                     <hr>
-                    <div class="pago-resumen-footer">
-                        <p><strong>Total a Pagar:</strong></p>
-                        <p class="pago-total">S/ <span id="pago-total">0.00</span></p>
-                    </div>
+
+                    <p><strong>Total:</strong></p>
+                    <p class="pago-total">S/ <span id="pago-total">0.00</span></p>
                 </div>
 
-                <!-- MÉTODO DE PAGO -->
+                <!-- MÉTODOS DE PAGO -->
                 <div class="pago-box">
                     <h2>Método de Pago</h2>
 
                     <div class="pago-metodos">
                         <button class="metodo-btn active" data-metodo="yape">
-                            <img src="assets/yape.png" alt="Yape"> Yape
+                            <img src="assets/yape.png"> Yape
                         </button>
+
                         <button class="metodo-btn" data-metodo="plin">
-                            <img src="assets/plin.png" alt="Plin"> Plin
+                            <img src="assets/plin.png"> Plin
                         </button>
+
                         <button class="metodo-btn" data-metodo="efectivo">
-                             Contraentrega
+                            Contra Entrega
                         </button>
+
                         <button class="metodo-btn" data-metodo="recojo">
-                             Pago en Tienda
+                            Recojo en Tienda
                         </button>
                     </div>
 
-           
                     <div id="pago-detalles-container">
-                        
+
+                        <!-- QR -->
                         <div id="pago-qr-box" class="pago-detalle-metodo">
                             <h3>Escanea el código QR</h3>
-                            <img id="qr-imagen" src="assets/qr-default.png" alt="Código QR de Yape">
-                            <p class="pago-qr-instrucciones">Monto a pagar: <strong>S/ <span id="qr-monto">0.00</span></strong></p>
-                            <p id="numero-yape" class="pago-numero"><strong>Número Yape:</strong> 977706674</p>
-                            <p id="numero-plin" class="pago-numero" style="display:none;"><strong>Número Plin:</strong> 988 332 110</p>
+                            <img id="qr-imagen" src="assets/qr-default.png">
+                            <p>Monto: <strong>S/ <span id="qr-monto">0.00</span></strong></p>
+
+                            <p id="numero-yape"><strong>Número Yape:</strong> 977 706 674</p>
+                            <p id="numero-plin" style="display:none;"><strong>Número Plin:</strong> 988 332 110</p>
                         </div>
 
-                       
+                        <!-- CONTRA ENTREGA -->
                         <div id="pago-efectivo" class="pago-detalle-metodo" style="display:none;">
-                            <p> Pagarás con tarjeta o efectivo al momento de recibir tu pedido.</p>
+                            <p>Tu pago se realizará <strong>al recibir el producto</strong> en tu domicilio.</p>
                         </div>
 
                         <!-- RECOJO EN TIENDA -->
                         <div id="pago-recojo" class="pago-detalle-metodo" style="display:none;">
-                            <p> Realizarás el pago cuando pases a recoger tu producto a nuestra tienda.</p>
+                            <p>Pagarás cuando recojas tu pedido en la tienda.</p>
                         </div>
+
                     </div>
 
-                    <!-- SUBIR COMPROBANTE (Visible para Yape/Plin) -->
+                    <!-- ARCHIVO -->
                     <div id="comprobante-box" class="pago-comprobante">
-                        <h3>Adjuntar Comprobante de Pago</h3>
+                        <h3>Adjuntar Comprobante</h3>
+
                         <label for="file-comprobante" class="btn btn--secondary">Seleccionar Imagen</label>
-                        <input type="file" id="file-comprobante" accept="image/*" style="display: none;">
+                        <input type="file" id="file-comprobante" accept="image/*" style="display:none;">
+
                         <p id="nombre-archivo">Ningún archivo seleccionado</p>
                     </div>
 
-                    <!-- BOTÓN CONFIRMAR -->
-                    <button id="btn-confirmar-pago" class="btn btn--primary btn--lg btn--full-width">
+                    <button id="btn-confirmar-pago" class="btn btn--primary btn--full-width btn--lg">
                         Confirmar Pedido
                     </button>
                 </div>
             </div>
         </section>
+
     </div>
 </main>
-   <footer class="site-footer">
+
+
+<footer class="site-footer">
     <div class="footer-container">
         <div class="footer-col">
             <h3>Contacto</h3>
@@ -185,109 +192,39 @@
 </footer>
 
 
-  <!-- ================== BOTÓN FLOTANTE WHATSAPP ================== -->
+<!-- WHATSAPP FLOAT -->
 <div class="whatsapp-btn" id="open-whatsapp-menu">
-    <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.671.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.174.2-.298.3-.498.099-.198.05-.371-.025-.52-.075-.143-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.224-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.091.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    <svg viewBox="0 0 24 24" fill="currentColor" class="whatsapp-icon">
+        <path d="M17.47 14.38c-.29-.14-1.75-.86-2.03-.96-.27-.1-.47-.15-.67.15-.19.3-.77.97-.94 1.17-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.29-.35.45-.52.15-.17.2-.29.3-.5.1-.2.05-.37-.03-.52-.07-.14-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.48 1.69.62.71.22 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.08-.12-.27-.2-.57-.35z"/>
     </svg>
 </div>
 
-<div class="whatsapp-menu" id="whatsapp-menu">
+<div id="whatsapp-menu" class="whatsapp-menu">
     <div class="whatsapp-menu-header">¿Qué deseas consultar?</div>
-
-    <button onclick="sendWAMessage('Hola, quiero consultar sobre un producto.')">Consultar sobre un producto</button>
-    <button onclick="sendWAMessage('Hola, quiero saber el estado de mi pedido.')">Estado de mi pedido</button>
-    <button onclick="sendWAMessage('¿Cuánto cuesta el envío a mi distrito?')">Costo de envío</button>
-    <button onclick="sendWAMessage('¿Qué métodos de pago aceptan?')">Métodos de pago</button>
+    <button onclick="sendWAMessage('Hola, quiero consultar un producto.')">Consultar Producto</button>
+    <button onclick="sendWAMessage('Hola, quiero saber el estado de mi pedido.')">Estado de mi Pedido</button>
+    <button onclick="sendWAMessage('¿Cuánto cuesta el envío a mi distrito?')">Costo de Envío</button>
+    <button onclick="sendWAMessage('¿Qué métodos de pago aceptan?')">Métodos de Pago</button>
 </div>
 
 <script>
     const waMenu = document.getElementById("whatsapp-menu");
     const waBtn = document.getElementById("open-whatsapp-menu");
 
-    // abrir/cerrar menú
-    waBtn.addEventListener("click", (e) => {
+    waBtn.onclick = e => {
         e.stopPropagation();
         waMenu.style.display = waMenu.style.display === "flex" ? "none" : "flex";
-    });
+    };
 
-    // cerrar si se hace click fuera
-    document.addEventListener("click", (e) => {
-        if (!waMenu.contains(e.target) && e.target !== waBtn) {
+    document.onclick = e => {
+        if (!waMenu.contains(e.target) && e.target !== waBtn)
             waMenu.style.display = "none";
-        }
-    });
+    };
 
-    function sendWAMessage(message) {
-        const phone = "51944670870";
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank");
-        waMenu.style.display = "none";
+    function sendWAMessage(msg) {
+        window.open(`https://wa.me/51944670870?text=${encodeURIComponent(msg)}`, "_blank");
     }
 </script>
 
-<style>
-    /* botón */
-    .whatsapp-btn {
-        position: fixed;
-        bottom: 22px;
-        right: 22px;
-        width: 58px;
-        height: 58px;
-        background: #25D366;
-        color: #fff;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 32px;
-        cursor: pointer;
-        z-index: 9999;
-        transition: .2s;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .whatsapp-btn:hover {
-        transform: scale(1.12);
-    }
-
-    /* menú */
-    .whatsapp-menu {
-        position: fixed;
-        bottom: 90px;
-        right: 22px;
-        width: 250px;
-        background: #fff;
-        border-radius: 12px;
-        padding: 12px;
-        display: none;
-        flex-direction: column;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        z-index: 9999;
-    }
-
-    .whatsapp-menu-header {
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .whatsapp-menu button {
-        padding: 10px;
-        margin-bottom: 6px;
-        border-radius: 6px;
-        border: none;
-        background: #f4f4f4;
-        cursor: pointer;
-        transition: .2s;
-        text-align: left;
-    }
-
-    .whatsapp-menu button:hover {
-        background: #e3e3e3;
-    }
-</style>
-
- 
 </body>
 </html>

@@ -91,7 +91,7 @@ async function cargarOfertas() {
         renderizarOfertas(ofertasOriginal);
 
     } catch (err) {
-        console.error("❌ Error cargando ofertas:", err);
+        console.error("Error cargando ofertas:", err);
         showError(grid);
     }
 }
@@ -158,7 +158,7 @@ function configurarEventosFiltros() {
     document.getElementById("filtro-categoria-ofertas").onchange = aplicarFiltros;
     document.getElementById("filtro-descuento").onchange = aplicarFiltros;
     document.getElementById("ordenar-ofertas").onchange = aplicarFiltros;
-    document.getElementById("search-bar").oninput = aplicarFiltros;
+    document.getElementById("search-ofertas").oninput = aplicarFiltros;
 }
 
 // ============================================================
@@ -186,47 +186,36 @@ async function cargarCategorias() {
 //  APLICAR FILTROS
 // ============================================================
 
-// ============================================================
-//  APLICAR FILTROS (CORREGIDO)
-// ============================================================
-
 function aplicarFiltros() {
     let lista = [...ofertasOriginal];
 
-    const txt = document.getElementById("search-bar").value.toLowerCase();
+    const txt = document.getElementById("search-ofertas").value.toLowerCase();
     const cat = document.getElementById("filtro-categoria-ofertas").value;
     const descMin = Number(document.getElementById("filtro-descuento").value) || 0;
     const ordenar = document.getElementById("ordenar-ofertas").value;
 
-    // FILTRO DE TEXTO
     if (txt)
         lista = lista.filter(p =>
             p.producto_nombre.toLowerCase().includes(txt)
         );
 
-    // FILTRO POR CATEGORÍA (CORREGIDO)
     if (cat)
         lista = lista.filter(p =>
             p.id_categoria && Number(p.id_categoria) === Number(cat)
         );
 
-    // FILTRO POR DESCUENTO MÍNIMO
     lista = lista.filter(p => p.descuento_porcentaje >= descMin);
 
-    // ORDENAMIENTO
     switch (ordenar) {
         case "precio-asc":
             lista.sort((a, b) => a.precio_oferta - b.precio_oferta);
             break;
-
         case "precio-desc":
             lista.sort((a, b) => b.precio_oferta - a.precio_oferta);
             break;
-
         case "descuento":
             lista.sort((a, b) => b.descuento_porcentaje - a.descuento_porcentaje);
             break;
-
         case "nuevos":
             lista.sort((a, b) => b.id_catalogo - a.id_catalogo);
             break;
@@ -234,7 +223,6 @@ function aplicarFiltros() {
 
     renderizarOfertas(lista);
 }
-
 
 // ============================================================
 //  ACCIONES
