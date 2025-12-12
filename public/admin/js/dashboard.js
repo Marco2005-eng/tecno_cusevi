@@ -1,11 +1,11 @@
 /**************************************************************
- * DASHBOARD ADMIN — NGROK READY + adminApi.js integrado
+ * DASHBOARD ADMIN — OPTIMIZADO + CORREGIDO
  **************************************************************/
 
 document.addEventListener("DOMContentLoaded", () => {
 
     /**************************************************************
-     * 🔐 VALIDACIÓN DE SESIÓN ADMIN
+     * VALIDACIÓN DE SESIÓN ADMIN
      **************************************************************/
     const token = localStorage.getItem("token");
     const usuario = JSON.parse(localStorage.getItem("user") || "{}");
@@ -19,35 +19,39 @@ document.addEventListener("DOMContentLoaded", () => {
         usuario.nombre || "Administrador";
 
     /**************************************************************
-     * 📌 MENÚ LATERAL (ACORDEÓN)
+     * ACORDEÓN DEL MENU
      **************************************************************/
     document.querySelectorAll(".sidebar-title").forEach(title => {
+        const nextList = title.nextElementSibling;
+        if (!nextList) return;
+
+        title.style.cursor = "pointer";
+
         title.addEventListener("click", () => {
-            title.classList.toggle("active");
-            const items = title.nextElementSibling;
-            if (items?.classList.contains("nav-items")) {
-                items.classList.toggle("expanded");
-            }
+            nextList.classList.toggle("expanded");
         });
     });
 
     /**************************************************************
-     * 🌐 HELPER DE MONEDA
+     * 🌐 HELPERS
      **************************************************************/
-    const money = n => "S/ " + Number(n).toFixed(2);
+    const money = n => "S/ " + Number(n || 0).toFixed(2);
 
     /**************************************************************
-     * 📊 1. ESTADÍSTICAS PRINCIPALES (adminApiGet)
+     * 📊 1. ESTADÍSTICAS PRINCIPALES
      **************************************************************/
     async function cargarEstadisticas() {
         try {
-            const ventasHoy     = await adminApiGet("/reportes/ventas-hoy");
-            const pedidosHoy    = await adminApiGet("/reportes/pedidos-hoy");
-            const stockBajo     = await adminApiGet("/reportes/stock-bajo");
-            const nuevosClientes = await adminApiGet("/reportes/nuevos-clientes");
+            const [ventasHoy, pedidosHoy, stockBajo, nuevosClientes] =
+                await Promise.all([
+                    adminApiGet("/reportes/ventas-hoy"),
+                    adminApiGet("/reportes/pedidos-hoy"),
+                    adminApiGet("/reportes/stock-bajo"),
+                    adminApiGet("/reportes/nuevos-clientes")
+                ]);
 
             document.getElementById("stat-sales-today").textContent =
-                money(ventasHoy.data?.total || 0);
+                money(ventasHoy.data?.total);
 
             document.getElementById("stat-orders-today").textContent =
                 pedidosHoy.data?.total || 0;
@@ -61,10 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
             animarTarjetas();
 
         } catch (error) {
-            console.error("❌ Error cargando estadísticas:", error);
+            console.error("❌ Error al cargar estadísticas:", error);
         }
     }
 
+    /**************************************************************
+     * 🎨 ANIMACIÓN DE TARJETAS
+     **************************************************************/
     function animarTarjetas() {
         document.querySelectorAll(".stat-card").forEach((card, i) => {
             card.style.opacity = "0";
@@ -74,17 +81,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 card.style.transition = "all .4s ease";
                 card.style.opacity = "1";
                 card.style.transform = "translateY(0)";
-            }, 150 * i);
+            }, 120 * i);
         });
     }
 
     /**************************************************************
-     * 🛒 2. PEDIDOS DEL DÍA (máx 5)
+     * 🛒 2. PEDIDOS RECIENTES DEL DÍA (máx 5)
      **************************************************************/
     async function cargarPedidosRecientes() {
         try {
             const res = await adminApiGet("/pedidos");
-            if (!res.success) return;
+            if (!res.success || !Array.isArray(res.data)) return;
 
             const tbody = document.getElementById("recent-orders-tbody");
             tbody.innerHTML = "";
@@ -93,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const pedidosHoy = res.data
                 .filter(p => p.fecha_pedido?.slice(0, 10) === hoy)
+                .sort((a, b) => b.id - a.id)
                 .slice(0, 5);
 
             if (!pedidosHoy.length) {
@@ -115,12 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                 Ver
                             </a>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             });
 
         } catch (error) {
-            console.error("Error cargando pedidos recientes:", error);
+            console.error("❌ Error cargando pedidos recientes:", error);
         }
     }
 
@@ -133,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!res.success) return;
 
             const hoy = new Date().toISOString().slice(0, 10);
+
             const alertasHoy = res.data
                 .filter(a => a.fecha?.slice(0, 10) === hoy)
                 .slice(0, 10);
@@ -153,17 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     <li class="alert-item">
                         <strong>${a.titulo}</strong><br>
                         <small>${a.descripcion}</small>
-                    </li>
-                `;
+                    </li>`;
             });
 
         } catch (error) {
-            console.error("Error cargando alertas:", error);
+            console.error("❌ Error cargando alertas:", error);
         }
     }
 
     /**************************************************************
-     * 🚪 LOGOUT
+     * 🚪 LOGOUT SEGURO
      **************************************************************/
     document.getElementById("logout-btn").addEventListener("click", () => {
         const btn = document.getElementById("logout-btn");
@@ -185,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function ocultarLoader() {
         loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
         setTimeout(() => loader.remove(), 300);
     }
 
@@ -195,5 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarEstadisticas(),
         cargarPedidosRecientes(),
         cargarAlertas()
-    ]).then(() => ocultarLoader());
+    ])
+    .then(ocultarLoader)
+    .catch(err => {
+        console.error("❌ Error inicializando dashboard:", err);
+        ocultarLoader();
+    });
 });
