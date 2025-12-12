@@ -241,19 +241,19 @@ function inicializarBotonWhatsapp() {
 
     if (!toggleBtn || !menu) return;
 
-    // Abrir/cerrar menú
+        
     toggleBtn.onclick = () => {
         menu.classList.toggle("visible");
     };
 
-    // Cerrar al hacer clic fuera
+
     document.addEventListener("click", e => {
         if (!menu.contains(e.target) && e.target !== toggleBtn) {
             menu.classList.remove("visible");
         }
     });
 
-    // Enviar mensaje desde botones del menú
+
     document.querySelectorAll(".whatsapp-option").forEach(btn => {
         btn.onclick = () => {
             const texto = btn.dataset.msg;
@@ -263,7 +263,7 @@ function inicializarBotonWhatsapp() {
 }
 
 function abrirWhatsapp(mensaje) {
-    const numero = "51944670870"; // Número oficial TecnoCuseVi
+    const numero = "51944670870"; 
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank");
 }

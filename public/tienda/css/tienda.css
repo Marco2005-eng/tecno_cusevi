@@ -6,7 +6,8 @@
         --bg-light: #161a23;
         --bg-card: #1b1f29;
         --bg-hover: #232838;
-        --bg-body: var(--bg-main); /* Alias para consistencia */
+        --bg-body: var(--bg-main);
+        /* Alias para consistencia */
 
         --text-main: #e5e7eb;
         --text-muted: #9ca3af;
@@ -98,28 +99,77 @@
     /* ============================================================
     CLASES UTILITARIAS
     ============================================================ */
-    .text-center { text-align: center; }
-    .text-left { text-align: left; }
-    .text-right { text-align: right; }
+    .text-center {
+        text-align: center;
+    }
 
-    .d-flex { display: flex; }
-    .d-block { display: block; }
-    .d-none { display: none; }
+    .text-left {
+        text-align: left;
+    }
 
-    .justify-center { justify-content: center; }
-    .justify-between { justify-content: space-between; }
-    .align-center { align-items: center; }
+    .text-right {
+        text-align: right;
+    }
 
-    .gap-1 { gap: 0.5rem; }
-    .gap-2 { gap: 1rem; }
-    .gap-3 { gap: 1.5rem; }
+    .d-flex {
+        display: flex;
+    }
 
-    .mt-1 { margin-top: 0.5rem; }
-    .mt-2 { margin-top: 1rem; }
-    .mt-3 { margin-top: 1.5rem; }
-    .mb-1 { margin-bottom: 0.5rem; }
-    .mb-2 { margin-bottom: 1rem; }
-    .mb-3 { margin-bottom: 1.5rem; }
+    .d-block {
+        display: block;
+    }
+
+    .d-none {
+        display: none;
+    }
+
+    .justify-center {
+        justify-content: center;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .gap-1 {
+        gap: 0.5rem;
+    }
+
+    .gap-2 {
+        gap: 1rem;
+    }
+
+    .gap-3 {
+        gap: 1.5rem;
+    }
+
+    .mt-1 {
+        margin-top: 0.5rem;
+    }
+
+    .mt-2 {
+        margin-top: 1rem;
+    }
+
+    .mt-3 {
+        margin-top: 1.5rem;
+    }
+
+    .mb-1 {
+        margin-bottom: 0.5rem;
+    }
+
+    .mb-2 {
+        margin-bottom: 1rem;
+    }
+
+    .mb-3 {
+        margin-bottom: 1.5rem;
+    }
 
     /* ============================================================
     HEADER
@@ -228,9 +278,17 @@
         text-align: center;
     }
 
-    .theme-toggle .moon-icon { display: none; }
-    body.light-mode .theme-toggle .sun-icon { display: none; }
-    body.light-mode .theme-toggle .moon-icon { display: block; }
+    .theme-toggle .moon-icon {
+        display: none;
+    }
+
+    body.light-mode .theme-toggle .sun-icon {
+        display: none;
+    }
+
+    body.light-mode .theme-toggle .moon-icon {
+        display: block;
+    }
 
     .search-bar {
         display: flex;
@@ -358,7 +416,8 @@
         background: transparent;
         color: var(--primary);
         border: 2px solid var(--primary);
-        box-shadow: none; /* Sin sombra en estado base */
+        box-shadow: none;
+        /* Sin sombra en estado base */
     }
 
     .btn--secondary:hover {
@@ -383,6 +442,7 @@
     .btn--full-width {
         width: 100%;
     }
+
     /* ============================================================
     SECCIONES
     ============================================================ */
@@ -583,7 +643,7 @@
         font-size: 13px;
         font-weight: bold;
         z-index: 2;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .producto-card--oferta .producto-card__precio-original {
@@ -620,9 +680,18 @@
     }
 
     /* --- Estilos para tipos de notificación --- */
-    .notificacion--success { background-color: #28a745; }
-    .notificacion--error { background-color: #dc3545; }
-    .notificacion--warning { background-color: #ffc107; color: #212529; }
+    .notificacion--success {
+        background-color: #28a745;
+    }
+
+    .notificacion--error {
+        background-color: #dc3545;
+    }
+
+    .notificacion--warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
 
     /* ============================================================
     FOOTER
@@ -654,32 +723,39 @@
             flex-direction: column;
             gap: 15px;
         }
+
         .main-nav__list {
             gap: 18px;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .hero-banner {
             text-align: center;
             padding: 50px 25px;
         }
+
         .hero-banner__title {
             font-size: 32px;
         }
+
         .hero-banner__actions {
             justify-content: center;
         }
+
         .productos-grid,
         .categorias-grid {
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 20px;
         }
+
         .section__title {
             font-size: 22px;
         }
     }
 
     @media (max-width: 480px) {
+
         .productos-grid,
         .categorias-grid {
             grid-template-columns: 1fr;
@@ -822,6 +898,7 @@
             grid-template-columns: 1fr;
             gap: 30px;
         }
+
         .catalogo__sidebar {
             position: static;
         }
@@ -877,6 +954,7 @@
             flex-direction: column;
             align-items: stretch;
         }
+
         .filtro-group {
             min-width: auto;
         }
@@ -1056,12 +1134,15 @@
             grid-template-columns: 1fr;
             gap: 30px;
         }
+
         .producto-detalle__info h1 {
             font-size: 1.8rem;
         }
+
         .precio-actual {
             font-size: 1.6rem;
         }
+
         .producto-detalle__botones {
             flex-direction: column;
         }
@@ -1125,11 +1206,30 @@
         text-transform: uppercase;
     }
 
-    .pedido-card__estado.pendiente { background-color: #f0ad4e; color: #fff; }
-    .pedido-card__estado.procesando { background-color: #5bc0de; color: #fff; }
-    .pedido-card__estado.enviado { background-color: #5cb85c; color: #fff; }
-    .pedido-card__estado.entregado { background-color: var(--primary); color: #fff; }
-    .pedido-card__estado.cancelado { background-color: var(--accent); color: #fff; }
+    .pedido-card__estado.pendiente {
+        background-color: #f0ad4e;
+        color: #fff;
+    }
+
+    .pedido-card__estado.procesando {
+        background-color: #5bc0de;
+        color: #fff;
+    }
+
+    .pedido-card__estado.enviado {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+
+    .pedido-card__estado.entregado {
+        background-color: var(--primary);
+        color: #fff;
+    }
+
+    .pedido-card__estado.cancelado {
+        background-color: var(--accent);
+        color: #fff;
+    }
 
     .pedido-card__acciones {
         display: flex;
@@ -1193,7 +1293,7 @@
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
     }
 
     .modal-content.large {
@@ -1308,15 +1408,18 @@
         .modal-content {
             padding: 20px;
         }
+
         .pedido-detalle-item {
             flex-direction: column;
             text-align: center;
         }
+
         .pedido-card {
             flex-direction: column;
             align-items: flex-start;
             gap: 15px;
         }
+
         .pedido-card__resumen {
             text-align: left;
             width: 100%;
@@ -1535,6 +1638,7 @@
             grid-template-columns: 1fr;
             gap: 30px;
         }
+
         .carrito__resumen {
             position: static;
         }
@@ -1545,10 +1649,12 @@
             flex-direction: column;
             text-align: center;
         }
+
         .carrito-item-details,
         .carrito-item-price {
             width: 100%;
         }
+
         .carrito-item-cantidad {
             margin-top: 10px;
         }
@@ -1634,17 +1740,19 @@
 
     .btn--with-icon:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     @media (max-width: 768px) {
         .perfil-form {
             padding: 20px;
         }
+
         .perfil__actions {
             flex-direction: column;
             align-items: stretch;
         }
+
         .btn--with-icon {
             justify-content: center;
         }
@@ -1680,8 +1788,15 @@
         margin: 0.5rem 0;
     }
 
-    .pago-estado--pendiente { color: #f39c12; font-weight: bold; }
-    .pago-estado--pagado { color: #27ae60; font-weight: bold; }
+    .pago-estado--pendiente {
+        color: #f39c12;
+        font-weight: bold;
+    }
+
+    .pago-estado--pagado {
+        color: #27ae60;
+        font-weight: bold;
+    }
 
     #pago-productos-list {
         margin: 1.5rem 0;
@@ -1838,6 +1953,7 @@
         .pago-metodos {
             grid-template-columns: 1fr;
         }
+
         .pago-box {
             padding: 1rem 1.5rem;
         }
@@ -1969,10 +2085,25 @@
         border-radius: 0.25rem;
     }
 
-    .badge-yellow { background-color: #ffc107; color: #212529; }
-    .badge-blue { background-color: #0dcaf0; color: #000; }
-    .badge-green { background-color: #198754; color: #fff; }
-    .badge-red { background-color: #dc3545; color: #fff; }
+    .badge-yellow {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .badge-blue {
+        background-color: #0dcaf0;
+        color: #000;
+    }
+
+    .badge-green {
+        background-color: #198754;
+        color: #fff;
+    }
+
+    .badge-red {
+        background-color: #dc3545;
+        color: #fff;
+    }
 
     /* --- Botones de Admin --- */
     .admin-btn {
@@ -1986,15 +2117,34 @@
         text-transform: none;
     }
 
-    .admin-btn-primary { background: var(--primary); color: var(--bg-main); }
-    .admin-btn-success { background: #28a745; color: #fff; }
-    .admin-btn-danger { background: #dc3545; color: #fff; }
-    .admin-btn-info { background: #17a2b8; color: #fff; }
-    .admin-btn-small { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+    .admin-btn-primary {
+        background: var(--primary);
+        color: var(--bg-main);
+    }
+
+    .admin-btn-success {
+        background: #28a745;
+        color: #fff;
+    }
+
+    .admin-btn-danger {
+        background: #dc3545;
+        color: #fff;
+    }
+
+    .admin-btn-info {
+        background: #17a2b8;
+        color: #fff;
+    }
+
+    .admin-btn-small {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
 
     .admin-btn:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     /* --- Filtros --- */
@@ -2140,13 +2290,20 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
+
     /* --- ESTILOS PARA LAS CATEGORÍAS DINÁMICAS --- */
 
     /* Mensajes de carga y vacío */
-    .loading-message, .no-results {
+    .loading-message,
+    .no-results {
         text-align: center;
         padding: 3rem 1rem;
         color: var(--color-text-secondary, #666);
@@ -2175,9 +2332,11 @@
         border-radius: 12px;
         text-align: center;
         text-decoration: none;
-        color: #ffffff; /* El texto será blanco para contrastar con el fondo */
+        color: #ffffff;
+        /* El texto será blanco para contrastar con el fondo */
         transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-        min-height: 180px; /* Asegura que todas las tarjetas tengan la misma altura */
+        min-height: 180px;
+        /* Asegura que todas las tarjetas tengan la misma altura */
     }
 
     /* Efecto hover */
@@ -2192,7 +2351,8 @@
         width: 64px;
         height: 64px;
         margin-bottom: 1rem;
-        fill: currentColor; /* Hereda el color del padre (blanco) */
+        fill: currentColor;
+        /* Hereda el color del padre (blanco) */
     }
 
     /* Título de la categoría */
@@ -2201,6 +2361,7 @@
         font-weight: 600;
         margin: 0;
     }
+
     /* ===== MODAL ===== */
     .modal.show {
         display: flex !important;
@@ -2257,21 +2418,179 @@
         opacity: 0.7;
     }
 
+    /* ================================
+   BOTÓN FLOTANTE WHATSAPP
+================================ */
+
+    .whatsapp-btn {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        width: 70px;
+        height: 70px;
+
+        background: #25D366;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 36px;
+        cursor: pointer;
+        z-index: 9999;
+
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+
+        animation: whatsapp-pop 1.2s infinite alternate ease-in-out;
+    }
+
+    .whatsapp-btn:hover {
+        transform: scale(1.1);
+        background: #1ebe5d;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Animación suave */
+    @keyframes whatsapp-pop {
+        0% {
+            transform: translateY(0) scale(1);
+        }
+
+        100% {
+            transform: translateY(-4px) scale(1.03);
+        }
+    }
+
+    /* Ícono */
+    .whatsapp-btn i {
+        pointer-events: none;
+    }
+
     /* ============================================================
     ESTILOS PARA IMPRESIÓN
     ============================================================ */
     @media print {
-        .site-header, .site-footer, .admin-sidebar, .admin-header, .admin-btn, .modal-close, .pago-metodos, .pago-comprobante {
+
+        .site-header,
+        .site-footer,
+        .admin-sidebar,
+        .admin-header,
+        .admin-btn,
+        .modal-close,
+        .pago-metodos,
+        .pago-comprobante {
             display: none !important;
         }
+
         .admin-main {
             padding: 0;
         }
+
         body {
             background: #fff;
             color: #000;
         }
+
         .data-table th {
             background-color: #f2f2f2 !important;
         }
     }
+
+    /* FOOTER SIMPLE Y PROFESIONAL */
+.site-footer {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 40px 0 20px;
+    margin-top: 80px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-col h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #fff;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-col h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: #25D366;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 12px;
+    color: #a0a0a0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-list a {
+    color: #a0a0a0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-list a:hover {
+    color: #fff;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+    text-align: center;
+    color: #a0a0a0;
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Asegurar que el icono de WhatsApp se vea bien */
+.fab.fa-whatsapp {
+    font-size: 20px;
+    color: #25D366;
+    transition: color 0.3s ease;
+}
+
+.fab.fa-whatsapp:hover {
+    color: #1daa52;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-col {
+        margin-bottom: 30px;
+    }
+}
