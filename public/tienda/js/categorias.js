@@ -1,5 +1,5 @@
 // ============================================================
-//  CATEGORÍAS.JS – COMPATIBLE CON NGROK + apiGet()
+//  CATEGORÍAS.JS – FINAL OPTIMIZADO
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -29,16 +29,16 @@ function inicializarTema() {
 }
 
 // ============================================================
-//  LOGO DINÁMICO (usa apiGet)
+//  LOGO DINÁMICO
 // ============================================================
 
 async function cargarLogo() {
     try {
-        const data = await apiGet("/config");
-
+        const res = await apiGet("/config");
         const logo = document.getElementById("site-logo");
-        if (data.success && data.data.store_logo && logo) {
-            logo.src = data.data.store_logo;
+
+        if (res.success && res.data.store_logo && logo) {
+            logo.src = res.data.store_logo;
         }
     } catch {
         console.warn("⚠ No se pudo cargar el logo.");
@@ -52,11 +52,12 @@ async function cargarLogo() {
 function actualizarCarritoHeader() {
     const cart = JSON.parse(localStorage.getItem("carrito_tienda")) || [];
     const badge = document.getElementById("cart-count");
+
     badge.textContent = cart.reduce((t, p) => t + p.cantidad, 0);
 }
 
 // ============================================================
-//  CARGAR CATEGORÍAS (NGROK-READY)
+//  CARGAR CATEGORÍAS (con imágenes + cantidad de productos)
 // ============================================================
 
 async function cargarCategorias() {
@@ -65,62 +66,77 @@ async function cargarCategorias() {
     const vacio = document.getElementById("categorias-vacio");
 
     try {
-        const data = await apiGet("/categorias");
+        const res = await apiGet("/categorias");
 
         placeholder.style.display = "none";
 
-        if (!data.success || !data.data.length) {
+        if (!res.success || res.data.length === 0) {
             vacio.style.display = "flex";
             return;
         }
 
-        grid.innerHTML = data.data.map(cat => `
-            <a href="catalogo.html?cat=${cat.id}" class="categoria-card-large">
-                <div class="categoria-card-large__icon">
-                    ${iconoCategoriaSVG(cat.nombre)}
-                </div>
-                <div class="categoria-card-large__content">
-                    <h3 class="categoria-card-large__title">${cat.nombre}</h3>
-                    <p class="categoria-card-large__description">
-                        ${cat.descripcion || "Explora esta categoría"}
-                    </p>
-                </div>
-            </a>
-        `).join("");
+        grid.innerHTML = "";
+
+        res.data.forEach(cat => {
+            const imgHTML = cat.imagen_url
+                ? `<div class="categoria-card-large__img" style="background-image:url('${cat.imagen_url}')"></div>`
+                : `<div class="categoria-card-large__icon">${iconoCategoriaSVG(cat.nombre)}</div>`;
+
+            const productos = cat.total_productos ?? "—";
+
+            grid.innerHTML += `
+                <a href="catalogo.html?categoria=${cat.id}" class="categoria-card-large">
+
+                    ${imgHTML}
+
+                    <div class="categoria-card-large__content">
+                        <h3 class="categoria-card-large__title">${cat.nombre}</h3>
+
+                        <p class="categoria-card-large__description">
+                            ${cat.descripcion || "Explora esta categoría"}
+                        </p>
+
+                        <span class="categoria-card-large__count">
+                            ${productos} productos
+                        </span>
+                    </div>
+                </a>
+            `;
+        });
 
         grid.style.display = "grid";
 
-    } catch (error) {
-        console.error("❌ Error cargando categorías:", error);
+    } catch (err) {
+        console.error("❌ Error cargando categorías:", err);
 
         placeholder.style.display = "none";
         vacio.querySelector("h3").textContent = "Error al cargar las categorías";
-        vacio.querySelector("p").textContent = "Por favor, intenta recargar la página.";
+        vacio.querySelector("p").textContent = "Por favor, intenta nuevamente.";
         vacio.style.display = "flex";
     }
 }
 
 // ============================================================
-//  ICONOS SVG
+//  ICONOS SVG AUTOMÁTICOS
 // ============================================================
 
 function iconoCategoriaSVG(nombre) {
-    nombre = nombre.toLowerCase();
+    const n = nombre.toLowerCase();
 
-    if (nombre.includes("celu"))
-        return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>`;
+    if (n.includes("celu"))
+        return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>`;
 
-    if (nombre.includes("lap") || nombre.includes("note"))
-        return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M1 18h22"/></svg>`;
+    if (n.includes("lap") || n.includes("note"))
+        return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M1 18h22"/></svg>`;
 
-    if (nombre.includes("pc") || nombre.includes("compu"))
-        return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8"/></svg>`;
+    if (n.includes("pc") || n.includes("compu"))
+        return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8"/></svg>`;
 
-    if (nombre.includes("audio"))
-        return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M8 15v5M16 15v5"/></svg>`;
+    if (n.includes("audio"))
+        return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M8 15v5M16 15v5"/></svg>`;
 
-    if (nombre.includes("accesorio"))
-        return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="3"/></svg>`;
+    if (n.includes("accesorio"))
+        return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="3"/></svg>`;
 
-    return `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>`;
+    return `<svg width="40" height="40" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>`;
 }
