@@ -113,6 +113,21 @@ function configurarEventosFormulario() {
 }
 
 /**************************************************************
+ * LOG confirmacion
+ **************************************************************/
+function mostrarLogPerfil(mensaje) {
+    const log = document.getElementById("perfil-log");
+    if (!log) return;
+
+    log.textContent = mensaje;
+    log.classList.add("show");
+
+    setTimeout(() => {
+        log.classList.remove("show");
+    }, 2500);
+}
+
+/**************************************************************
  * GUARDAR PERFIL
  **************************************************************/
 async function guardarPerfil(e) {
@@ -159,7 +174,7 @@ async function guardarPerfil(e) {
             user.id_cliente = data.data.id;
             localStorage.setItem("user", JSON.stringify(user));
         }
-
+        mostrarLogPerfil("Perfil guardado correctamente");
         mostrarNotificacion("Perfil actualizado correctamente.", "success");
 
     } catch (err) {

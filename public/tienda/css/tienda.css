@@ -2692,3 +2692,23 @@
     color: var(--text-muted);
     font-size: 14px;
 }
+.perfil-log {
+    position: fixed;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: var(--bg-main);
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    opacity: 0;
+    transition: all .35s ease;
+    z-index: 9999;
+}
+.perfil-log.show {
+    top: 20px;
+    opacity: 1;
+}
