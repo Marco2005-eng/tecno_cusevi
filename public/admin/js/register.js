@@ -53,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Guardar sesión
             localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("user", JSON.stringify(data.usuario)); // ← CORRECTO
 
             mostrarSuccess("Cuenta creada. Redirigiendo para completar tus datos...");
 
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 1500);
 
         } catch (error) {
-            console.error(" Error registrando usuario:", error);
+            console.error("Error registrando usuario:", error);
             mostrarError("Ocurrió un error al conectar con el servidor.");
         }
     });
