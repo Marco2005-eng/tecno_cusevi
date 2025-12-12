@@ -2664,3 +2664,31 @@
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.2);
 }
+
+.categoria-bloque {
+    margin-bottom: 40px;
+}
+
+.categoria-productos-preview {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.cat-prod-item {
+    width: 120px;
+    text-align: center;
+}
+
+.cat-prod-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: var(--bg-card);
+}
+
+.cat-no-prods {
+    color: var(--text-muted);
+    font-size: 14px;
+}
