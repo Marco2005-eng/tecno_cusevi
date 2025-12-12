@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            // 🔥 LOGIN usando API ADMIN
+          
             const data = await adminApiPost("/auth/login", { email, password });
 
             console.log("🔐 RESPUESTA LOGIN ADMIN:", data);
@@ -26,18 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 return mostrarError(data.message || "Credenciales incorrectas");
             }
 
-            // Guardar sesión del admin
+         
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.usuario));
 
-            // Redirección si venía desde otra página
             const redirect = sessionStorage.getItem("redirect_after_login");
             if (redirect) {
                 sessionStorage.removeItem("redirect_after_login");
                 return (window.location.href = redirect);
             }
 
-            // Redirecciones según rol
+           
             if (data.usuario.rol === "admin") {
                 window.location.href = "../admin/dashboard.html";
             } else {
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         } catch (error) {
-            console.error("❌ Error al intentar conectar:", error);
+            console.error(" Error al intentar conectar:", error);
             mostrarError("No se pudo conectar con el servidor.");
         }
     });
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errorBox.style.display = "block";
         errorBox.innerText = msg;
 
-        // Animación sutil para experiencia UX
+        
         errorBox.classList.add("shake");
         setTimeout(() => errorBox.classList.remove("shake"), 400);
     }

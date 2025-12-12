@@ -1,5 +1,5 @@
 /**************************************************************
- * REGISTER ADMIN — usando adminApiPost() (NGROK READY)
+ * REGISTER ADMIN — auto-login + redirección al perfil
  **************************************************************/
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let errorBox = document.getElementById("register-error");
     let successBox = document.getElementById("register-success");
 
-    // Crear cajas si no existen
     if (!errorBox) {
         errorBox = document.createElement("div");
         errorBox.id = "register-error";
@@ -41,13 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            // 🔥 Ahora usando adminApiPost()
             const data = await adminApiPost("/auth/register", {
                 nombre_usuario: nombreUsuario,
                 nombre: nombreUsuario,
                 email,
                 password,
-                rol: "cliente" // por defecto
+                rol: "cliente"
             });
 
             if (!data.success) {
@@ -55,13 +53,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            mostrarSuccess("Cuenta creada exitosamente. Redirigiendo...");
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
 
-            // Redirige a login
-            setTimeout(() => window.location.href = "login.html", 1500);
+            mostrarSuccess("Cuenta creada. Redirigiendo para completar tus datos...");
+
+            setTimeout(() => {
+                window.location.href = "../tienda/perfil.html";
+            }, 1500);
 
         } catch (error) {
-            console.error("❌ Error registrando usuario:", error);
+            console.error(" Error registrando usuario:", error);
             mostrarError("Ocurrió un error al conectar con el servidor.");
         }
     });
