@@ -93,112 +93,111 @@
             </div>
         </div>
     </header>
-
-
     <!-- ================== MAIN ================== -->
     <main class="main-content">
-
-
-        <div class="catalogo-search-section">
-            <div class="catalogo-search-container">
-                <div class="catalogo-search-bar">
-                    <input type="search" id="search-bar" class="catalogo-search-input"
-                        placeholder="Buscar productos...">
-                    <button id="btn-buscar" class="catalogo-search-btn">
-                        <svg width="20" height="20" stroke="currentColor" fill="none">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                    </button>
+        <div class="container">
+            <div class="catalogo-search-section">
+                <div class="catalogo-search-container">
+                    <div class="catalogo-search-bar">
+                        <input type="search" id="search-bar" class="catalogo-search-input"
+                            placeholder="Buscar productos...">
+                        <button id="btn-buscar" class="catalogo-search-btn">
+                            <svg width="20" height="20" stroke="currentColor" fill="none">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="catalogo__layout"></div>
-            <!-- ================== SIDEBAR ================== -->
-            <aside class="catalogo__sidebar">
-                <h2>Filtrar productos</h2>
+            <div class="catalogo__layout">
 
-                <form id="filtros-form" class="filtros-form">
+                <!-- ================== SIDEBAR ================== -->
+                <aside class="catalogo__sidebar">
+                    <h2>Filtrar productos</h2>
 
-                    <!-- Categoría -->
-                    <div class="filtros__group">
-                        <label for="filtro-categoria">Categoría</label>
-                        <select id="filtro-categoria">
-                            <option value="">Todas las categorías</option>
-                        </select>
-                    </div>
+                    <form id="filtros-form" class="filtros-form">
 
-                    <!-- Marca -->
-                    <div class="filtros__group">
-                        <label for="filtro-marca">Marca</label>
-                        <select id="filtro-marca">
-                            <option value="">Todas las marcas</option>
-                        </select>
-                    </div>
-
-                    <!-- Precio -->
-                    <div class="filtros__group">
-                        <label>Rango de precio</label>
-                        <div class="filtros__price-range">
-                            <input type="number" id="precio-min" placeholder="Mín." min="0">
-                            <span>-</span>
-                            <input type="number" id="precio-max" placeholder="Máx." min="0">
+                        <!-- Categoría -->
+                        <div class="filtros__group">
+                            <label for="filtro-categoria">Categoría</label>
+                            <select id="filtro-categoria">
+                                <option value="">Todas las categorías</option>
+                            </select>
                         </div>
+
+                        <!-- Marca -->
+                        <div class="filtros__group">
+                            <label for="filtro-marca">Marca</label>
+                            <select id="filtro-marca">
+                                <option value="">Todas las marcas</option>
+                            </select>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="filtros__group">
+                            <label>Rango de precio</label>
+                            <div class="filtros__price-range">
+                                <input type="number" id="precio-min" placeholder="Mín." min="0">
+                                <span>-</span>
+                                <input type="number" id="precio-max" placeholder="Máx." min="0">
+                            </div>
+                        </div>
+
+                        <!-- Ordenar -->
+                        <div class="filtros__group">
+                            <label for="ordenar-por">Ordenar por</label>
+                            <select id="ordenar-por">
+                                <option value="relevancia">Más relevantes</option>
+                                <option value="precio-asc">Precio: Menor a mayor</option>
+                                <option value="precio-desc">Precio: Mayor a menor</option>
+                                <option value="nombre-asc">Nombre: A a Z</option>
+                                <option value="nombre-desc">Nombre: Z a A</option>
+                            </select>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="filtros__actions">
+                            <button type="submit" class="btn btn--primary">Aplicar filtros</button>
+                            <button type="button" id="btn-limpiar-filtros" class="btn btn--secondary">Limpiar</button>
+                        </div>
+                    </form>
+                </aside>
+
+
+                <!-- ================== PRODUCTOS ================== -->
+                <section class="catalogo__content">
+
+                    <div class="catalogo__header">
+                        <h1>Catálogo de Productos</h1>
+                        <p class="catalogo__result-count">
+                            Mostrando <span id="result-count">0</span> productos
+                        </p>
                     </div>
 
-                    <!-- Ordenar -->
-                    <div class="filtros__group">
-                        <label for="ordenar-por">Ordenar por</label>
-                        <select id="ordenar-por">
-                            <option value="relevancia">Más relevantes</option>
-                            <option value="precio-asc">Precio: Menor a mayor</option>
-                            <option value="precio-desc">Precio: Mayor a menor</option>
-                            <option value="nombre-asc">Nombre: A a Z</option>
-                            <option value="nombre-desc">Nombre: Z a A</option>
-                        </select>
+                    <div id="productos-list" class="productos-grid">
+                        <!-- Los productos se cargarán aquí con JS -->
                     </div>
 
-                    <!-- Botones -->
-                    <div class="filtros__actions">
-                        <button type="submit" class="btn btn--primary">Aplicar filtros</button>
-                        <button type="button" id="btn-limpiar-filtros" class="btn btn--secondary">Limpiar</button>
+                    <div id="no-results" class="no-results" style="display:none;">
+                        <svg width="64" height="64" stroke="currentColor" fill="none">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                            <path d="M8 11h6"></path>
+                        </svg>
+                        <h3>No se encontraron productos</h3>
+                        <p>Intenta ajustar los filtros.</p>
                     </div>
-                </form>
-            </aside>
 
+                </section>
 
-            <!-- ================== PRODUCTOS ================== -->
-            <section class="catalogo__content">
-
-                <div class="catalogo__header">
-                    <h1>Catálogo de Productos</h1>
-                    <p class="catalogo__result-count">
-                        Mostrando <span id="result-count">0</span> productos
-                    </p>
-                </div>
-
-                <div id="productos-list" class="productos-grid">
-                    <!-- Los productos se cargarán aquí con JS -->
-                </div>
-
-                <div id="no-results" class="no-results" style="display:none;">
-                    <svg width="64" height="64" stroke="currentColor" fill="none">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                        <path d="M8 11h6"></path>
-                    </svg>
-                    <h3>No se encontraron productos</h3>
-                    <p>Intenta ajustar los filtros.</p>
-                </div>
-
-            </section>
-
-        </div>
+            </div>
 
         </div>
     </main>
+
+
 
     <footer class="site-footer">
         <div class="footer-container">
